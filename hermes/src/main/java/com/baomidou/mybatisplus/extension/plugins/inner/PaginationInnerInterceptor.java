@@ -16,8 +16,8 @@
 package com.baomidou.mybatisplus.extension.plugins.inner;
 
 import com.baomidou.mybatisplus.annotation.DbType;
-import com.baomidou.mybatisplus.core.metadata.HPage;
-import com.baomidou.mybatisplus.core.metadata.HOrderItem;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.metadata.OrderItem;
 import com.baomidou.mybatisplus.core.toolkit.*;
 import com.baomidou.mybatisplus.extension.parser.JsqlParserGlobal;
 import com.baomidou.mybatisplus.extension.plugins.pagination.DialectFactory;
@@ -62,7 +62,7 @@ import java.util.stream.Collectors;
 @Data
 @NoArgsConstructor
 @SuppressWarnings({"rawtypes"})
-public class HPaginationInnerInterceptor implements InnerInterceptor {
+public class PaginationInnerInterceptor implements InnerInterceptor {
     /**
      * 获取jsqlparser中count的SelectItem
      */
@@ -101,11 +101,11 @@ public class HPaginationInnerInterceptor implements InnerInterceptor {
      */
     protected boolean optimizeJoin = true;
 
-    public HPaginationInnerInterceptor(DbType dbType) {
+    public PaginationInnerInterceptor(DbType dbType) {
         this.dbType = dbType;
     }
 
-    public HPaginationInnerInterceptor(IDialect dialect) {
+    public PaginationInnerInterceptor(IDialect dialect) {
         this.dialect = dialect;
     }
 
@@ -114,7 +114,7 @@ public class HPaginationInnerInterceptor implements InnerInterceptor {
      */
     @Override
     public boolean willDoQuery(Executor executor, MappedStatement ms, Object parameter, RowBounds rowBounds, ResultHandler resultHandler, BoundSql boundSql) throws SQLException {
-        HPage<?> page = HParameterUtils.findPage(parameter).orElse(null);
+        IPage<?> page = ParameterUtils.findPage(parameter).orElse(null);
         if (page == null || page.getSize() < 0 || !page.searchCount() || resultHandler != Executor.NO_RESULT_HANDLER) {
             return true;
         }
@@ -147,7 +147,7 @@ public class HPaginationInnerInterceptor implements InnerInterceptor {
 
     @Override
     public void beforeQuery(Executor executor, MappedStatement ms, Object parameter, RowBounds rowBounds, ResultHandler resultHandler, BoundSql boundSql) {
-        HPage<?> page = HParameterUtils.findPage(parameter).orElse(null);
+        IPage<?> page = ParameterUtils.findPage(parameter).orElse(null);
         if (null == page) {
             return;
         }
@@ -155,7 +155,7 @@ public class HPaginationInnerInterceptor implements InnerInterceptor {
         // 处理 orderBy 拼接
         boolean addOrdered = false;
         String buildSql = boundSql.getSql();
-        List<HOrderItem> orders = page.orders();
+        List<OrderItem> orders = page.orders();
         if (CollectionUtils.isNotEmpty(orders)) {
             addOrdered = true;
             buildSql = this.concatOrderBy(buildSql, orders);
@@ -256,7 +256,7 @@ public class HPaginationInnerInterceptor implements InnerInterceptor {
      * @param sql  sql
      * @return countSql
      */
-    public String autoCountSql(HPage<?> page, String sql) {
+    public String autoCountSql(IPage<?> page, String sql) {
         if (!page.optimizeCountSql()) {
             return lowLevelCountSql(sql);
         }
@@ -376,7 +376,7 @@ public class HPaginationInnerInterceptor implements InnerInterceptor {
      * @param originalSql 需要拼接的SQL
      * @return ignore
      */
-    public String concatOrderBy(String originalSql, List<HOrderItem> orderList) {
+    public String concatOrderBy(String originalSql, List<OrderItem> orderList) {
         try {
             Select selectBody = (Select) JsqlParserGlobal.parse(originalSql);
             if (selectBody instanceof PlainSelect) {
@@ -402,7 +402,7 @@ public class HPaginationInnerInterceptor implements InnerInterceptor {
         return originalSql;
     }
 
-    protected List<OrderByElement> addOrderByElements(List<HOrderItem> orderList, List<OrderByElement> orderByElements) {
+    protected List<OrderByElement> addOrderByElements(List<OrderItem> orderList, List<OrderByElement> orderByElements) {
         List<OrderByElement> additionalOrderBy = orderList.stream()
                 .filter(item -> StringUtils.isNotBlank(item.getColumn()))
                 .map(item -> {
@@ -426,7 +426,7 @@ public class HPaginationInnerInterceptor implements InnerInterceptor {
      * @param page 分页对象
      * @return 是否
      */
-    protected boolean continuePage(HPage<?> page) {
+    protected boolean continuePage(IPage<?> page) {
         if (page.getTotal() <= 0) {
             return false;
         }
@@ -447,7 +447,7 @@ public class HPaginationInnerInterceptor implements InnerInterceptor {
      *
      * @param page IPage
      */
-    protected void handlerLimit(HPage<?> page, Long limit) {
+    protected void handlerLimit(IPage<?> page, Long limit) {
         final long size = page.getSize();
         if (limit != null && limit > 0 && (size > limit || size < 0)) {
             page.setSize(limit);
@@ -459,7 +459,7 @@ public class HPaginationInnerInterceptor implements InnerInterceptor {
      *
      * @param page IPage
      */
-    protected void handlerOverflow(HPage<?> page) {
+    protected void handlerOverflow(IPage<?> page) {
         page.setCurrent(1);
     }
 

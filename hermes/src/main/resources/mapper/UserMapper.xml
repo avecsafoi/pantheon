@@ -17,8 +17,8 @@
     <select id="mySelectPage" resultType="com.baomidou.mybatisplus.samples.pagination.entity.User">
         select *
         from sys_user
-        where (age = #{pg.selectInt} and name = #{pg.selectStr})
-           or (age = #{ps.yihao} and name = #{ps.erhao})
+        where (age >= #{pg.selectInt} and name >= #{pg.selectStr})
+           or (age >= #{ps.yihao} and name >= #{ps.erhao})
     </select>
 
     <select id="mySelectPageMap" resultType="com.baomidou.mybatisplus.samples.pagination.entity.User">

@@ -19,6 +19,7 @@ import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
@@ -32,7 +33,8 @@ import java.util.stream.Collectors;
  */
 @Getter
 @Setter
-public class HOrderItem implements Serializable {
+public class OrderItem implements Serializable {
+    @Serial
     private static final long serialVersionUID = 1L;
 
     /**
@@ -44,42 +46,59 @@ public class HOrderItem implements Serializable {
      */
     private boolean asc = true;
 
-    public static HOrderItem asc(String column) {
+
+    private Object value;
+
+    public static OrderItem asc(String column) {
         return build(column, true);
     }
 
-    public static HOrderItem desc(String column) {
+    public static OrderItem desc(String column) {
         return build(column, false);
     }
 
-    public static List<HOrderItem> ascs(String... columns) {
-        return Arrays.stream(columns).map(HOrderItem::asc).collect(Collectors.toList());
+    public static OrderItem asc(String column, Object value) {
+        return build(column, true, value);
     }
 
-    public static List<HOrderItem> descs(String... columns) {
-        return Arrays.stream(columns).map(HOrderItem::desc).collect(Collectors.toList());
+    public static OrderItem desc(String column, Object value) {
+        return build(column, false, value);
     }
 
-    private static HOrderItem build(String column, boolean asc) {
-        return new HOrderItem().setColumn(column).setAsc(asc);
+    public static List<OrderItem> ascs(String... columns) {
+        return Arrays.stream(columns).map(OrderItem::asc).collect(Collectors.toList());
     }
 
-    public HOrderItem setColumn(String column) {
+    public static List<OrderItem> descs(String... columns) {
+        return Arrays.stream(columns).map(OrderItem::desc).collect(Collectors.toList());
+    }
+
+    private static OrderItem build(String column, boolean asc) {
+        return new OrderItem().setColumn(column).setAsc(asc);
+    }
+
+    private static OrderItem build(String column, boolean asc, Object value) {
+        return new OrderItem().setColumn(column).setAsc(asc).setValue(value);
+    }
+
+    public OrderItem setColumn(String column) {
         this.column = StringUtils.replaceAllBlank(column);
         return this;
     }
 
-    public HOrderItem setAsc(boolean asc) {
+    public OrderItem setAsc(boolean asc) {
         this.asc = asc;
+        return this;
+    }
+
+    public OrderItem setValue(Object value) {
+        this.value = value;
         return this;
     }
 
     @Override
     public String toString() {
-        return "OrderItem{" +
-                "column='" + column + '\'' +
-                ", asc=" + asc +
-                '}';
+        return "%s{%s,%s,%s}".formatted(getClass().getSimpleName(), column, asc ? "A" : "D", value == null ? "" : value.toString());
     }
 
 }

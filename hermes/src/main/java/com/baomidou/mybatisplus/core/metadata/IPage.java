@@ -15,8 +15,6 @@
  */
 package com.baomidou.mybatisplus.core.metadata;
 
-import com.baomidou.mybatisplus.extension.plugins.inner.HPaginationInnerInterceptor;
-
 import java.io.Serializable;
 import java.util.List;
 import java.util.function.Function;
@@ -29,14 +27,14 @@ import static java.util.stream.Collectors.toList;
  * @author hubin
  * @since 2018-06-09
  */
-public interface HPage<T> extends Serializable {
+public interface IPage<T> extends Serializable {
 
     /**
      * 获取排序信息，排序的字段和正反序
      *
      * @return 排序信息
      */
-    List<HOrderItem> orders();
+    List<OrderItem> orders();
 
     /**
      * 自动优化 COUNT SQL【 默认：true 】
@@ -48,7 +46,7 @@ public interface HPage<T> extends Serializable {
     }
 
     /**
-     * {@link HPaginationInnerInterceptor#isOptimizeJoin()}
+     * {@link com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor#isOptimizeJoin()}
      * 两个参数都为 true 才会进行sql处理
      *
      * @return true 是 / false 否
@@ -104,10 +102,11 @@ public interface HPage<T> extends Serializable {
     /**
      * 内部什么也不干
      * <p>只是为了 json 反序列化时不报错</p>
+     *
      * @deprecated 3.5.8
      */
     @Deprecated
-    default HPage<T> setPages(long pages) {
+    default IPage<T> setPages(long pages) {
         // to do nothing
         return this;
     }
@@ -122,7 +121,7 @@ public interface HPage<T> extends Serializable {
     /**
      * 设置分页记录列表
      */
-    HPage<T> setRecords(List<T> records);
+    IPage<T> setRecords(List<T> records);
 
     /**
      * 当前满足条件总行数
@@ -134,7 +133,7 @@ public interface HPage<T> extends Serializable {
     /**
      * 设置当前满足条件总行数
      */
-    HPage<T> setTotal(long total);
+    IPage<T> setTotal(long total);
 
     /**
      * 获取每页显示条数
@@ -146,7 +145,7 @@ public interface HPage<T> extends Serializable {
     /**
      * 设置每页显示条数
      */
-    HPage<T> setSize(long size);
+    IPage<T> setSize(long size);
 
     /**
      * 当前页
@@ -158,7 +157,7 @@ public interface HPage<T> extends Serializable {
     /**
      * 设置当前页
      */
-    HPage<T> setCurrent(long current);
+    IPage<T> setCurrent(long current);
 
     /**
      * IPage 的泛型转换
@@ -168,9 +167,9 @@ public interface HPage<T> extends Serializable {
      * @return 转换泛型后的 IPage
      */
     @SuppressWarnings("unchecked")
-    default <R> HPage<R> convert(Function<? super T, ? extends R> mapper) {
+    default <R> IPage<R> convert(Function<? super T, ? extends R> mapper) {
         List<R> collect = this.getRecords().stream().map(mapper).collect(toList());
-        return ((HPage<R>) this).setRecords(collect);
+        return ((IPage<R>) this).setRecords(collect);
     }
 
     /**
@@ -183,5 +182,15 @@ public interface HPage<T> extends Serializable {
      */
     default String countId() {
         return null;
+    }
+
+    boolean isFirst();
+
+    PageType getPageType();
+
+    IPage<T> setPageType(PageType pageType);
+
+    public static enum PageType {
+        OFFSET, ORDERS
     }
 }

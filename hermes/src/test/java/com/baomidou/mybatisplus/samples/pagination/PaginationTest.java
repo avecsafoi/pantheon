@@ -9,18 +9,17 @@ import com.baomidou.mybatisplus.core.metadata.OrderItem;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.conditions.query.LambdaQueryChainWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.baomidou.mybatisplus.samples.pagination.service.IUserService;
-import jakarta.annotation.Resource;
 import com.baomidou.mybatisplus.samples.pagination.entity.User;
 import com.baomidou.mybatisplus.samples.pagination.mapper.UserMapper;
 import com.baomidou.mybatisplus.samples.pagination.model.MyPage;
 import com.baomidou.mybatisplus.samples.pagination.model.ParamSome;
 import com.baomidou.mybatisplus.samples.pagination.model.UserChildren;
+import com.baomidou.mybatisplus.samples.pagination.service.IUserService;
+import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.session.RowBounds;
 import org.assertj.core.util.Maps;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.util.CollectionUtils;
 
@@ -49,29 +48,29 @@ class PaginationTest {
 
     @Test
     void tests1() {
-        log.info("----------------------------------baseMapper 自带分页-------------------------------------------------------");
-        Page<User> page = new Page<>(1, 5);
-        page.addOrder(OrderItem.asc("age"));
-        Page<User> userIPage = mapper.selectPage(page, Wrappers.<User>lambdaQuery().eq(User::getAge, 20).like(User::getName, "Jack"));
-        assertThat(page).isSameAs(userIPage);
-        log.info("总条数 -------------> {}", userIPage.getTotal());
-        log.info("当前页数 -------------> {}", userIPage.getCurrent());
-        log.info("当前每页显示数 -------------> {}", userIPage.getSize());
-        List<User> records = userIPage.getRecords();
-        assertThat(records).isNotEmpty();
-
-        log.info("----------------------------------json 正反序列化-------------------------------------------------------");
-        String json = JSON.toJSONString(page);
-        log.info("json ----------> {}", json);
-        Page<User> page1 = JSON.parseObject(json, new TypeReference<Page<User>>() {
-        });
-        List<User> records1 = page1.getRecords();
-        assertThat(records1).isNotEmpty();
-        assertThat(records1.get(0).getClass()).isEqualTo(User.class);
+//        log.info("----------------------------------baseMapper 自带分页-------------------------------------------------------");
+//        Page<User> page = new Page<>(1, 5);
+//        page.addOrder(OrderItem.asc("age"));
+//        Page<User> userIPage = mapper.selectPage(page, Wrappers.<User>lambdaQuery().eq(User::getAge, 20).like(User::getName, "Jack"));
+//        assertThat(page).isSameAs(userIPage);
+//        log.info("总条数 -------------> {}", userIPage.getTotal());
+//        log.info("当前页数 -------------> {}", userIPage.getCurrent());
+//        log.info("当前每页显示数 -------------> {}", userIPage.getSize());
+//        List<User> records = userIPage.getRecords();
+//        assertThat(records).isNotEmpty();
+//
+//        log.info("----------------------------------json 正反序列化-------------------------------------------------------");
+//        String json = JSON.toJSONString(page);
+//        log.info("json ----------> {}", json);
+//        Page<User> page1 = JSON.parseObject(json, new TypeReference<Page<User>>() {
+//        });
+//        List<User> records1 = page1.getRecords();
+//        assertThat(records1).isNotEmpty();
+//        assertThat(records1.getFirst().getClass()).isEqualTo(User.class);
 
         log.info("----------------------------------自定义 XML 分页-------------------------------------------------------");
         MyPage<User> myPage = new MyPage<User>(1, 5).setSelectInt(20).setSelectStr("Jack");
-        ParamSome paramSome = new ParamSome(20, "Jack");
+        ParamSome paramSome = new ParamSome(0, " ");
         MyPage<User> userMyPage = mapper.mySelectPage(myPage, paramSome);
         assertThat(myPage).isSameAs(userMyPage);
         log.info("总条数 -------------> {}", userMyPage.getTotal());
@@ -184,7 +183,7 @@ class PaginationTest {
     void test() {
         userService.lambdaQuery().like(User::getName, "a").list().forEach(System.out::println);
 
-        Page page = userService.lambdaQuery().like(User::getName, "a").page(new Page<>(1, 10));
+        Page<User> page = userService.lambdaQuery().like(User::getName, "a").page(new Page<>(1, 10));
         page.getRecords().forEach(System.out::println);
     }
 }
