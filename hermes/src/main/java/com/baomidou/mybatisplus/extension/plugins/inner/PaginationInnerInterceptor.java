@@ -136,7 +136,7 @@ public class PaginationInnerInterceptor implements InnerInterceptor {
         long total = 0;
         if (CollectionUtils.isNotEmpty(result)) {
             // 个别数据库 count 没数据不会返回 0
-            Object o = result.get(0);
+            Object o = result.getFirst();
             if (o != null) {
                 total = Long.parseLong(o.toString());
             }
@@ -312,11 +312,9 @@ public class PaginationInnerInterceptor implements InnerInterceptor {
                         }
                         FromItem rightItem = join.getRightItem();
                         String str = "";
-                        if (rightItem instanceof Table) {
-                            Table table = (Table) rightItem;
+                        if (rightItem instanceof Table table) {
                             str = Optional.ofNullable(table.getAlias()).map(Alias::getName).orElse(table.getName()) + StringPool.DOT;
-                        } else if (rightItem instanceof ParenthesedSelect) {
-                            ParenthesedSelect subSelect = (ParenthesedSelect) rightItem;
+                        } else if (rightItem instanceof ParenthesedSelect subSelect) {
                             /* 如果 left join 是子查询，并且子查询里包含 ?(代表有入参) 或者 where 条件里包含使用 join 的表的字段作条件,就不移除 join */
                             if (subSelect.toString().contains(StringPool.QUESTION_MARK)) {
                                 canRemoveJoin = false;
@@ -379,14 +377,12 @@ public class PaginationInnerInterceptor implements InnerInterceptor {
     public String concatOrderBy(String originalSql, List<OrderItem> orderList) {
         try {
             Select selectBody = (Select) JsqlParserGlobal.parse(originalSql);
-            if (selectBody instanceof PlainSelect) {
-                PlainSelect plainSelect = (PlainSelect) selectBody;
+            if (selectBody instanceof PlainSelect plainSelect) {
                 List<OrderByElement> orderByElements = plainSelect.getOrderByElements();
                 List<OrderByElement> orderByElementsReturn = addOrderByElements(orderList, orderByElements);
                 plainSelect.setOrderByElements(orderByElementsReturn);
                 return plainSelect.toString();
-            } else if (selectBody instanceof SetOperationList) {
-                SetOperationList setOperationList = (SetOperationList) selectBody;
+            } else if (selectBody instanceof SetOperationList setOperationList) {
                 List<OrderByElement> orderByElements = setOperationList.getOrderByElements();
                 List<OrderByElement> orderByElementsReturn = addOrderByElements(orderList, orderByElements);
                 setOperationList.setOrderByElements(orderByElementsReturn);
