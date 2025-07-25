@@ -2,8 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/hermes.main.iml" filepath="$PROJECT_DIR$/.idea/modules/hermes.main.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/hermes.test.iml" filepath="$PROJECT_DIR$/.idea/modules/hermes.test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/athena.main.iml" filepath="$PROJECT_DIR$/.idea/modules/athena.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/pantheon.iml" filepath="$PROJECT_DIR$/.idea/pantheon.iml" />
     </modules>
   </component>

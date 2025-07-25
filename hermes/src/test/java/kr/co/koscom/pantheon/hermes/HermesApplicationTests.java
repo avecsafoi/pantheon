@@ -8,7 +8,6 @@ class HermesApplicationTests {
 
     @Test
     void contextLoads() {
-
     }
 
 }
