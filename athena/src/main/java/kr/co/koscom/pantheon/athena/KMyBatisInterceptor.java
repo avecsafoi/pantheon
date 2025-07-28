@@ -20,12 +20,9 @@ import org.apache.ibatis.session.RowBounds;
 import java.util.List;
 import java.util.Map;
 
-@Intercepts({
-        @Signature(type = Executor.class, method = "query", args = {MappedStatement.class, Object.class, RowBounds.class, ResultHandler.class})
-        //, @Signature(type = Executor.class, method = "query", args = {MappedStatement.class, Object.class, RowBounds.class, ResultHandler.class, CacheKey.class, BoundSql.class})
-})
+@Intercepts(@Signature(type = Executor.class, method = "query", args = {MappedStatement.class, Object.class, RowBounds.class, ResultHandler.class}))
 @Slf4j
-public class AthenaMyBatisInterceptor implements Interceptor {
+public class KMyBatisInterceptor implements Interceptor {
 
     public static final DefaultReflectorFactory DEFAULT_REFLECTOR_FACTORY = new DefaultReflectorFactory();
     public static final ObjectMapper om = new ObjectMapper();
