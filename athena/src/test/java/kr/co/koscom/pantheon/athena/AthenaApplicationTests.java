@@ -10,12 +10,12 @@ import java.util.List;
 @SpringBootTest
 class AthenaApplicationTests {
 
+    @Resource
+    private SysUserMapper sysUserMapper;
+
     @Test
     void contextLoads() {
     }
-
-    @Resource
-    private SysUserMapper sysUserMapper;
 
     @Test
     void queryTest() {

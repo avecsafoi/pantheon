@@ -2,7 +2,6 @@ package kr.co.koscom.pantheon.athena;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.cache.CacheKey;
 import org.apache.ibatis.executor.Executor;
 import org.apache.ibatis.mapping.BoundSql;
@@ -31,34 +30,7 @@ public class AthenaMyBatisInterceptor implements Interceptor {
     public static final DefaultReflectorFactory DEFAULT_REFLECTOR_FACTORY = new DefaultReflectorFactory();
     public static final ObjectMapper om = new ObjectMapper();
 
-    @Override
-    public Object intercept(Invocation invocation) throws Throwable {
-        if (invocation.getTarget() instanceof Executor executor) {
-            Object[] args = invocation.getArgs();
-            MappedStatement ms = (MappedStatement) args[0];
-            Object pr = args[1];
-            RowBounds rb = (RowBounds) args[2];
-            Map.Entry<String, KPage> pe = findType(pr, KPage.class);
-            if (pe == null) return invocation.proceed();
-            KPage pg = pe.getValue();
-            BoundSql bs = ms.getBoundSql(pr);
-            setContSql(ms, bs, pe.getKey(), pg);
-            CacheKey ck = executor.createCacheKey(ms, pr, rb, bs);
-            Object rs = executor.query(ms, pr, rb, (ResultHandler<?>) args[3], ck, bs);
-            if (rs instanceof List<?> l) {
-                if (l.size() < pg.getLimit()) pg.setLast(true);
-                else if (!l.isEmpty()) {
-                    Object r = l.getLast();
-                    Map<?, ?> m = r instanceof Map<?, ?> m1 ? m1 : om.convertValue(r, Map.class);
-                    for (KOrder o : pg.getOrders()) o.setValue(m.get(o.getColumn()));
-                }
-            }
-            return rs;
-        }
-        return invocation.proceed();
-    }
-
-    private static void setContSql(MappedStatement ms, BoundSql bs, String pn, KPage pg) {
+    private static void setPageSql(MappedStatement ms, BoundSql bs, String pn, KPage pg) {
         List<ParameterMapping> pm = bs.getParameterMappings();
         String on = pn.isEmpty() ? "orders" : pn + ".orders";
         String ln = pn.isEmpty() ? "" : pn + ".";
@@ -86,15 +58,6 @@ public class AthenaMyBatisInterceptor implements Interceptor {
         meta.setValue("sql", sql);
     }
 
-    private Select parseSql(String sql) {
-        try {
-            return (Select) JsqlParserGlobal.parse(sql);
-        } catch (JSQLParserException e) {
-            e.printStackTrace(System.err);
-            return null;
-        }
-    }
-
     @SuppressWarnings("unchecked")
     public static <T> Map.Entry<String, T> findType(Object o, Class<T> t) {
         if (o != null) {
@@ -104,5 +67,32 @@ public class AthenaMyBatisInterceptor implements Interceptor {
             if (t.isAssignableFrom(o.getClass())) return Map.entry("", (T) o);
         }
         return null;
+    }
+
+    @Override
+    public Object intercept(Invocation invocation) throws Throwable {
+        if (invocation.getTarget() instanceof Executor executor) {
+            Object[] args = invocation.getArgs();
+            MappedStatement ms = (MappedStatement) args[0];
+            Object pr = args[1];
+            RowBounds rb = (RowBounds) args[2];
+            Map.Entry<String, KPage> pe = findType(pr, KPage.class);
+            if (pe == null) return invocation.proceed();
+            KPage pg = pe.getValue();
+            BoundSql bs = ms.getBoundSql(pr);
+            setPageSql(ms, bs, pe.getKey(), pg);
+            CacheKey ck = executor.createCacheKey(ms, pr, rb, bs);
+            Object rs = executor.query(ms, pr, rb, (ResultHandler<?>) args[3], ck, bs);
+            if (rs instanceof List<?> l) {
+                if (l.size() < pg.getLimit()) pg.setLast(true);
+                else if (!l.isEmpty()) {
+                    Object r = l.getLast();
+                    Map<?, ?> m = r instanceof Map<?, ?> m1 ? m1 : om.convertValue(r, Map.class);
+                    for (KOrder o : pg.getOrders()) o.setValue(m.get(o.getColumn()));
+                }
+            }
+            return rs;
+        }
+        return invocation.proceed();
     }
 }
