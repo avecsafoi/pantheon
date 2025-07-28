@@ -1,7 +1,7 @@
-package kr.co.koscom.pantheon.athena.mapper;
+package kr.co.koscom.pantheon.athena.demo.mapper;
 
-import kr.co.koscom.pantheon.athena.KPage;
-import kr.co.koscom.pantheon.athena.SysUser;
+import kr.co.koscom.pantheon.athena.demo.model.KPage;
+import kr.co.koscom.pantheon.athena.demo.model.SysUser;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;

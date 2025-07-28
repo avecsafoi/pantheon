@@ -1,7 +1,10 @@
 package kr.co.koscom.pantheon.athena;
 
 import jakarta.annotation.Resource;
-import kr.co.koscom.pantheon.athena.mapper.SysUserMapper;
+import kr.co.koscom.pantheon.athena.demo.mapper.SysUserMapper;
+import kr.co.koscom.pantheon.athena.demo.model.KOrder;
+import kr.co.koscom.pantheon.athena.demo.model.KPage;
+import kr.co.koscom.pantheon.athena.demo.model.SysUser;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 

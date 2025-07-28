@@ -1,6 +1,8 @@
 package kr.co.koscom.pantheon.athena;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import kr.co.koscom.pantheon.athena.demo.model.KOrder;
+import kr.co.koscom.pantheon.athena.demo.model.KPage;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.cache.CacheKey;
 import org.apache.ibatis.executor.Executor;

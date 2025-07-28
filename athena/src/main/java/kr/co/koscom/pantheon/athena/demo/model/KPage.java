@@ -1,4 +1,4 @@
-package kr.co.koscom.pantheon.athena;
+package kr.co.koscom.pantheon.athena.demo.model;
 
 import lombok.Data;
 
