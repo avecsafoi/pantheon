@@ -106,7 +106,11 @@ public class TextXDataOutputStream extends DataOutputStream {
             } catch (IllegalAccessException e) {
                 throw new IOException("Failed to access Field: " + en(c, f), e);
             }
-            writeObject(f.getType(), fo, f);
+            try {
+                writeObject(f.getType(), fo, f);
+            } catch (IOException e) {
+                throw new IOException("Failed to write Field: " + en(c, f), e);
+            }
         }
     }
 }

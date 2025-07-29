@@ -89,7 +89,12 @@ public class TextXDataInputStream extends DataInputStream {
         }
         for (Field f : fa) {
             if (!f.canAccess(o)) f.setAccessible(true);
-            Object fo = readObject(f.getType(), f);
+            Object fo;
+            try {
+                fo = readObject(f.getType(), f);
+            } catch (IOException e) {
+                throw new IOException("Failed to read Field: " + en(c, f), e);
+            }
             try {
                 f.set(o, fo);
             } catch (IllegalAccessException e) {

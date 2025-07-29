@@ -7,14 +7,13 @@ import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.http.converter.HttpMessageNotWritableException;
 import org.springframework.lang.Nullable;
-import org.springframework.util.StreamUtils;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 
-public class TextXDataHttpMessageConverter implements HttpMessageConverter<TextXData> {
+public class TextXDataHttpMessageConverter implements HttpMessageConverter<Object> {
 
     private final Charset defaultCharset;
 
@@ -47,18 +46,18 @@ public class TextXDataHttpMessageConverter implements HttpMessageConverter<TextX
     }
 
     @Override
-    public TextXData read(Class<? extends TextXData> c, HttpInputMessage m) throws IOException, HttpMessageNotReadableException {
+    public Object read(Class<?> c, HttpInputMessage m) throws IOException, HttpMessageNotReadableException {
         MediaType t = m.getHeaders().getContentType();
         Charset charset = t != null && t.getCharset() != null ? t.getCharset() : defaultCharset;
-        TextXDataInputStream is = new TextXDataInputStream(m.getBody(), t.getCharset());
-        TextXData o = is.readObject(c);
-        StreamUtils.drain(is);
-        return o;
+        TextXDataInputStream is = new TextXDataInputStream(m.getBody(), charset);
+        return is.readObject(c);
     }
 
     @Override
-    public void write(TextXData o, @Nullable MediaType t, HttpOutputMessage m) throws IOException, HttpMessageNotWritableException {
+    public void write(Object o, @Nullable MediaType t, HttpOutputMessage m) throws IOException, HttpMessageNotWritableException {
         Charset charset = t != null && t.getCharset() != null ? t.getCharset() : defaultCharset;
+        if (m.getHeaders().getContentType() == null)
+            m.getHeaders().setContentType(new MediaType("text", "plain", charset));
         TextXDataOutputStream os = new TextXDataOutputStream(m.getBody(), charset);
         os.writeObject(o);
         os.flush();
