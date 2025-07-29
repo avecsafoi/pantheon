@@ -36,6 +36,13 @@ class AthenaApplicationTests {
         pg.getOrders().add(new XOrder("email", true, "~"));
         pg.getOrders().add(new XOrder("id", true, "~"));
         pg.setFirst(false);
+
+        ///DataSourceKey.use("ds2");
         List<SysUser> sul = sysUserMapper.selectContPage(su, pg);
+        int i = 0;
+        for (SysUser s : sul) {
+            System.out.printf("[%4d %s]%n", i++, s);
+        }
+        ///DataSourceKey.clear();
     }
 }
