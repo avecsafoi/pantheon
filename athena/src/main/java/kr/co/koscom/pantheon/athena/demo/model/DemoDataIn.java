@@ -16,5 +16,5 @@ public class DemoDataIn implements TextXData {
     private String name;
 
     @XAText(name = "예수금", size = 10)
-    private String deposit;
+    private long deposit;
 }
