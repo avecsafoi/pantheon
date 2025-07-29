@@ -18,13 +18,9 @@ public class AthenaApplication {
         return new XMyBatisInterceptor();
     }
 
-//    @Bean
-//    public TextXDataHttpMessageConverter textXDataHttpMessageConverter() {
-//        return new TextXDataHttpMessageConverter();
-//    }
-
     @Bean
-    public TextXDataGenericHttpMessageConverter textXDataGenericHttpMessageConverter() {
-        return new TextXDataGenericHttpMessageConverter();
+    public TextXDataGenericHttpMessageConverter textXDataHttpMessageConverter() {
+        // return new TextXDataHttpMessageConverter(); // 기본객체만 처리가능 (GenericType 객체는 다른 컨버터로 패스)
+        return new TextXDataGenericHttpMessageConverter(); // GenericType IO 처리가능 예) @ResponseBody List<User> users(@RequestBody List<User>);
     }
 }
