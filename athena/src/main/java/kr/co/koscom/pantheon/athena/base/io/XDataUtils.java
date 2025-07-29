@@ -43,12 +43,7 @@ public class XDataUtils {
         return l;
     }
 
-    public static Class<?> getParameterizedType(Class<?> c, Field f) {
-        if (f != null) return (Class<?>) ((((ParameterizedType) f.getGenericType()).getActualTypeArguments())[0]);
-        else try {
-            return Class.forName(c.getTypeParameters()[0].getTypeName());
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        }
+    public static Class<?> getParameterizedType(Field f) {
+        return (Class<?>) ((((ParameterizedType) f.getGenericType()).getActualTypeArguments())[0]);
     }
 }

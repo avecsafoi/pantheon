@@ -19,7 +19,7 @@ public class TextXDataInputStream extends DataInputStream {
 
     public static final Map<Class<?>, Field[]> FIELDS = new HashMap<>();
 
-    private final Charset charset;
+    public final Charset charset;
 
     public TextXDataInputStream(InputStream is, Charset charset) {
         super(is);
@@ -69,7 +69,7 @@ public class TextXDataInputStream extends DataInputStream {
             return s.isEmpty() ? null : DateUtils.parseDate(s, df);
         }
         if (List.class.isAssignableFrom(c)) {
-            Class<?> s = XDataUtils.getParameterizedType(c, f);
+            Class<?> s = XDataUtils.getParameterizedType(f);
             List<Object> l = new ArrayList<>(z);
             for (int i = 0; i < z; i++) l.add(readFields(s, createObject(s, f)));
             return l;

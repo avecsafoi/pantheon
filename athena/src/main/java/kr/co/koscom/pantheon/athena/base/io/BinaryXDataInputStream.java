@@ -20,15 +20,11 @@ import static kr.co.koscom.pantheon.athena.base.io.XDataUtils.en;
 
 public class BinaryXDataInputStream extends DataInputStream {
 
-    private final Charset charset;
+    public final Charset charset;
 
     public BinaryXDataInputStream(InputStream in, Charset charset) {
         super(in);
         this.charset = charset;
-    }
-
-    public int readDataSize() throws IOException {
-        return readUnsignedShort();
     }
 
     public int readSize() throws IOException {
@@ -95,7 +91,7 @@ public class BinaryXDataInputStream extends DataInputStream {
         }
         if (List.class.isAssignableFrom(c)) {
             if (f == null) throw new IOException("Only for Field Type: " + en(c, null));
-            Class<?> s = XDataUtils.getParameterizedType(c, f);
+            Class<?> s = XDataUtils.getParameterizedType(f);
             XABinary aa = f.getAnnotation(XABinary.class);
             int z = aa == null ? readSize() : aa.size();
             List<Object> l = new ArrayList<>(z);

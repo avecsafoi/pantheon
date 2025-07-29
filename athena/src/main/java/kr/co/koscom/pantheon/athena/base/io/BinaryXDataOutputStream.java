@@ -19,7 +19,7 @@ import static kr.co.koscom.pantheon.athena.base.io.XDataUtils.en;
 
 public class BinaryXDataOutputStream extends DataOutputStream {
 
-    private final Charset charset;
+    public final Charset charset;
 
     public BinaryXDataOutputStream(OutputStream out, Charset charset) {
         super(out);
@@ -120,7 +120,7 @@ public class BinaryXDataOutputStream extends DataOutputStream {
         }
         if (List.class.isAssignableFrom(c)) {
             if (f == null) throw new IOException("Only for Field Type: " + en(c, null));
-            Class<?> s = XDataUtils.getParameterizedType(c, f);
+            Class<?> s = XDataUtils.getParameterizedType(f);
             @SuppressWarnings("unchecked")
             List<Object> l = (List<Object>) o;
             int n = l == null ? 0 : l.size();

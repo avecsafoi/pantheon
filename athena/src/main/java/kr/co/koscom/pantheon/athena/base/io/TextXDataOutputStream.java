@@ -21,7 +21,7 @@ public class TextXDataOutputStream extends DataOutputStream {
 
     public static final Map<Class<?>, Field[]> FIELDS = new HashMap<>();
 
-    private final Charset charset;
+    public final Charset charset;
 
     public TextXDataOutputStream(OutputStream os, Charset charset) {
         super(os);
@@ -44,7 +44,7 @@ public class TextXDataOutputStream extends DataOutputStream {
         writeFields(o.getClass(), o);
     }
 
-    private void writeObject(Class<?> c, Object o, Field f) throws IOException {
+    public void writeObject(Class<?> c, Object o, Field f) throws IOException {
         XAText aa = f == null ? null : f.getAnnotation(XAText.class);
         if (aa == null)
             throw new IOException("Needed @%s for Field: %s".formatted(XAText.class.getSimpleName(), en(c, f)));
@@ -75,13 +75,12 @@ public class TextXDataOutputStream extends DataOutputStream {
             return;
         }
         if (List.class.isAssignableFrom(c)) {
-            Class<?> s = getParameterizedType(c, f);
+            Class<?> s = getParameterizedType(f);
             @SuppressWarnings("unchecked")
             List<Object> l = (List<Object>) o;
             int n = l == null ? 0 : l.size();
             int z = aa.fix() ? aa.size() : n;
             if (n > z) throw new IOException("Exceeded size %d by %d(%s): %s".formatted(z, n, o, en(c, f)));
-            int d = z - n;
             for (int i = 0; i < z; i++) writeFields(s, i < n ? l.get(i) : null);
             return;
         }
@@ -92,7 +91,7 @@ public class TextXDataOutputStream extends DataOutputStream {
         throw new IOException("Unsupported Object type: " + en(c, f));
     }
 
-    private void writeFields(Class<?> c, Object o) throws IOException {
+    public void writeFields(Class<?> c, Object o) throws IOException {
         Field[] fa = FIELDS.get(c);
         if (fa == null) {
             List<Field> l = getAnnotationFields(c, XAText.class);
