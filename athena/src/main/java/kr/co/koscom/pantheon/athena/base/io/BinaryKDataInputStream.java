@@ -9,7 +9,6 @@ import java.io.InputStream;
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
-import java.lang.reflect.ParameterizedType;
 import java.math.BigInteger;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
@@ -96,7 +95,7 @@ public class BinaryKDataInputStream extends DataInputStream {
         }
         if (List.class.isAssignableFrom(c)) {
             if (f == null) throw new IOException("Only for Field Type: " + en(c, null));
-            Class<?> s = (Class<?>) ((((ParameterizedType) f.getGenericType()).getActualTypeArguments())[0]);
+            Class<?> s = KDataUtils.getParameterizedType(c, f);
             KABinary aa = f.getAnnotation(KABinary.class);
             int z = aa == null ? readSize() : aa.size();
             List<Object> l = new ArrayList<>(z);

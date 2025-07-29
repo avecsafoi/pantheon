@@ -9,7 +9,6 @@ import java.io.OutputStream;
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
-import java.lang.reflect.ParameterizedType;
 import java.math.BigInteger;
 import java.nio.charset.Charset;
 import java.util.Date;
@@ -121,7 +120,7 @@ public class BinaryKDataOutputStream extends DataOutputStream {
         }
         if (List.class.isAssignableFrom(c)) {
             if (f == null) throw new IOException("Only for Field Type: " + en(c, null));
-            Class<?> s = (Class<?>) ((((ParameterizedType) f.getGenericType()).getActualTypeArguments())[0]);
+            Class<?> s = KDataUtils.getParameterizedType(c, f);
             @SuppressWarnings("unchecked")
             List<Object> l = (List<Object>) o;
             int n = l == null ? 0 : l.size();

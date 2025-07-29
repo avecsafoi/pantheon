@@ -12,5 +12,5 @@ public @interface KAText {
 
     boolean fix() default true;
 
-    String format();
+    String format() default "";
 }

@@ -1,0 +1,40 @@
+package kr.co.koscom.pantheon.athena.demo;
+
+import kr.co.koscom.pantheon.athena.base.io.TextKDataInputStream;
+import kr.co.koscom.pantheon.athena.base.io.TextKDataOutputStream;
+import kr.co.koscom.pantheon.athena.demo.model.DemoDataIn;
+import org.junit.jupiter.api.Test;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+
+public class DemoTest {
+
+    @Test
+    void test1() throws IOException {
+
+        Charset charset = StandardCharsets.UTF_8;
+
+        DemoDataIn in1 = new DemoDataIn();
+        in1.setId("selani").setName("박용길").setDeposit(12345678901234567L);
+
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        TextKDataOutputStream dos = new TextKDataOutputStream(bos, charset);
+        dos.writeObject(in1);
+        dos.close();
+
+        byte[] b = bos.toByteArray();
+        System.out.printf("(%d)[%s]%n", b.length, new String(b, charset));
+
+        ByteArrayInputStream bis = new ByteArrayInputStream(b);
+        TextKDataInputStream dis = new TextKDataInputStream(bis, charset);
+
+        DemoDataIn in2 = dis.readObject(DemoDataIn.class);
+
+        System.out.println(in1);
+        System.out.println(in2);
+    }
+}

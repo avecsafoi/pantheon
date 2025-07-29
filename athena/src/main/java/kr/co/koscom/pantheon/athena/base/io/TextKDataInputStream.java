@@ -7,7 +7,6 @@ import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Field;
-import java.lang.reflect.ParameterizedType;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.nio.charset.Charset;
@@ -22,8 +21,8 @@ public class TextKDataInputStream extends DataInputStream {
 
     private final Charset charset;
 
-    public TextKDataInputStream(InputStream in, Charset charset) {
-        super(in);
+    public TextKDataInputStream(InputStream is, Charset charset) {
+        super(is);
         this.charset = charset;
     }
 
@@ -33,12 +32,13 @@ public class TextKDataInputStream extends DataInputStream {
 
     public String readString(int n) throws IOException {
         byte[] b = new byte[n];
-        readFully(b, 0, b.length);
+        readFully(b);
         return new String(b, charset);
     }
 
-    public Object readObject(Class<?> c) throws IOException {
-        return readFields(c, KDataUtils.createObject(c, null));
+    @SuppressWarnings("unchecked")
+    public <X> X readObject(Class<X> c) throws IOException {
+        return (X) readFields(c, KDataUtils.createObject(c, null));
     }
 
     public Object readObject(Class<?> c, Field f) throws IOException {
@@ -69,7 +69,7 @@ public class TextKDataInputStream extends DataInputStream {
             return s.isEmpty() ? null : DateUtils.parseDate(s, df);
         }
         if (List.class.isAssignableFrom(c)) {
-            Class<?> s = (Class<?>) ((((ParameterizedType) f.getGenericType()).getActualTypeArguments())[0]);
+            Class<?> s = KDataUtils.getParameterizedType(c, f);
             List<Object> l = new ArrayList<>(z);
             for (int i = 0; i < z; i++) l.add(readFields(s, createObject(s, f)));
             return l;

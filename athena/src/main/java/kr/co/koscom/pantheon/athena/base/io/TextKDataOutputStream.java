@@ -1,19 +1,21 @@
 package kr.co.koscom.pantheon.athena.base.io;
 
+import com.alibaba.fastjson2.util.DateUtils;
 import kr.co.koscom.pantheon.athena.base.io.data.annotations.KAText;
-import org.apache.commons.lang3.StringUtils;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.lang.reflect.Field;
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.nio.charset.Charset;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static kr.co.koscom.pantheon.athena.base.io.KDataUtils.en;
-import static kr.co.koscom.pantheon.athena.base.io.KDataUtils.getAnnotationFields;
+import static kr.co.koscom.pantheon.athena.base.io.KDataUtils.*;
 
 public class TextKDataOutputStream extends DataOutputStream {
 
@@ -21,25 +23,73 @@ public class TextKDataOutputStream extends DataOutputStream {
 
     private final Charset charset;
 
-    public TextKDataOutputStream(OutputStream out, Charset charset) {
-        super(out);
+    public TextKDataOutputStream(OutputStream os, Charset charset) {
+        super(os);
         this.charset = charset;
     }
 
-    public void writeSize(int n, int size) throws IOException {
-        String s = StringUtils.leftPad(String.valueOf(size), n, '0');
-        byte[] b = s.getBytes(charset);
-        write(b, 0, n);
+    public void writeString(Class<?> c, Field f, KAText aa, Object o, int p) throws IOException {
+        byte[] b = o == null ? null : String.valueOf(o).getBytes(charset);
+        int n = b == null ? 0 : b.length;
+        int z = aa.fix() ? aa.size() : n;
+        if (n > z) throw new IOException("Exceeded size %d by %d(%s): %s".formatted(z, n, o, en(c, f)));
+        int d = z - n;
+        if (p < 1) for (int i = 0; i < d; i++) write(' ');
+        if (n > 0) write(b, 0, n);
+        if (p > 0) for (int i = 0; i < d; i++) write(' ');
     }
 
-    public void writeObject(Class<?> c, Object o) throws IOException {
-        writeFields(c, o);
+    public void writeObject(Object o) throws IOException {
+        assert o != null;
+        writeFields(o.getClass(), o);
     }
 
-    public void writeObject(Class<?> c, Object o, Field f) throws IOException {
+    private void writeObject(Class<?> c, Object o, Field f) throws IOException {
         KAText aa = f == null ? null : f.getAnnotation(KAText.class);
         if (aa == null)
             throw new IOException("Needed @%s for Field: %s".formatted(KAText.class.getSimpleName(), en(c, f)));
+        if (c.isPrimitive()) {
+            if (int.class.isAssignableFrom(c) || long.class.isAssignableFrom(c) || float.class.isAssignableFrom(c) || double.class.isAssignableFrom(c)) {
+                writeString(c, f, aa, o, 0);
+                return;
+            }
+            throw new IOException("Unsupported primitive type: " + en(c, f));
+        }
+        if (String.class.isAssignableFrom(c)) {
+            writeString(c, f, aa, o, 1);
+            return;
+        }
+        if (Number.class.isAssignableFrom(c)) {
+            if (BigDecimal.class.isAssignableFrom(c) || BigInteger.class.isAssignableFrom(c)) {
+                writeString(c, f, aa, o, 0);
+                return;
+            }
+            throw new IOException("Unsupported Number type: " + en(c, f));
+        }
+        if (Date.class.isAssignableFrom(c)) {
+            String df = aa.format();
+            if (df == null)
+                throw new IOException("Needed @%s(format={value}) for Date: %s".formatted(KAText.class.getSimpleName(), en(c, f)));
+            String s = DateUtils.format((Date) o, df);
+            writeString(c, f, aa, s, 0);
+            return;
+        }
+        if (List.class.isAssignableFrom(c)) {
+            Class<?> s = getParameterizedType(c, f);
+            @SuppressWarnings("unchecked")
+            List<Object> l = (List<Object>) o;
+            int n = l == null ? 0 : l.size();
+            int z = aa.fix() ? aa.size() : n;
+            if (n > z) throw new IOException("Exceeded size %d by %d(%s): %s".formatted(z, n, o, en(c, f)));
+            int d = z - n;
+            for (int i = 0; i < z; i++) writeFields(s, i < n ? l.get(i) : null);
+            return;
+        }
+        if (KData.class.isAssignableFrom(c)) {
+            writeFields(c, o);
+            return;
+        }
+        throw new IOException("Unsupported Object type: " + en(c, f));
     }
 
     private void writeFields(Class<?> c, Object o) throws IOException {
