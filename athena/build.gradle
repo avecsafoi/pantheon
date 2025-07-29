@@ -33,7 +33,7 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 
-    implementation 'com.mybatis-flex:mybatis-flex-spring-boot3-starter:1.11.0'
+    implementation 'com.mybatis-flex:mybatis-flex-spring-boot3-starter:1.11.1'
 //  implementation 'com.baomidou:dynamic-datasource-spring-boot3-starter:4.3.1'
     implementation 'com.github.gavlyukovskiy:datasource-proxy-spring-boot-starter:1.12.0'
 
