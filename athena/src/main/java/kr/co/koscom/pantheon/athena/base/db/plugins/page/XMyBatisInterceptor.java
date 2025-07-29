@@ -1,8 +1,6 @@
-package kr.co.koscom.pantheon.athena;
+package kr.co.koscom.pantheon.athena.base.db.plugins.page;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import kr.co.koscom.pantheon.athena.demo.model.KOrder;
-import kr.co.koscom.pantheon.athena.demo.model.KPage;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.cache.CacheKey;
 import org.apache.ibatis.executor.Executor;
@@ -24,20 +22,20 @@ import java.util.Map;
 
 @Intercepts(@Signature(type = Executor.class, method = "query", args = {MappedStatement.class, Object.class, RowBounds.class, ResultHandler.class}))
 @Slf4j
-public class KMyBatisInterceptor implements Interceptor {
+public class XMyBatisInterceptor implements Interceptor {
 
     public static final DefaultReflectorFactory DEFAULT_REFLECTOR_FACTORY = new DefaultReflectorFactory();
     public static final ObjectMapper om = new ObjectMapper();
 
-    private static void setPageSql(MappedStatement ms, BoundSql bs, String pn, KPage pg) {
+    private static void setPageSql(MappedStatement ms, BoundSql bs, String pn, XPage pg) {
         List<ParameterMapping> pm = bs.getParameterMappings();
         String on = pn.isEmpty() ? "orders" : pn + ".orders";
         String ln = pn.isEmpty() ? "" : pn + ".";
-        List<KOrder> os = pg.getOrders();
+        List<XOrder> os = pg.getOrders();
         StringBuilder bw = new StringBuilder();
         StringBuilder bo = new StringBuilder();
         int i = 0, z = os.size(), x = z - 1;
-        for (KOrder o : os) {
+        for (XOrder o : os) {
             if (!pg.isFirst()) {
                 bw.append("%n%s (%s %s ?".formatted(i == 0 ? " WHERE" : "   AND", o.getColumn(), o.isAsc() ? ">" : "<"));
                 String s1 = "%s[%d].value".formatted(on, i);
@@ -75,9 +73,9 @@ public class KMyBatisInterceptor implements Interceptor {
             MappedStatement ms = (MappedStatement) args[0];
             Object pr = args[1];
             RowBounds rb = (RowBounds) args[2];
-            Map.Entry<String, KPage> pe = findType(pr, KPage.class);
+            Map.Entry<String, XPage> pe = findType(pr, XPage.class);
             if (pe == null) return invocation.proceed();
-            KPage pg = pe.getValue();
+            XPage pg = pe.getValue();
             BoundSql bs = ms.getBoundSql(pr);
             setPageSql(ms, bs, pe.getKey(), pg);
             CacheKey ck = executor.createCacheKey(ms, pr, rb, bs);
@@ -87,7 +85,7 @@ public class KMyBatisInterceptor implements Interceptor {
                 else if (!l.isEmpty()) {
                     Object r = l.getLast();
                     Map<?, ?> m = r instanceof Map<?, ?> m1 ? m1 : om.convertValue(r, Map.class);
-                    for (KOrder o : pg.getOrders()) o.setValue(m.get(o.getColumn()));
+                    for (XOrder o : pg.getOrders()) o.setValue(m.get(o.getColumn()));
                 }
             }
             return rs;

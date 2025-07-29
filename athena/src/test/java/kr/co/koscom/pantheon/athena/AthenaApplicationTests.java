@@ -1,9 +1,9 @@
 package kr.co.koscom.pantheon.athena;
 
 import jakarta.annotation.Resource;
+import kr.co.koscom.pantheon.athena.base.db.plugins.page.XOrder;
+import kr.co.koscom.pantheon.athena.base.db.plugins.page.XPage;
 import kr.co.koscom.pantheon.athena.demo.mapper.SysUserMapper;
-import kr.co.koscom.pantheon.athena.demo.model.KOrder;
-import kr.co.koscom.pantheon.athena.demo.model.KPage;
 import kr.co.koscom.pantheon.athena.demo.model.SysUser;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -23,18 +23,18 @@ class AthenaApplicationTests {
     @Test
     void queryTest() {
         SysUser su = new SysUser();
-        KPage pg = new KPage();
+        XPage pg = new XPage();
         List<SysUser> sul = sysUserMapper.selectPage(su, pg);
     }
 
     @Test
     void contTest() {
         SysUser su = new SysUser();
-        KPage pg = new KPage();
-        pg.getOrders().add(new KOrder("age", true, -1));
-        pg.getOrders().add(new KOrder("name", true, "~"));
-        pg.getOrders().add(new KOrder("email", true, "~"));
-        pg.getOrders().add(new KOrder("id", true, "~"));
+        XPage pg = new XPage();
+        pg.getOrders().add(new XOrder("age", true, -1));
+        pg.getOrders().add(new XOrder("name", true, "~"));
+        pg.getOrders().add(new XOrder("email", true, "~"));
+        pg.getOrders().add(new XOrder("id", true, "~"));
         pg.setFirst(false);
         List<SysUser> sul = sysUserMapper.selectContPage(su, pg);
     }

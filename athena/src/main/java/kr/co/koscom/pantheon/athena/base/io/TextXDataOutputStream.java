@@ -1,7 +1,7 @@
 package kr.co.koscom.pantheon.athena.base.io;
 
 import com.alibaba.fastjson2.util.DateUtils;
-import kr.co.koscom.pantheon.athena.base.io.data.annotations.KAText;
+import kr.co.koscom.pantheon.athena.base.io.data.annotations.XAText;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -15,20 +15,20 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static kr.co.koscom.pantheon.athena.base.io.KDataUtils.*;
+import static kr.co.koscom.pantheon.athena.base.io.XDataUtils.*;
 
-public class TextKDataOutputStream extends DataOutputStream {
+public class TextXDataOutputStream extends DataOutputStream {
 
     public static final Map<Class<?>, Field[]> FIELDS = new HashMap<>();
 
     private final Charset charset;
 
-    public TextKDataOutputStream(OutputStream os, Charset charset) {
+    public TextXDataOutputStream(OutputStream os, Charset charset) {
         super(os);
         this.charset = charset;
     }
 
-    public void writeString(Class<?> c, Field f, KAText aa, Object o, int p) throws IOException {
+    public void writeString(Class<?> c, Field f, XAText aa, Object o, int p) throws IOException {
         byte[] b = o == null ? null : String.valueOf(o).getBytes(charset);
         int n = b == null ? 0 : b.length;
         int z = aa.fix() ? aa.size() : n;
@@ -45,9 +45,9 @@ public class TextKDataOutputStream extends DataOutputStream {
     }
 
     private void writeObject(Class<?> c, Object o, Field f) throws IOException {
-        KAText aa = f == null ? null : f.getAnnotation(KAText.class);
+        XAText aa = f == null ? null : f.getAnnotation(XAText.class);
         if (aa == null)
-            throw new IOException("Needed @%s for Field: %s".formatted(KAText.class.getSimpleName(), en(c, f)));
+            throw new IOException("Needed @%s for Field: %s".formatted(XAText.class.getSimpleName(), en(c, f)));
         if (c.isPrimitive()) {
             if (int.class.isAssignableFrom(c) || long.class.isAssignableFrom(c) || float.class.isAssignableFrom(c) || double.class.isAssignableFrom(c)) {
                 writeString(c, f, aa, o, 0);
@@ -69,7 +69,7 @@ public class TextKDataOutputStream extends DataOutputStream {
         if (Date.class.isAssignableFrom(c)) {
             String df = aa.format();
             if (df == null)
-                throw new IOException("Needed @%s(format={value}) for Date: %s".formatted(KAText.class.getSimpleName(), en(c, f)));
+                throw new IOException("Needed @%s(format={value}) for Date: %s".formatted(XAText.class.getSimpleName(), en(c, f)));
             String s = DateUtils.format((Date) o, df);
             writeString(c, f, aa, s, 0);
             return;
@@ -85,7 +85,7 @@ public class TextKDataOutputStream extends DataOutputStream {
             for (int i = 0; i < z; i++) writeFields(s, i < n ? l.get(i) : null);
             return;
         }
-        if (KData.class.isAssignableFrom(c)) {
+        if (XData.class.isAssignableFrom(c)) {
             writeFields(c, o);
             return;
         }
@@ -95,7 +95,7 @@ public class TextKDataOutputStream extends DataOutputStream {
     private void writeFields(Class<?> c, Object o) throws IOException {
         Field[] fa = FIELDS.get(c);
         if (fa == null) {
-            List<Field> l = getAnnotationFields(c, KAText.class);
+            List<Field> l = getAnnotationFields(c, XAText.class);
             fa = new Field[l.size()];
             FIELDS.put(c, l.toArray(fa));
         }

@@ -1,6 +1,7 @@
 package kr.co.koscom.pantheon.athena;
 
-import kr.co.koscom.pantheon.athena.base.io.TextKDataHttpMessageConverter;
+import kr.co.koscom.pantheon.athena.base.db.plugins.page.XMyBatisInterceptor;
+import kr.co.koscom.pantheon.athena.base.io.TextXDataHttpMessageConverter;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -13,12 +14,12 @@ public class AthenaApplication {
     }
 
     @Bean
-    public KMyBatisInterceptor kMyBatisInterceptor() {
-        return new KMyBatisInterceptor();
+    public XMyBatisInterceptor xMyBatisInterceptor() {
+        return new XMyBatisInterceptor();
     }
 
     @Bean
-    public TextKDataHttpMessageConverter textKDataHttpMessageConverter() {
-        return new TextKDataHttpMessageConverter();
+    public TextXDataHttpMessageConverter textXDataHttpMessageConverter() {
+        return new TextXDataHttpMessageConverter();
     }
 }

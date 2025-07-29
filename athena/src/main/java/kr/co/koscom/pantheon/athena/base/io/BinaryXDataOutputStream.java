@@ -1,7 +1,7 @@
 package kr.co.koscom.pantheon.athena.base.io;
 
-import kr.co.koscom.pantheon.athena.base.io.data.annotations.KABinary;
-import kr.co.koscom.pantheon.athena.base.io.data.annotations.KAUnsigned;
+import kr.co.koscom.pantheon.athena.base.io.data.annotations.XABinary;
+import kr.co.koscom.pantheon.athena.base.io.data.annotations.XAUnsigned;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -14,14 +14,14 @@ import java.nio.charset.Charset;
 import java.util.Date;
 import java.util.List;
 
-import static kr.co.koscom.pantheon.athena.base.io.KDataUtils.en;
+import static kr.co.koscom.pantheon.athena.base.io.XDataUtils.en;
 
 
-public class BinaryKDataOutputStream extends DataOutputStream {
+public class BinaryXDataOutputStream extends DataOutputStream {
 
     private final Charset charset;
 
-    public BinaryKDataOutputStream(OutputStream out, Charset charset) {
+    public BinaryXDataOutputStream(OutputStream out, Charset charset) {
         super(out);
         this.charset = charset;
     }
@@ -47,7 +47,7 @@ public class BinaryKDataOutputStream extends DataOutputStream {
     public void writeObject(Class<?> c, Object o, Field f, int h) throws IOException {
         if (c.isPrimitive()) {
             if (int.class.isAssignableFrom(c)) {
-                KAUnsigned au = f == null ? null : f.getAnnotation(KAUnsigned.class);
+                XAUnsigned au = f == null ? null : f.getAnnotation(XAUnsigned.class);
                 if (au == null) writeInt((int) o);
                 else writeShort((int) o);
                 return;
@@ -57,7 +57,7 @@ public class BinaryKDataOutputStream extends DataOutputStream {
                 return;
             }
             if (long.class.isAssignableFrom(c)) {
-                KAUnsigned au = f == null ? null : f.getAnnotation(KAUnsigned.class);
+                XAUnsigned au = f == null ? null : f.getAnnotation(XAUnsigned.class);
                 if (au == null) writeLong((long) o);
                 else writeUnsginedInt((long) o);
                 return;
@@ -87,7 +87,7 @@ public class BinaryKDataOutputStream extends DataOutputStream {
             String s = (String) o;
             byte[] b = s == null ? null : s.getBytes(charset);
             int n = b == null ? 0 : b.length;
-            KABinary aa = f == null ? null : f.getAnnotation(KABinary.class);
+            XABinary aa = f == null ? null : f.getAnnotation(XABinary.class);
             int z = aa == null ? n : aa.size();
             if (n > z) throw new IOException("Out of byteSize(%d): %s %d(%s)".formatted(z, en(c, f), n, s));
             for (int i = 0; i < z; i++) write(i < n ? b[i] : 0);
@@ -96,14 +96,14 @@ public class BinaryKDataOutputStream extends DataOutputStream {
         if (Number.class.isAssignableFrom(c)) {
             if (Long.class.isAssignableFrom(c)) {
                 long v = o == null ? 0 : (long) o;
-                KAUnsigned au = f == null ? null : f.getAnnotation(KAUnsigned.class);
+                XAUnsigned au = f == null ? null : f.getAnnotation(XAUnsigned.class);
                 if (au == null) writeLong(v);
                 else writeUnsginedInt(v);
                 return;
             }
             if (Integer.class.isAssignableFrom(c)) {
                 int v = o == null ? 0 : (int) o;
-                KAUnsigned au = f == null ? null : f.getAnnotation(KAUnsigned.class);
+                XAUnsigned au = f == null ? null : f.getAnnotation(XAUnsigned.class);
                 if (au == null) writeInt(v);
                 else writeShort(v);
                 return;
@@ -120,21 +120,21 @@ public class BinaryKDataOutputStream extends DataOutputStream {
         }
         if (List.class.isAssignableFrom(c)) {
             if (f == null) throw new IOException("Only for Field Type: " + en(c, null));
-            Class<?> s = KDataUtils.getParameterizedType(c, f);
+            Class<?> s = XDataUtils.getParameterizedType(c, f);
             @SuppressWarnings("unchecked")
             List<Object> l = (List<Object>) o;
             int n = l == null ? 0 : l.size();
-            KABinary aa = f.getAnnotation(KABinary.class);
+            XABinary aa = f.getAnnotation(XABinary.class);
             int z = aa == null ? n : aa.size();
             if (aa == null) writeSize(n);
             for (int i = 0; i < z; i++) writeObject(s, i < n ? l.get(i) : null, f, h);
         }
-        if (KData.class.isAssignableFrom(c)) {
+        if (XData.class.isAssignableFrom(c)) {
             writeFields(c, o);
             return;
         }
         if (c.isArray()) {
-            KABinary aa = f == null ? null : f.getAnnotation(KABinary.class);
+            XABinary aa = f == null ? null : f.getAnnotation(XABinary.class);
             int n = o == null ? 0 : Array.getLength(o);
             int z = aa == null ? n : aa.size();
             Class<?> s = c.getComponentType();

@@ -1,7 +1,7 @@
 package kr.co.koscom.pantheon.athena.base.io;
 
-import kr.co.koscom.pantheon.athena.base.io.data.annotations.KABinary;
-import kr.co.koscom.pantheon.athena.base.io.data.annotations.KAUnsigned;
+import kr.co.koscom.pantheon.athena.base.io.data.annotations.XABinary;
+import kr.co.koscom.pantheon.athena.base.io.data.annotations.XAUnsigned;
 
 import java.io.DataInputStream;
 import java.io.IOException;
@@ -15,14 +15,14 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import static kr.co.koscom.pantheon.athena.base.io.KDataUtils.createObject;
-import static kr.co.koscom.pantheon.athena.base.io.KDataUtils.en;
+import static kr.co.koscom.pantheon.athena.base.io.XDataUtils.createObject;
+import static kr.co.koscom.pantheon.athena.base.io.XDataUtils.en;
 
-public class BinaryKDataInputStream extends DataInputStream {
+public class BinaryXDataInputStream extends DataInputStream {
 
     private final Charset charset;
 
-    public BinaryKDataInputStream(InputStream in, Charset charset) {
+    public BinaryXDataInputStream(InputStream in, Charset charset) {
         super(in);
         this.charset = charset;
     }
@@ -56,12 +56,12 @@ public class BinaryKDataInputStream extends DataInputStream {
     public Object readObject(Class<?> c, Field f, int h) throws IOException {
         if (c.isPrimitive()) {
             if (int.class.isAssignableFrom(c)) {
-                KAUnsigned au = f == null ? null : f.getAnnotation(KAUnsigned.class);
+                XAUnsigned au = f == null ? null : f.getAnnotation(XAUnsigned.class);
                 return au == null ? readInt() : readUnsignedShort();
             }
             if (short.class.isAssignableFrom(c)) return readShort();
             if (long.class.isAssignableFrom(c)) {
-                KAUnsigned au = f == null ? null : f.getAnnotation(KAUnsigned.class);
+                XAUnsigned au = f == null ? null : f.getAnnotation(XAUnsigned.class);
                 return au == null ? readLong() : readUnsignedInt();
             }
             if (float.class.isAssignableFrom(c)) return readFloat();
@@ -72,18 +72,18 @@ public class BinaryKDataInputStream extends DataInputStream {
             throw new IOException("Unsupported primitive type: " + en(c, f));
         }
         if (String.class.isAssignableFrom(c)) {
-            KABinary aa = f == null ? null : f.getAnnotation(KABinary.class);
+            XABinary aa = f == null ? null : f.getAnnotation(XABinary.class);
             int z = aa == null ? readSize() : aa.size();
             return readString(z);
         }
         if (Number.class.isAssignableFrom(c)) {
             if (Long.class.isAssignableFrom(c)) {
-                KAUnsigned au = f == null ? null : f.getAnnotation(KAUnsigned.class);
+                XAUnsigned au = f == null ? null : f.getAnnotation(XAUnsigned.class);
                 if (au == null) return readLong();
                 else return readUnsignedInt();
             }
             if (Integer.class.isAssignableFrom(c)) {
-                KAUnsigned au = f == null ? null : f.getAnnotation(KAUnsigned.class);
+                XAUnsigned au = f == null ? null : f.getAnnotation(XAUnsigned.class);
                 if (au == null) return readInt();
                 else return readUnsignedShort();
             }
@@ -95,18 +95,18 @@ public class BinaryKDataInputStream extends DataInputStream {
         }
         if (List.class.isAssignableFrom(c)) {
             if (f == null) throw new IOException("Only for Field Type: " + en(c, null));
-            Class<?> s = KDataUtils.getParameterizedType(c, f);
-            KABinary aa = f.getAnnotation(KABinary.class);
+            Class<?> s = XDataUtils.getParameterizedType(c, f);
+            XABinary aa = f.getAnnotation(XABinary.class);
             int z = aa == null ? readSize() : aa.size();
             List<Object> l = new ArrayList<>(z);
             for (int i = 0, j = h + 1; i < z; i++) l.add(readObject(s, f, j));
             return l;
         }
-        if (KData.class.isAssignableFrom(c)) {
+        if (XData.class.isAssignableFrom(c)) {
             return readFields(c, createObject(c, f));
         }
         if (c.isArray()) {
-            KABinary aa = f == null ? null : f.getAnnotation(KABinary.class);
+            XABinary aa = f == null ? null : f.getAnnotation(XABinary.class);
             int z = aa == null ? readSize() : aa.size();
             Class<?> s = c.getComponentType();
             Object o = Array.newInstance(s, z);

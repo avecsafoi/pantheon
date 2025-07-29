@@ -9,7 +9,7 @@ import java.lang.reflect.ParameterizedType;
 import java.util.LinkedList;
 import java.util.List;
 
-public class KDataUtils {
+public class XDataUtils {
 
     public static final String DEF_DATE_FORMAT_08 = "yyyyMMdd";
     public static final String DEF_DATE_FORMAT_12 = "yyyyMMddHHmm";

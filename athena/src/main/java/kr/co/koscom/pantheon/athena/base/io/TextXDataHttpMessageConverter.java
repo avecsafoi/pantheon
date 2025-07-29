@@ -14,15 +14,23 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 
-public class TextKDataHttpMessageConverter implements HttpMessageConverter<TextKData> {
+public class TextXDataHttpMessageConverter implements HttpMessageConverter<TextXData> {
 
-    private Charset defaultCharset = StandardCharsets.UTF_8;
+    private final Charset defaultCharset;
+
+    public TextXDataHttpMessageConverter() {
+        this(StandardCharsets.UTF_8);
+    }
+
+    public TextXDataHttpMessageConverter(Charset defaultCharset) {
+        this.defaultCharset = defaultCharset;
+    }
 
     @Override
     public boolean canRead(Class<?> c, @Nullable MediaType t) {
-        if (TextKData.class.isAssignableFrom(c))
+        if (TextXData.class.isAssignableFrom(c))
             if (t == null) return true;
-            else if (TextKData.class.isAssignableFrom(c))
+            else if (TextXData.class.isAssignableFrom(c))
                 for (MediaType a : getSupportedMediaTypes())
                     if (t.isCompatibleWith(a)) return true;
         return false;
@@ -39,19 +47,19 @@ public class TextKDataHttpMessageConverter implements HttpMessageConverter<TextK
     }
 
     @Override
-    public TextKData read(Class<? extends TextKData> c, HttpInputMessage m) throws IOException, HttpMessageNotReadableException {
+    public TextXData read(Class<? extends TextXData> c, HttpInputMessage m) throws IOException, HttpMessageNotReadableException {
         MediaType t = m.getHeaders().getContentType();
         Charset charset = t != null && t.getCharset() != null ? t.getCharset() : defaultCharset;
-        TextKDataInputStream is = new TextKDataInputStream(m.getBody(), t.getCharset());
-        TextKData o = is.readObject(c);
+        TextXDataInputStream is = new TextXDataInputStream(m.getBody(), t.getCharset());
+        TextXData o = is.readObject(c);
         StreamUtils.drain(is);
         return o;
     }
 
     @Override
-    public void write(TextKData o, @Nullable MediaType t, HttpOutputMessage m) throws IOException, HttpMessageNotWritableException {
+    public void write(TextXData o, @Nullable MediaType t, HttpOutputMessage m) throws IOException, HttpMessageNotWritableException {
         Charset charset = t != null && t.getCharset() != null ? t.getCharset() : defaultCharset;
-        TextKDataOutputStream os = new TextKDataOutputStream(m.getBody(), charset);
+        TextXDataOutputStream os = new TextXDataOutputStream(m.getBody(), charset);
         os.writeObject(o);
         os.flush();
     }

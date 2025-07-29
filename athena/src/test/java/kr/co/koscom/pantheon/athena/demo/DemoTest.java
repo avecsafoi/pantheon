@@ -1,7 +1,7 @@
 package kr.co.koscom.pantheon.athena.demo;
 
-import kr.co.koscom.pantheon.athena.base.io.TextKDataInputStream;
-import kr.co.koscom.pantheon.athena.base.io.TextKDataOutputStream;
+import kr.co.koscom.pantheon.athena.base.io.TextXDataInputStream;
+import kr.co.koscom.pantheon.athena.base.io.TextXDataOutputStream;
 import kr.co.koscom.pantheon.athena.demo.model.DemoDataIn;
 import org.junit.jupiter.api.Test;
 
@@ -22,7 +22,7 @@ public class DemoTest {
         in1.setId("selani").setName("박용길").setDeposit(12345678901234567L);
 
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
-        TextKDataOutputStream dos = new TextKDataOutputStream(bos, charset);
+        TextXDataOutputStream dos = new TextXDataOutputStream(bos, charset);
         dos.writeObject(in1);
         dos.close();
 
@@ -30,7 +30,7 @@ public class DemoTest {
         System.out.printf("(%d)[%s]%n", b.length, new String(b, charset));
 
         ByteArrayInputStream bis = new ByteArrayInputStream(b);
-        TextKDataInputStream dis = new TextKDataInputStream(bis, charset);
+        TextXDataInputStream dis = new TextXDataInputStream(bis, charset);
 
         DemoDataIn in2 = dis.readObject(DemoDataIn.class);
 

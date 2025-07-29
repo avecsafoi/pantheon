@@ -1,7 +1,7 @@
 package kr.co.koscom.pantheon.athena.base.io;
 
 import com.alibaba.fastjson2.util.DateUtils;
-import kr.co.koscom.pantheon.athena.base.io.data.annotations.KAText;
+import kr.co.koscom.pantheon.athena.base.io.data.annotations.XAText;
 
 import java.io.DataInputStream;
 import java.io.IOException;
@@ -12,16 +12,16 @@ import java.math.BigInteger;
 import java.nio.charset.Charset;
 import java.util.*;
 
-import static kr.co.koscom.pantheon.athena.base.io.KDataUtils.*;
+import static kr.co.koscom.pantheon.athena.base.io.XDataUtils.*;
 
 
-public class TextKDataInputStream extends DataInputStream {
+public class TextXDataInputStream extends DataInputStream {
 
     public static final Map<Class<?>, Field[]> FIELDS = new HashMap<>();
 
     private final Charset charset;
 
-    public TextKDataInputStream(InputStream is, Charset charset) {
+    public TextXDataInputStream(InputStream is, Charset charset) {
         super(is);
         this.charset = charset;
     }
@@ -38,13 +38,13 @@ public class TextKDataInputStream extends DataInputStream {
 
     @SuppressWarnings("unchecked")
     public <X> X readObject(Class<X> c) throws IOException {
-        return (X) readFields(c, KDataUtils.createObject(c, null));
+        return (X) readFields(c, XDataUtils.createObject(c, null));
     }
 
     public Object readObject(Class<?> c, Field f) throws IOException {
-        KAText aa = f == null ? null : f.getAnnotation(KAText.class);
+        XAText aa = f == null ? null : f.getAnnotation(XAText.class);
         if (aa == null)
-            throw new IOException("Needed @%s for Field: %s".formatted(KAText.class.getSimpleName(), en(c, f)));
+            throw new IOException("Needed @%s for Field: %s".formatted(XAText.class.getSimpleName(), en(c, f)));
         int z = aa.fix() ? aa.size() : readSize(aa.size());
         if (c.isPrimitive()) {
             if (int.class.isAssignableFrom(c)) return Integer.parseInt(readString(z).trim());
@@ -64,17 +64,17 @@ public class TextKDataInputStream extends DataInputStream {
         if (Date.class.isAssignableFrom(c)) {
             String df = aa.format();
             if (df == null)
-                throw new IOException("Needed @%s(format={value}) for Date: %s".formatted(KAText.class.getSimpleName(), en(c, f)));
+                throw new IOException("Needed @%s(format={value}) for Date: %s".formatted(XAText.class.getSimpleName(), en(c, f)));
             String s = readString(z).trim();
             return s.isEmpty() ? null : DateUtils.parseDate(s, df);
         }
         if (List.class.isAssignableFrom(c)) {
-            Class<?> s = KDataUtils.getParameterizedType(c, f);
+            Class<?> s = XDataUtils.getParameterizedType(c, f);
             List<Object> l = new ArrayList<>(z);
             for (int i = 0; i < z; i++) l.add(readFields(s, createObject(s, f)));
             return l;
         }
-        if (KData.class.isAssignableFrom(c)) {
+        if (XData.class.isAssignableFrom(c)) {
             return readFields(c, createObject(c, f));
         }
         throw new IOException("Unsupported Object type: " + en(c, f));
@@ -83,7 +83,7 @@ public class TextKDataInputStream extends DataInputStream {
     public Object readFields(Class<?> c, Object o) throws IOException {
         Field[] fa = FIELDS.get(c);
         if (fa == null) {
-            List<Field> l = getAnnotationFields(c, KAText.class);
+            List<Field> l = getAnnotationFields(c, XAText.class);
             fa = new Field[l.size()];
             FIELDS.put(c, l.toArray(fa));
         }
