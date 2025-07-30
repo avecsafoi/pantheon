@@ -3,27 +3,24 @@ package kr.co.koscom.pantheon.athena.base.io.data;
 import com.alibaba.fastjson2.util.DateUtils;
 import kr.co.koscom.pantheon.athena.base.io.data.annotations.XAText;
 
-import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.nio.charset.Charset;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
-import static kr.co.koscom.pantheon.athena.base.io.data.XDataUtils.*;
+import static kr.co.koscom.pantheon.athena.base.io.data.XDataUtils.createObject;
+import static kr.co.koscom.pantheon.athena.base.io.data.XDataUtils.en;
 
 
-public class TextXDataInputStream extends DataInputStream {
-
-    public static final Map<Class<?>, Field[]> FIELDS = new HashMap<>();
-
-    public final Charset charset;
+public class TextXDataInputStream extends XDataInputStream {
 
     public TextXDataInputStream(InputStream is, Charset charset) {
-        super(is);
-        this.charset = charset;
+        super(is, charset);
     }
 
     public int readSize(int n) throws IOException {
@@ -81,24 +78,19 @@ public class TextXDataInputStream extends DataInputStream {
     }
 
     public Object readFields(Class<?> c, Object o) throws IOException {
-        Field[] fa = FIELDS.get(c);
-        if (fa == null) {
-            List<Field> l = getAnnotationFields(c, XAText.class);
-            fa = new Field[l.size()];
-            FIELDS.put(c, l.toArray(fa));
-        }
+        Field[] fa = XDataFieldsCache.getInputTextXDataFields(c);
         for (Field f : fa) {
             if (!f.canAccess(o)) f.setAccessible(true);
             Object fo;
             try {
                 fo = readObject(f.getType(), f);
             } catch (IOException e) {
-                throw new IOException("Failed to read Field: " + en(c, f), e);
+                throw new IOException("Failed to read Object Field: " + en(c, f), e);
             }
             try {
                 f.set(o, fo);
             } catch (IllegalAccessException e) {
-                throw new IOException("Failed to access Field: " + en(c, f), e);
+                throw new IOException("Failed to set Field: " + en(c, f), e);
             }
         }
         return o;

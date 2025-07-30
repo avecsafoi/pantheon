@@ -1,6 +1,7 @@
 package kr.co.koscom.pantheon.athena.base.io.data;
 
 import jakarta.annotation.Nonnull;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpInputMessage;
 import org.springframework.http.HttpOutputMessage;
 import org.springframework.http.MediaType;
@@ -9,14 +10,16 @@ import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.http.converter.HttpMessageNotWritableException;
 import org.springframework.lang.Nullable;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 public class TextXDataHttpMessageConverter implements HttpMessageConverter<Object> {
 
-    private final Charset defaultCharset;
+    public final Charset defaultCharset;
 
     public TextXDataHttpMessageConverter() {
         this(StandardCharsets.UTF_8);
@@ -57,10 +60,17 @@ public class TextXDataHttpMessageConverter implements HttpMessageConverter<Objec
     @Override
     public void write(@Nonnull Object o, @Nullable MediaType t, HttpOutputMessage m) throws IOException, HttpMessageNotWritableException {
         Charset charset = t != null && t.getCharset() != null ? t.getCharset() : defaultCharset;
-        if (m.getHeaders().getContentType() == null)
-            m.getHeaders().setContentType(new MediaType("text", "plain", charset));
-        TextXDataOutputStream os = new TextXDataOutputStream(m.getBody(), charset);
-        os.writeObject(o);
+        HttpHeaders h = m.getHeaders();
+        if (h.getContentType() == null)
+            h.setContentType(new MediaType("text", "plain", charset));
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        TextXDataOutputStream tdos = new TextXDataOutputStream(baos, charset);
+        tdos.writeObject(o);
+        tdos.close();
+        byte[] b = baos.toByteArray();
+        h.setContentLength(b.length);
+        OutputStream os = m.getBody();
+        os.write(b);
         os.flush();
     }
 }

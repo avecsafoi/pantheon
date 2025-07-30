@@ -15,7 +15,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static kr.co.koscom.pantheon.athena.base.io.data.XDataUtils.*;
+import static kr.co.koscom.pantheon.athena.base.io.data.XDataUtils.en;
+import static kr.co.koscom.pantheon.athena.base.io.data.XDataUtils.getParameterizedType;
 
 public class TextXDataOutputStream extends DataOutputStream {
 
@@ -92,24 +93,19 @@ public class TextXDataOutputStream extends DataOutputStream {
     }
 
     public void writeFields(Class<?> c, Object o) throws IOException {
-        Field[] fa = FIELDS.get(c);
-        if (fa == null) {
-            List<Field> l = getAnnotationFields(c, XAText.class);
-            fa = new Field[l.size()];
-            FIELDS.put(c, l.toArray(fa));
-        }
+        Field[] fa = XDataFieldsCache.getOutputTextXDataFields(c);
         for (Field f : fa) {
             if (!f.canAccess(o)) f.setAccessible(true);
             Object fo;
             try {
                 fo = f.get(o);
             } catch (IllegalAccessException e) {
-                throw new IOException("Failed to access Field: " + en(c, f), e);
+                throw new IOException("Failed to get Field: " + en(c, f), e);
             }
             try {
                 writeObject(f.getType(), fo, f);
             } catch (IOException e) {
-                throw new IOException("Failed to write Field: " + en(c, f), e);
+                throw new IOException("Failed to write Object Field: " + en(c, f), e);
             }
         }
     }

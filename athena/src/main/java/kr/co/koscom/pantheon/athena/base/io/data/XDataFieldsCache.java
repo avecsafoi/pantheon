@@ -21,19 +21,19 @@ public class XDataFieldsCache extends XFieldsCache {
 
     public final static Predicate<Field> BINARY_XDATA_FILTER = f -> f.getAnnotation(XABinary.class) != null;
 
-    public static Field[] getInputTextXDataFields(Class<XData> c) {
+    public static Field[] getInputTextXDataFields(Class<?> c) {
         return getFieldsByFilter(c, INPUT_TEXT_XDATA, TEXT_XDATA_FILTER);
     }
 
-    public static Field[] getOutputTextXDataFields(Class<XData> c) {
+    public static Field[] getOutputTextXDataFields(Class<?> c) {
         return getFieldsByFilter(c, OUTPUT_TEXT_XDATA, TEXT_XDATA_FILTER);
     }
 
-    public static Field[] getInputBinaryXDataFields(Class<XData> c) {
+    public static Field[] getInputBinaryXDataFields(Class<?> c) {
         return getFieldsByFilter(c, INPUT_BINARY_XDATA, BINARY_XDATA_FILTER);
     }
 
-    public static Field[] getOutputBinaryXDataFields(Class<XData> c) {
+    public static Field[] getOutputBinaryXDataFields(Class<?> c) {
         return getFieldsByFilter(c, OUTPUT_BINARY_XDATA, BINARY_XDATA_FILTER);
     }
 }

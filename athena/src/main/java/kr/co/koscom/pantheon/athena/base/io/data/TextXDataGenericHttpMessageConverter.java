@@ -2,6 +2,7 @@ package kr.co.koscom.pantheon.athena.base.io.data;
 
 import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpInputMessage;
 import org.springframework.http.HttpOutputMessage;
 import org.springframework.http.MediaType;
@@ -9,10 +10,13 @@ import org.springframework.http.converter.GenericHttpMessageConverter;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.http.converter.HttpMessageNotWritableException;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.lang.reflect.Array;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,26 +33,29 @@ public class TextXDataGenericHttpMessageConverter extends TextXDataHttpMessageCo
     }
 
     @Override
-    public @Nonnull Object read(@Nonnull Type type, @Nullable Class<?> contextClass, @Nonnull HttpInputMessage inputMessage) throws IOException, HttpMessageNotReadableException {
+    public @Nonnull Object read(@Nonnull Type type, @Nullable Class<?> contextClass, @Nonnull HttpInputMessage m) throws IOException, HttpMessageNotReadableException {
+        MediaType t = m.getHeaders().getContentType();
+        Charset charset = t != null && t.getCharset() != null ? t.getCharset() : defaultCharset;
+        TextXDataInputStream tdis = new TextXDataInputStream(m.getBody(), charset);
         if (type instanceof ParameterizedType p) {
             Class<?> c = (Class<?>) p.getRawType();
             if (List.class.isAssignableFrom(c)) {
+                Class<?> s = (Class<?>) p.getActualTypeArguments()[0];
                 List<Object> l = new ArrayList<>();
-                while (inputMessage.getBody().available() > 0)
-                    l.add(super.read((Class<?>) p.getActualTypeArguments()[0], inputMessage));
+                while (tdis.available() > 0) l.add(tdis.readObject(s));
                 return l;
             }
             if (c.isArray()) {
+                Class<?> s = (Class<?>) p.getActualTypeArguments()[0];
                 List<Object> l = new ArrayList<>();
-                while (inputMessage.getBody().available() > 0)
-                    l.add(super.read((Class<?>) p.getActualTypeArguments()[0], inputMessage));
-                Object r = Array.newInstance((Class<?>) p.getRawType(), l.size());
-                for (int i = 0; i < l.size(); i++) Array.set(r, i, l.get(i));
-                return r;
+                while (tdis.available() > 0) l.add(tdis.readObject(s));
+                Object a = Array.newInstance(s, l.size());
+                for (int i = 0; i < l.size(); i++) Array.set(a, i, l.get(i));
+                return a;
             }
             throw new IOException("Unsupported Generic type: %s" + c.getName());
         }
-        return super.read((Class<?>) type, inputMessage);
+        return tdis.readObject((Class<?>) type);
     }
 
     @Override
@@ -58,22 +65,33 @@ public class TextXDataGenericHttpMessageConverter extends TextXDataHttpMessageCo
 
 
     @Override
-    public void write(@Nonnull Object o, @Nullable Type type, @Nullable MediaType contentType, @Nonnull HttpOutputMessage outputMessage) throws IOException, HttpMessageNotWritableException {
+    public void write(@Nonnull Object o, @Nullable Type type, @Nullable MediaType t, @Nonnull HttpOutputMessage m) throws IOException, HttpMessageNotWritableException {
+        Charset charset = t != null && t.getCharset() != null ? t.getCharset() : defaultCharset;
+        HttpHeaders h = m.getHeaders();
+        if (h.getContentType() == null)
+            h.setContentType(new MediaType("text", "plain", charset));
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        TextXDataOutputStream tdos = new TextXDataOutputStream(baos, charset);
         if (type instanceof ParameterizedType p) {
             Class<?> c = (Class<?>) p.getRawType();
             if (List.class.isAssignableFrom(c)) {
                 @SuppressWarnings("unchecked")
                 List<Object> l = (List<Object>) o;
-                for (Object a : l) super.write(a, contentType, outputMessage);
-                return;
-            }
-            if (c.isArray()) {
+                for (Object a : l) tdos.writeObject(a);
+            } else if (c.isArray()) {
                 int z = Array.getLength(o);
-                for (int i = 0; i < z; i++) super.write(Array.get(o, i), contentType, outputMessage);
-                return;
+                for (int i = 0; i < z; i++) tdos.writeObject(Array.get(o, i));
+            } else {
+                throw new IOException("Unsupported Generic type: %s" + c.getName());
             }
-            throw new IOException("Unsupported Generic type: %s" + c.getName());
+        } else {
+            tdos.writeObject(o);
         }
-        super.write(o, contentType, outputMessage);
+        tdos.close();
+        byte[] b = baos.toByteArray();
+        h.setContentLength(b.length);
+        OutputStream os = m.getBody();
+        os.write(b);
+        os.flush();
     }
 }
