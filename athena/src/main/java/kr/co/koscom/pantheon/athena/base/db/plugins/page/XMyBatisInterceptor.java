@@ -51,7 +51,7 @@ public class XMyBatisInterceptor implements Interceptor {
         if (!pg.isFirst()) bw.append(")".repeat(Math.max(0, i * 2 - 1)));
         pm.add(new ParameterMapping.Builder(ms.getConfiguration(), "%slimit".formatted(ln), int.class).build());
         MetaObject meta = MetaObject.forObject(bs, SystemMetaObject.DEFAULT_OBJECT_FACTORY, SystemMetaObject.DEFAULT_OBJECT_WRAPPER_FACTORY, DEFAULT_REFLECTOR_FACTORY);
-        String sql = "%n/* MYBATIS_SQLID %s */%nSELECT A.* FROM (%n%s%n) A%s%n%s%nLIMIT ?".formatted(ms.getId(), bs.getSql(), bw, bo);
+        String sql = "%n/* MyBatis_SQLID %s */%nSELECT A.* FROM (%n%s%n) A%s%n%s%nLIMIT ?".formatted(ms.getId(), bs.getSql(), bw, bo);
         meta.setValue("sql", sql);
     }
 
@@ -74,7 +74,9 @@ public class XMyBatisInterceptor implements Interceptor {
             Object pr = args[1];
             RowBounds rb = (RowBounds) args[2];
             Map.Entry<String, XPage> pe = findType(pr, XPage.class);
+
             if (pe == null) return invocation.proceed();
+
             XPage pg = pe.getValue();
             BoundSql bs = ms.getBoundSql(pr);
             setPageSql(ms, bs, pe.getKey(), pg);
