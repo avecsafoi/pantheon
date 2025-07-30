@@ -1,5 +1,6 @@
 package kr.co.koscom.pantheon.athena.base.io.data;
 
+import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
 import org.springframework.http.HttpInputMessage;
 import org.springframework.http.HttpOutputMessage;
@@ -18,7 +19,7 @@ import java.util.List;
 public class TextXDataGenericHttpMessageConverter extends TextXDataHttpMessageConverter implements GenericHttpMessageConverter<Object> {
 
     @Override
-    public boolean canRead(@Nullable Type type, @Nullable Class<?> contextClass, @Nullable MediaType mediaType) {
+    public boolean canRead(@Nonnull Type type, @Nullable Class<?> contextClass, @Nullable MediaType mediaType) {
         if (type instanceof ParameterizedType p) {
             for (Type t : p.getActualTypeArguments())
                 if (super.canRead((Class<?>) t, mediaType)) return true;
@@ -28,12 +29,7 @@ public class TextXDataGenericHttpMessageConverter extends TextXDataHttpMessageCo
     }
 
     @Override
-    public boolean canWrite(@Nullable Type type, Class<?> clazz, @Nullable MediaType mediaType) {
-        return canRead(type, clazz, mediaType);
-    }
-
-    @Override
-    public Object read(Type type, @Nullable Class<?> contextClass, HttpInputMessage inputMessage) throws IOException, HttpMessageNotReadableException {
+    public @Nonnull Object read(@Nonnull Type type, @Nullable Class<?> contextClass, @Nonnull HttpInputMessage inputMessage) throws IOException, HttpMessageNotReadableException {
         if (type instanceof ParameterizedType p) {
             Class<?> c = (Class<?>) p.getRawType();
             if (List.class.isAssignableFrom(c)) {
@@ -55,9 +51,14 @@ public class TextXDataGenericHttpMessageConverter extends TextXDataHttpMessageCo
         return super.read((Class<?>) type, inputMessage);
     }
 
+    @Override
+    public boolean canWrite(@Nullable Type type, @Nonnull Class<?> clazz, @Nullable MediaType mediaType) {
+        return type != null && canRead(type, clazz, mediaType);
+    }
+
 
     @Override
-    public void write(Object o, @Nullable Type type, @Nullable MediaType contentType, HttpOutputMessage outputMessage) throws IOException, HttpMessageNotWritableException {
+    public void write(@Nonnull Object o, @Nullable Type type, @Nullable MediaType contentType, @Nonnull HttpOutputMessage outputMessage) throws IOException, HttpMessageNotWritableException {
         if (type instanceof ParameterizedType p) {
             Class<?> c = (Class<?>) p.getRawType();
             if (List.class.isAssignableFrom(c)) {

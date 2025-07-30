@@ -1,5 +1,6 @@
 package kr.co.koscom.pantheon.athena.base.io.data;
 
+import jakarta.annotation.Nonnull;
 import org.springframework.http.HttpInputMessage;
 import org.springframework.http.HttpOutputMessage;
 import org.springframework.http.MediaType;
@@ -26,7 +27,7 @@ public class TextXDataHttpMessageConverter implements HttpMessageConverter<Objec
     }
 
     @Override
-    public boolean canRead(Class<?> c, @Nullable MediaType t) {
+    public boolean canRead(@Nonnull Class<?> c, @Nullable MediaType t) {
         if (TextXData.class.isAssignableFrom(c))
             if (t == null) return true;
             else if (TextXData.class.isAssignableFrom(c))
@@ -36,17 +37,17 @@ public class TextXDataHttpMessageConverter implements HttpMessageConverter<Objec
     }
 
     @Override
-    public boolean canWrite(Class<?> c, @Nullable MediaType m) {
+    public boolean canWrite(@Nonnull Class<?> c, @Nullable MediaType m) {
         return canRead(c, m);
     }
 
     @Override
-    public List<MediaType> getSupportedMediaTypes() {
+    public @Nonnull List<MediaType> getSupportedMediaTypes() {
         return List.of(MediaType.TEXT_PLAIN);
     }
 
     @Override
-    public Object read(Class<?> c, HttpInputMessage m) throws IOException, HttpMessageNotReadableException {
+    public @Nonnull Object read(@Nonnull Class<?> c, HttpInputMessage m) throws IOException, HttpMessageNotReadableException {
         MediaType t = m.getHeaders().getContentType();
         Charset charset = t != null && t.getCharset() != null ? t.getCharset() : defaultCharset;
         TextXDataInputStream is = new TextXDataInputStream(m.getBody(), charset);
@@ -54,7 +55,7 @@ public class TextXDataHttpMessageConverter implements HttpMessageConverter<Objec
     }
 
     @Override
-    public void write(Object o, @Nullable MediaType t, HttpOutputMessage m) throws IOException, HttpMessageNotWritableException {
+    public void write(@Nonnull Object o, @Nullable MediaType t, HttpOutputMessage m) throws IOException, HttpMessageNotWritableException {
         Charset charset = t != null && t.getCharset() != null ? t.getCharset() : defaultCharset;
         if (m.getHeaders().getContentType() == null)
             m.getHeaders().setContentType(new MediaType("text", "plain", charset));
