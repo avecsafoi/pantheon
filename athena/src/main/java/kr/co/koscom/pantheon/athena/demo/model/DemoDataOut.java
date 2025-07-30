@@ -1,6 +1,6 @@
 package kr.co.koscom.pantheon.athena.demo.model;
 
-import kr.co.koscom.pantheon.athena.base.io.TextXData;
+import kr.co.koscom.pantheon.athena.base.io.data.TextXData;
 import kr.co.koscom.pantheon.athena.base.io.data.annotations.XAText;
 import lombok.Data;
 import lombok.experimental.Accessors;

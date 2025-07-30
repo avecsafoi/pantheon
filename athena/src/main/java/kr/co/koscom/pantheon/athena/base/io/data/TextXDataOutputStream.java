@@ -1,4 +1,4 @@
-package kr.co.koscom.pantheon.athena.base.io;
+package kr.co.koscom.pantheon.athena.base.io.data;
 
 import com.alibaba.fastjson2.util.DateUtils;
 import kr.co.koscom.pantheon.athena.base.io.data.annotations.XAText;
@@ -15,7 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static kr.co.koscom.pantheon.athena.base.io.XDataUtils.*;
+import static kr.co.koscom.pantheon.athena.base.io.data.XDataUtils.*;
 
 public class TextXDataOutputStream extends DataOutputStream {
 

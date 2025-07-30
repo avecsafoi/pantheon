@@ -1,4 +1,4 @@
-package kr.co.koscom.pantheon.athena.base.io;
+package kr.co.koscom.pantheon.athena.base.io.data;
 
 import com.alibaba.fastjson2.util.DateUtils;
 import kr.co.koscom.pantheon.athena.base.io.data.annotations.XAText;
@@ -12,7 +12,7 @@ import java.math.BigInteger;
 import java.nio.charset.Charset;
 import java.util.*;
 
-import static kr.co.koscom.pantheon.athena.base.io.XDataUtils.*;
+import static kr.co.koscom.pantheon.athena.base.io.data.XDataUtils.*;
 
 
 public class TextXDataInputStream extends DataInputStream {

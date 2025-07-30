@@ -1,4 +1,4 @@
-package kr.co.koscom.pantheon.athena.base.io;
+package kr.co.koscom.pantheon.athena.base.io.data;
 
 import kr.co.koscom.pantheon.athena.base.io.data.annotations.XABinary;
 import kr.co.koscom.pantheon.athena.base.io.data.annotations.XAUnsigned;
@@ -14,7 +14,7 @@ import java.nio.charset.Charset;
 import java.util.Date;
 import java.util.List;
 
-import static kr.co.koscom.pantheon.athena.base.io.XDataUtils.en;
+import static kr.co.koscom.pantheon.athena.base.io.data.XDataUtils.en;
 
 
 public class BinaryXDataOutputStream extends DataOutputStream {

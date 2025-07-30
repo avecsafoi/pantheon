@@ -1,7 +1,7 @@
 package kr.co.koscom.pantheon.athena.demo;
 
-import kr.co.koscom.pantheon.athena.base.io.TextXDataInputStream;
-import kr.co.koscom.pantheon.athena.base.io.TextXDataOutputStream;
+import kr.co.koscom.pantheon.athena.base.io.data.TextXDataInputStream;
+import kr.co.koscom.pantheon.athena.base.io.data.TextXDataOutputStream;
 import kr.co.koscom.pantheon.athena.demo.model.DemoDataIn;
 import org.junit.jupiter.api.Test;
 
