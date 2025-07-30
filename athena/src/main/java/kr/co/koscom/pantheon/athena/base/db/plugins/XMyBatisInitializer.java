@@ -32,7 +32,7 @@ public class XMyBatisInitializer {
     private void setSqlId(SqlSource so, String id) throws IllegalAccessException {
         switch (so) {
             case StaticSqlSource o -> setSqlId(o, "sql", id);
-            case ProviderSqlSource o -> { /* NOTHING_TODO */ }
+            case ProviderSqlSource ignored -> { /* NOTHING_TODO */ }
             case DynamicSqlSource o -> {
                 Field f = FieldUtils.getField(DynamicSqlSource.class, "rootSqlNode", true);
                 setSqlId((SqlNode) f.get(o), id);
