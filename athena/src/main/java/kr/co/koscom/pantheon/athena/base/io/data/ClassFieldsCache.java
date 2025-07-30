@@ -27,7 +27,7 @@ public class ClassFieldsCache {
     protected static Field[] getFields(Map<Class<?>, Field[]> m, Class<?> c, Class<?> t) {
         Field[] r = m.get(c);
         if (r == null) {
-            r = getFields(FIELDS, c);
+            r = getFields(c);
             List<Field> l = new ArrayList<>(r.length);
             for (Field f : r) {
                 int i = f.getModifiers();

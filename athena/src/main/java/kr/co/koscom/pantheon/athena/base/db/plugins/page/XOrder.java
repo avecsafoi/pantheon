@@ -7,6 +7,6 @@ import lombok.Data;
 @AllArgsConstructor
 public class XOrder {
     private String column;
-    private boolean asc = true;
+    private boolean asc;
     private Object value;
 }

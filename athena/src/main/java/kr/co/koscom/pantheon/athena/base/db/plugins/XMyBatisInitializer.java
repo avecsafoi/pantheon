@@ -31,9 +31,7 @@ public class XMyBatisInitializer {
 
     private void setSqlId(SqlSource so, String id) throws IllegalAccessException {
         switch (so) {
-            case StaticSqlSource o -> {
-                setSqlId(o, "sql", id);
-            }
+            case StaticSqlSource o -> setSqlId(o, "sql", id);
             case ProviderSqlSource o -> { /* NOTHING_TODO */ }
             case DynamicSqlSource o -> {
                 Field f = FieldUtils.getField(DynamicSqlSource.class, "rootSqlNode", true);
@@ -50,24 +48,20 @@ public class XMyBatisInitializer {
     @SuppressWarnings("unchecked")
     private void setSqlId(SqlNode so, String id) throws IllegalAccessException {
         switch (so) {
-            case ChooseSqlNode o -> { /* NOTHING_TODO */ }
-            case ForEachSqlNode o -> { /* NOTHING_TODO */ }
-            case IfSqlNode o -> { /* NOTHING_TODO */ }
+            case ChooseSqlNode ignored -> { /* NOTHING_TODO */ }
+            case ForEachSqlNode ignored -> { /* NOTHING_TODO */ }
+            case IfSqlNode ignored -> { /* NOTHING_TODO */ }
             case MixedSqlNode o -> {
                 Field f = FieldUtils.getField(DynamicSqlSource.class, "contents", true);
                 setSqlId(((List<SqlNode>) f.get(o)).getFirst(), id);
             }
-            case StaticTextSqlNode o -> {
-                setSqlId(o, "text", id);
-            }
-            case TextSqlNode o -> {
-                setSqlId(o, "text", id);
-            }
+            case StaticTextSqlNode o -> setSqlId(o, "text", id);
+            case TextSqlNode o -> setSqlId(o, "text", id);
             case TrimSqlNode o -> {
                 Field f = FieldUtils.getField(DynamicSqlSource.class, "contents", true);
                 setSqlId((SqlNode) f.get(o), id);
             }
-            case VarDeclSqlNode o -> { /* NOTHING_TODO */ }
+            case VarDeclSqlNode ignored -> { /* NOTHING_TODO */ }
             default -> throw new IllegalStateException("Unexpected SqlNode Type: " + so.getClass());
         }
     }

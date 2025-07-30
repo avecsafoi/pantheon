@@ -10,9 +10,10 @@ import java.util.List;
 
 @Mapper
 public interface SysUserMapper {
+
     @Select("select * from sys_user where age >= #{su.age} limit #{pg.limit} offset #{pg.offset}")
-    public List<SysUser> selectPage(@Param("su") SysUser su, @Param("pg") XPage pg);
+    List<SysUser> selectPage(@Param("su") SysUser su, @Param("pg") XPage pg);
 
     @Select("select id, name, age, email from sys_user where age > #{su.age} - 100")
-    public List<SysUser> selectContPage(@Param("su") SysUser su, @Param("pg") XPage pg);
+    List<SysUser> selectContPage(@Param("su") SysUser su, @Param("pg") XPage pg);
 }

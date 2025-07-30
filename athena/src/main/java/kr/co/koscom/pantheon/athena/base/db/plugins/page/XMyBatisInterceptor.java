@@ -57,7 +57,7 @@ public class XMyBatisInterceptor implements Interceptor {
     }
 
     public static void setLockSql(MappedStatement ms, BoundSql bs, StringBuilder sb, Map.Entry<String, XLock> le) {
-        int wt = le.getValue().getWaitTime();
+        int wt = le.getValue().waitTime();
         if (wt == Integer.MAX_VALUE) sb.append(" FOR UPDATE");
         else if (wt == 0) sb.append(" FOR UPDATE NOWAIT");
         else if (wt > 0) {
