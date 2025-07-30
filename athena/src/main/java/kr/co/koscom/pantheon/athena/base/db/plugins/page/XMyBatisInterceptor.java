@@ -1,6 +1,7 @@
 package kr.co.koscom.pantheon.athena.base.db.plugins.page;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import kr.co.koscom.pantheon.athena.base.db.plugins.XLock;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.cache.CacheKey;
 import org.apache.ibatis.executor.Executor;
@@ -25,12 +26,14 @@ import java.util.Map;
 public class XMyBatisInterceptor implements Interceptor {
 
     public static final DefaultReflectorFactory DEFAULT_REFLECTOR_FACTORY = new DefaultReflectorFactory();
-    public static final ObjectMapper om = new ObjectMapper();
+    public static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
-    private static void setPageSql(MappedStatement ms, BoundSql bs, String pn, XPage pg) {
+    private static void setPageSql(MappedStatement ms, BoundSql bs, StringBuilder sb, Map.Entry<String, XPage> pe) {
         List<ParameterMapping> pm = bs.getParameterMappings();
+        String pn = pe.getKey();
+        XPage pg = pe.getValue();
         String on = pn.isEmpty() ? "orders" : pn + ".orders";
-        String ln = pn.isEmpty() ? "" : pn + ".";
+        String ln = pn.isEmpty() ? "limit" : pn + ".limit";
         List<XOrder> os = pg.getOrders();
         StringBuilder bw = new StringBuilder();
         StringBuilder bo = new StringBuilder();
@@ -49,14 +52,24 @@ public class XMyBatisInterceptor implements Interceptor {
             i++;
         }
         if (!pg.isFirst()) bw.append(")".repeat(Math.max(0, i * 2 - 1)));
-        pm.add(new ParameterMapping.Builder(ms.getConfiguration(), "%slimit".formatted(ln), int.class).build());
-        MetaObject meta = MetaObject.forObject(bs, SystemMetaObject.DEFAULT_OBJECT_FACTORY, SystemMetaObject.DEFAULT_OBJECT_WRAPPER_FACTORY, DEFAULT_REFLECTOR_FACTORY);
-        String sql = "%n/* MyBatis_SQLID %s */%nSELECT A.* FROM (%n%s%n) A%s%n%s%nLIMIT ?".formatted(ms.getId(), bs.getSql(), bw, bo);
-        meta.setValue("sql", sql);
+        pm.add(new ParameterMapping.Builder(ms.getConfiguration(), ln, int.class).build());
+        sb.append("SELECT A.* FROM (%n%s%n) A%s%n%s%nLIMIT ?".formatted(bs.getSql(), bw, bo));
+    }
+
+    public static void setLockSql(MappedStatement ms, BoundSql bs, StringBuilder sb, Map.Entry<String, XLock> le) {
+        int wt = le.getValue().getWaitTime();
+        if (wt == Integer.MAX_VALUE) sb.append(" FOR UPDATE");
+        else if (wt == 0) sb.append(" FOR UPDATE NOWAIT");
+        else if (wt > 0) {
+            sb.append(" FOR UPDATE WAIT ?");
+            List<ParameterMapping> pm = bs.getParameterMappings();
+            String nm = le.getKey().isEmpty() ? "waitTime" : le.getKey() + ".waitTime";
+            pm.add(new ParameterMapping.Builder(ms.getConfiguration(), nm, Object.class).build());
+        }
     }
 
     @SuppressWarnings("unchecked")
-    public static <T> Map.Entry<String, T> findType(Object o, Class<T> t) {
+    public static <T> Map.Entry<String, T> findTypeEntry(Object o, Class<T> t) {
         if (o != null) {
             if (o instanceof Map<?, ?> m)
                 for (Map.Entry<?, ?> e : m.entrySet())
@@ -73,21 +86,31 @@ public class XMyBatisInterceptor implements Interceptor {
             MappedStatement ms = (MappedStatement) args[0];
             Object pr = args[1];
             RowBounds rb = (RowBounds) args[2];
-            Map.Entry<String, XPage> pe = findType(pr, XPage.class);
+            Map.Entry<String, XPage> pe = findTypeEntry(pr, XPage.class);
+            Map.Entry<String, XLock> le = findTypeEntry(pr, XLock.class);
 
-            if (pe == null) return invocation.proceed();
-
-            XPage pg = pe.getValue();
             BoundSql bs = ms.getBoundSql(pr);
-            setPageSql(ms, bs, pe.getKey(), pg);
+            StringBuilder sb = new StringBuilder("%n/* MyBatis_SQLID %s */%n".formatted(ms.getId()));
+
+            if (pe != null) setPageSql(ms, bs, sb, pe);
+            else sb.append(bs.getSql());
+
+            if (le != null) setLockSql(ms, bs, sb, le);
+
+            MetaObject meta = MetaObject.forObject(bs, SystemMetaObject.DEFAULT_OBJECT_FACTORY, SystemMetaObject.DEFAULT_OBJECT_WRAPPER_FACTORY, DEFAULT_REFLECTOR_FACTORY);
+            meta.setValue("sql", sb.toString());
+
             CacheKey ck = executor.createCacheKey(ms, pr, rb, bs);
             Object rs = executor.query(ms, pr, rb, (ResultHandler<?>) args[3], ck, bs);
-            if (rs instanceof List<?> l) {
-                if (l.size() < pg.getLimit()) pg.setLast(true);
-                else if (!l.isEmpty()) {
-                    Object r = l.getLast();
-                    Map<?, ?> m = r instanceof Map<?, ?> m1 ? m1 : om.convertValue(r, Map.class);
-                    for (XOrder o : pg.getOrders()) o.setValue(m.get(o.getColumn()));
+            if (pe != null) {
+                XPage pg = pe.getValue();
+                if (rs instanceof List<?> l) {
+                    if (l.size() < pg.getLimit()) pg.setLast(true);
+                    else if (!l.isEmpty()) {
+                        Object r = l.getLast();
+                        Map<?, ?> m = r instanceof Map<?, ?> m1 ? m1 : OBJECT_MAPPER.convertValue(r, Map.class);
+                        for (XOrder o : pg.getOrders()) o.setValue(m.get(o.getColumn()));
+                    }
                 }
             }
             return rs;
