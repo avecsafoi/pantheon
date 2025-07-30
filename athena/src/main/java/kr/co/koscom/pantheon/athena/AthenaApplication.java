@@ -1,6 +1,6 @@
 package kr.co.koscom.pantheon.athena;
 
-import kr.co.koscom.pantheon.athena.base.db.XMyBatisInitializer;
+import kr.co.koscom.pantheon.athena.base.db.plugins.XMyBatisInitializer;
 import kr.co.koscom.pantheon.athena.base.db.plugins.page.XMyBatisInterceptor;
 import kr.co.koscom.pantheon.athena.base.io.TextXDataGenericHttpMessageConverter;
 import org.springframework.boot.SpringApplication;

@@ -1,4 +1,4 @@
-package kr.co.koscom.pantheon.athena.base.db;
+package kr.co.koscom.pantheon.athena.base.db.plugins;
 
 import jakarta.annotation.Resource;
 import org.apache.commons.lang3.reflect.FieldUtils;
