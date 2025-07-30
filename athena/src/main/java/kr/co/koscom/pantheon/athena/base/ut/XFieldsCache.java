@@ -11,9 +11,8 @@ import java.util.function.Predicate;
 
 public class XFieldsCache {
 
-    static final Map<Class<?>, Field[]> FIELDS = new HashMap<>();
-
     public static final Predicate<Field> NSTATIC = f -> !Modifier.isStatic(f.getModifiers());
+    static final Map<Class<?>, Field[]> FIELDS = new HashMap<>();
 
     public static Field[] getFields(Class<?> c) {
         return getFields(c, FIELDS);

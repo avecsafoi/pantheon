@@ -11,15 +11,12 @@ import java.util.function.Predicate;
 
 public class XDataFieldsCache extends XFieldsCache {
 
+    public final static Predicate<Field> TEXT_XDATA_FILTER = f -> f.getAnnotation(XAText.class) != null;
+    public final static Predicate<Field> BINARY_XDATA_FILTER = f -> f.getAnnotation(XABinary.class) != null;
     static final Map<Class<?>, Field[]> INPUT_TEXT_XDATA = new HashMap<>();
     static final Map<Class<?>, Field[]> OUTPUT_TEXT_XDATA = new HashMap<>();
-
     static final Map<Class<?>, Field[]> INPUT_BINARY_XDATA = new HashMap<>();
     static final Map<Class<?>, Field[]> OUTPUT_BINARY_XDATA = new HashMap<>();
-
-    public final static Predicate<Field> TEXT_XDATA_FILTER = f -> f.getAnnotation(XAText.class) != null;
-
-    public final static Predicate<Field> BINARY_XDATA_FILTER = f -> f.getAnnotation(XABinary.class) != null;
 
     public static Field[] getInputTextXDataFields(Class<?> c) {
         return getFieldsByFilter(c, INPUT_TEXT_XDATA, TEXT_XDATA_FILTER);
