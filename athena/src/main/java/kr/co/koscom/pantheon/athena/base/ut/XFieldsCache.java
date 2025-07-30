@@ -20,7 +20,8 @@ public class XFieldsCache {
 
     protected static Field[] getFields(Class<?> c, Map<Class<?>, Field[]> m) {
         Field[] r = m.get(c);
-        return r == null ? m.put(c, FieldUtils.getAllFields(c)) : r;
+        if (r == null) m.put(c, r = FieldUtils.getAllFields(c));
+        return r;
     }
 
     public static Field[] getFieldsByFilter(Class<?> c, Predicate<Field> t) {
@@ -29,10 +30,7 @@ public class XFieldsCache {
 
     protected static Field[] getFieldsByFilter(Class<?> c, Map<Class<?>, Field[]> m, Predicate<Field> t) {
         Field[] r = m.get(c);
-        if (r == null) {
-            r = Arrays.stream(getFields(c)).filter(t).toArray(Field[]::new);
-            m.put(c, r);
-        }
+        if (r == null) m.put(c, r = Arrays.stream(getFields(c)).filter(t).toArray(Field[]::new));
         return r;
     }
 }
