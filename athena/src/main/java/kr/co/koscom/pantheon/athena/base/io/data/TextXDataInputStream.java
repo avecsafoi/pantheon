@@ -33,6 +33,7 @@ public class TextXDataInputStream extends XDataInputStream {
         return new String(b, charset);
     }
 
+    @Override
     @SuppressWarnings("unchecked")
     public <X> X readObject(Class<X> c) throws IOException {
         return (X) readFields(c, XDataUtils.createObject(c, null));

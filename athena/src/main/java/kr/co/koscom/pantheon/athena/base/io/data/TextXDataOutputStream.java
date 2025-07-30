@@ -3,7 +3,6 @@ package kr.co.koscom.pantheon.athena.base.io.data;
 import com.alibaba.fastjson2.util.DateUtils;
 import kr.co.koscom.pantheon.athena.base.io.data.annotations.XAText;
 
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.lang.reflect.Field;
@@ -11,22 +10,15 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.nio.charset.Charset;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import static kr.co.koscom.pantheon.athena.base.io.data.XDataUtils.en;
 import static kr.co.koscom.pantheon.athena.base.io.data.XDataUtils.getParameterizedType;
 
-public class TextXDataOutputStream extends DataOutputStream {
-
-    public static final Map<Class<?>, Field[]> FIELDS = new HashMap<>();
-
-    public final Charset charset;
+public class TextXDataOutputStream extends XDataOutputStream {
 
     public TextXDataOutputStream(OutputStream os, Charset charset) {
-        super(os);
-        this.charset = charset;
+        super(os, charset);
     }
 
     public void writeString(Class<?> c, Field f, XAText aa, Object o, int p) throws IOException {
@@ -40,6 +32,7 @@ public class TextXDataOutputStream extends DataOutputStream {
         if (p > 0) for (int i = 0; i < d; i++) write(' ');
     }
 
+    @Override
     public void writeObject(Object o) throws IOException {
         assert o != null;
         writeFields(o.getClass(), o);

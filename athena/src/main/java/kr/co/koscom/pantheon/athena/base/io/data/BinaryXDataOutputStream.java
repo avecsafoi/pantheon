@@ -3,7 +3,6 @@ package kr.co.koscom.pantheon.athena.base.io.data;
 import kr.co.koscom.pantheon.athena.base.io.data.annotations.XABinary;
 import kr.co.koscom.pantheon.athena.base.io.data.annotations.XAUnsigned;
 
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.lang.reflect.Array;
@@ -17,13 +16,10 @@ import java.util.List;
 import static kr.co.koscom.pantheon.athena.base.io.data.XDataUtils.en;
 
 
-public class BinaryXDataOutputStream extends DataOutputStream {
-
-    public final Charset charset;
+public class BinaryXDataOutputStream extends XDataOutputStream {
 
     public BinaryXDataOutputStream(OutputStream out, Charset charset) {
-        super(out);
-        this.charset = charset;
+        super(out, charset);
     }
 
     public void writeSize(int v) throws IOException {
@@ -42,6 +38,12 @@ public class BinaryXDataOutputStream extends DataOutputStream {
     public void writeDate(Date d) throws IOException {
         long l = d == null ? 0 : d.getTime();
         writeLong(l);
+    }
+
+    @Override
+    public void writeObject(Object o) throws IOException {
+        if (o == null) return;
+        writeObject(o.getClass(), o, null, 0);
     }
 
     public void writeObject(Class<?> c, Object o, Field f, int h) throws IOException {

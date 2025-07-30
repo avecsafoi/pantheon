@@ -3,7 +3,6 @@ package kr.co.koscom.pantheon.athena.base.io.data;
 import kr.co.koscom.pantheon.athena.base.io.data.annotations.XABinary;
 import kr.co.koscom.pantheon.athena.base.io.data.annotations.XAUnsigned;
 
-import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Array;
@@ -18,13 +17,10 @@ import java.util.List;
 import static kr.co.koscom.pantheon.athena.base.io.data.XDataUtils.createObject;
 import static kr.co.koscom.pantheon.athena.base.io.data.XDataUtils.en;
 
-public class BinaryXDataInputStream extends DataInputStream {
-
-    public final Charset charset;
+public class BinaryXDataInputStream extends XDataInputStream {
 
     public BinaryXDataInputStream(InputStream in, Charset charset) {
-        super(in);
-        this.charset = charset;
+        super(in, charset);
     }
 
     public int readSize() throws IOException {
@@ -47,6 +43,12 @@ public class BinaryXDataInputStream extends DataInputStream {
 
     public Date readDate() throws IOException {
         return new Date(readUnsignedInt());
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public <X> X readObject(Class<X> c) throws IOException {
+        return (X) readObject(c, null, 0);
     }
 
     public Object readObject(Class<?> c, Field f, int h) throws IOException {
