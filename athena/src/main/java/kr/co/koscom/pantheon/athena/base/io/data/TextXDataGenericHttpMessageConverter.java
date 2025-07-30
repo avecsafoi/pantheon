@@ -17,7 +17,7 @@ import java.util.List;
 public class TextXDataGenericHttpMessageConverter extends TextXDataHttpMessageConverter implements GenericHttpMessageConverter<Object> {
 
     @Override
-    public boolean canRead(Type type, Class<?> contextClass, MediaType mediaType) {
+    public boolean canRead(@Nullable Type type, Class<?> contextClass, MediaType mediaType) {
         if (type instanceof ParameterizedType p) {
             for (Type t : p.getActualTypeArguments())
                 if (super.canRead((Class<?>) t, mediaType)) return true;
