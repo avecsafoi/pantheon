@@ -31,7 +31,7 @@ public class XToStringBuilder {
             if (f != null) {
                 XAPrintMask a = f.getAnnotation(XAPrintMask.class);
                 if (a != null) {
-                    sb.append(StringU.toPrintMask(o.toString(), a));
+                    sb.append(XStringUtil.toPrintMask(o.toString(), a));
                     return;
                 }
             }
@@ -78,7 +78,7 @@ public class XToStringBuilder {
                 sb.append("]");
             }
         } else if (o instanceof XData) {
-            Field[] fa = Arrays.stream(ClassFieldsCache.getFields(c)).filter(ClassFieldsCache.NSTATIC).toArray(Field[]::new);
+            Field[] fa = Arrays.stream(XFieldsCache.getFields(c)).filter(XFieldsCache.NSTATIC).toArray(Field[]::new);
             int z = fa.length;
             String ds = StringUtils.repeat(' ', d++ * 2);
             sb.append("{");

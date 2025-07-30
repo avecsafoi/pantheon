@@ -2,14 +2,14 @@ package kr.co.koscom.pantheon.athena.base.io.data;
 
 import kr.co.koscom.pantheon.athena.base.io.data.annotations.XABinary;
 import kr.co.koscom.pantheon.athena.base.io.data.annotations.XAText;
-import kr.co.koscom.pantheon.athena.base.ut.ClassFieldsCache;
+import kr.co.koscom.pantheon.athena.base.ut.XFieldsCache;
 
 import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Predicate;
 
-public class XDataFieldCache extends ClassFieldsCache {
+public class XDataFieldsCache extends XFieldsCache {
 
     static final Map<Class<?>, Field[]> INPUT_TEXT_XDATA = new HashMap<>();
     static final Map<Class<?>, Field[]> OUTPUT_TEXT_XDATA = new HashMap<>();

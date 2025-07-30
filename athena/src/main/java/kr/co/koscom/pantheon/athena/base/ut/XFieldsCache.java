@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Predicate;
 
-public class ClassFieldsCache {
+public class XFieldsCache {
 
     static final Map<Class<?>, Field[]> FIELDS = new HashMap<>();
 
