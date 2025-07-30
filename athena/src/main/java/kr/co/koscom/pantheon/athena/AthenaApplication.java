@@ -34,6 +34,6 @@ public class AthenaApplication {
 
     @EventListener(ApplicationReadyEvent.class)
     public void initialize(ApplicationReadyEvent event) {
-        xMyBatisInitializer().init();
+        /* xMyBatisInitializer().init(); */
     }
 }
