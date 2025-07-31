@@ -28,6 +28,20 @@ public class AthenaApplication {
         return new TextXDataGenericHttpMessageConverter(); // GenericType IO 처리가능 예) @ResponseBody List<User> users(@RequestBody List<User>);
     }
 
+//    @Bean
+//    public GlobalOperationCustomizer globalOperationCustomizer() {
+//        return (Operation operation, HandlerMethod handlerMethod) -> {
+//            String textPlain = org.springframework.http.MediaType.TEXT_PLAIN_VALUE;
+//            MediaType mt = new MediaType();
+//            operation.getRequestBody().getContent().addMediaType(textPlain, mt);
+//            ApiResponse x = operation.getResponses().get("200");
+//            Content content = x.getContent();
+//            if (content == null) x.setContent(content = new Content());
+//            content.addMediaType(textPlain, mt);
+//            return operation;
+//        };
+//    }
+
     @Bean
     @Description("MyBatis XML 쿼리 구문 앞에 주석으로 /* SQLID = mybatis_sql_id */ 추가하는 기능")
     public XMyBatisInitializer xMyBatisInitializer() {

@@ -18,7 +18,9 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class TextXDataGenericHttpMessageConverter extends TextXDataHttpMessageConverter implements GenericHttpMessageConverter<Object> {
 
@@ -44,6 +46,13 @@ public class TextXDataGenericHttpMessageConverter extends TextXDataHttpMessageCo
                 List<Object> l = new ArrayList<>();
                 while (tdis.available() > 0) l.add(tdis.readObject(s));
                 return l;
+            }
+            if (Map.class.isAssignableFrom(c)) {
+                Class<?> a = (Class<?>) p.getActualTypeArguments()[0];
+                Class<?> b = (Class<?>) p.getActualTypeArguments()[1];
+                HashMap<Object, Object> h = new HashMap<>();
+                while (tdis.available() > 0) h.put(tdis.readObject(a), tdis.readObject(b));
+                return h;
             }
             if (c.isArray()) {
                 Class<?> s = (Class<?>) p.getActualTypeArguments()[0];
@@ -74,10 +83,13 @@ public class TextXDataGenericHttpMessageConverter extends TextXDataHttpMessageCo
         TextXDataOutputStream tdos = new TextXDataOutputStream(baos, charset);
         if (type instanceof ParameterizedType p) {
             Class<?> c = (Class<?>) p.getRawType();
-            if (List.class.isAssignableFrom(c)) {
-                @SuppressWarnings("unchecked")
-                List<Object> l = (List<Object>) o;
+            if (o instanceof List<?> l) {
                 for (Object a : l) tdos.writeObject(a);
+            } else if (o instanceof Map<?, ?> x) {
+                for (Map.Entry<?, ?> e : x.entrySet()) {
+                    tdos.writeObject(e.getKey());
+                    tdos.writeObject(e.getValue());
+                }
             } else if (c.isArray()) {
                 int z = Array.getLength(o);
                 for (int i = 0; i < z; i++) tdos.writeObject(Array.get(o, i));

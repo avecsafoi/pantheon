@@ -1,7 +1,6 @@
 package kr.co.koscom.pantheon.athena.demo.controller;
 
 import kr.co.koscom.pantheon.athena.demo.model.DemoDataIn;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -12,34 +11,23 @@ import java.util.Map;
 
 @Controller("/demo")
 public class DemoController {
-    @PostMapping(value = "/Hello"
-            , consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE}
-            , produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE}
-    )
+
+    @PostMapping(value = "/Hello")
     public @ResponseBody DemoDataIn hello(@RequestBody DemoDataIn in) {
         return in;
     }
 
-    @PostMapping(value = "/HelloList"
-            , consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE}
-            , produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE}
-    )
+    @PostMapping(value = "/HelloList")
     public @ResponseBody List<DemoDataIn> helloList(@RequestBody List<DemoDataIn> in) {
         return in;
     }
 
-    @PostMapping(value = "/HelloArray"
-            , consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE}
-            , produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE}
-    )
+    @PostMapping(value = "/HelloArray")
     public @ResponseBody DemoDataIn[] helloArray(@RequestBody DemoDataIn[] in) {
         return in;
     }
 
-    @PostMapping(value = "/HelloMap"
-            , consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE}
-            , produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE}
-    )
+    @PostMapping(value = "/HelloMap")
     public @ResponseBody Map<String, DemoDataIn> helloMap(@RequestBody Map<String, DemoDataIn> in) {
         return in;
     }
