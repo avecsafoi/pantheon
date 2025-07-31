@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.util.Collections;
 import java.util.List;
 
 public class TextXDataHttpMessageConverter implements HttpMessageConverter<Object> {
@@ -47,6 +48,11 @@ public class TextXDataHttpMessageConverter implements HttpMessageConverter<Objec
     @Override
     public @Nonnull List<MediaType> getSupportedMediaTypes() {
         return List.of(MediaType.TEXT_PLAIN);
+    }
+
+    @Override
+    public @Nonnull List<MediaType> getSupportedMediaTypes(@Nonnull Class<?> clazz) {
+        return canRead(clazz, null) ? getSupportedMediaTypes() : Collections.emptyList();
     }
 
     @Override
