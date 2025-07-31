@@ -15,8 +15,8 @@ import java.util.Map;
 public class DemoController {
 
     @PostMapping(value = "/Hello"
-            , consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_HTML_VALUE}
-            , produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_HTML_VALUE}
+            , consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE}
+            , produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE}
     )
     public @ResponseBody ResponseEntity<DemoDataIn> hello(@RequestBody DemoDataIn in) {
         return ResponseEntity.ok(in);
