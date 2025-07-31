@@ -7,12 +7,12 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.TypeVariable;
 import java.util.List;
 
-public class Test1 {
+public class 테스트 {
 
     public List<String> fs;
 
     public static void main(String[] args) {
-        Method m = MethodUtils.getMethodObject(Test1.class, "test", List.class);
+        Method m = MethodUtils.getMethodObject(테스트.class, "test", List.class);
         ParameterizedType mt = (ParameterizedType) m.getGenericReturnType();
         Class<?> returnType = m.getReturnType();
         System.out.printf("returnType = %s", returnType.getSimpleName());
@@ -21,7 +21,7 @@ public class Test1 {
         for (TypeVariable<? extends Class<?>> a : tva) {
             System.out.printf("%3d %s (%s) %s", i++, a.getName(), a.getClass().getSimpleName(), a.getGenericDeclaration());
         }
-        Field f = FieldUtils.getField(Test1.class, "fs", true);
+        Field f = FieldUtils.getField(테스트.class, "fs", true);
         ParameterizedType ft = (ParameterizedType) f.getGenericType();
 
 
