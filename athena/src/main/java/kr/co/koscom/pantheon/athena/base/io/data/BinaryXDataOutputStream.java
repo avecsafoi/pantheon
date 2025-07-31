@@ -92,6 +92,7 @@ public class BinaryXDataOutputStream extends XDataOutputStream {
             XABinary aa = f == null ? null : f.getAnnotation(XABinary.class);
             int z = aa == null ? n : aa.size();
             if (n > z) throw new IOException("Out of byteSize(%d): %s %d(%s)".formatted(z, en(c, f), n, s));
+            if (aa == null) writeSize(z);
             for (int i = 0; i < z; i++) write(i < n ? b[i] : 0);
             return;
         }
@@ -123,10 +124,10 @@ public class BinaryXDataOutputStream extends XDataOutputStream {
         if (List.class.isAssignableFrom(c)) {
             if (f == null) throw new IOException("Only for Field Type: " + en(c, null));
             Class<?> s = XDataUtils.getParameterizedType(f);
+            XABinary aa = f.getAnnotation(XABinary.class);
             @SuppressWarnings("unchecked")
             List<Object> l = (List<Object>) o;
             int n = l == null ? 0 : l.size();
-            XABinary aa = f.getAnnotation(XABinary.class);
             int z = aa == null ? n : aa.size();
             if (aa == null) writeSize(n);
             for (int i = 0; i < z; i++) writeObject(s, i < n ? l.get(i) : null, f, h);
@@ -136,10 +137,11 @@ public class BinaryXDataOutputStream extends XDataOutputStream {
             return;
         }
         if (c.isArray()) {
+            Class<?> s = c.getComponentType();
             XABinary aa = f == null ? null : f.getAnnotation(XABinary.class);
             int n = o == null ? 0 : Array.getLength(o);
             int z = aa == null ? n : aa.size();
-            Class<?> s = c.getComponentType();
+            if (aa == null) writeSize(n);
             for (int i = 0, j = h + 1; i < z; i++) writeObject(s, o == null ? null : Array.get(o, i), f, j);
             return;
         }
