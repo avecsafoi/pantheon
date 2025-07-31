@@ -3,8 +3,6 @@
   <component name="ExternalStorageConfigurationManager" enabled="true" />
   <component name="FrameworkDetectionExcludesConfiguration">
     <file type="web" url="file://$PROJECT_DIR$/athena" />
-    <file type="web" url="file://$PROJECT_DIR$/hercules" />
-    <file type="web" url="file://$PROJECT_DIR$/hermes" />
   </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_24" default="true" project-jdk-name="24" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/out" />
