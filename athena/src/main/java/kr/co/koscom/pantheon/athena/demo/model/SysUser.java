@@ -4,7 +4,7 @@ import lombok.Data;
 import lombok.experimental.Accessors;
 
 @Data
-@Accessors(chain = true)
+@Accessors(fluent = true)
 public class SysUser {
     private String id;
     private String name;

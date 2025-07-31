@@ -1,8 +1,8 @@
 package kr.co.koscom.pantheon.athena.base.db.plugins.page;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import kr.co.koscom.pantheon.athena.base.db.plugins.XLock;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.reflect.FieldUtils;
 import org.apache.ibatis.cache.CacheKey;
 import org.apache.ibatis.executor.Executor;
 import org.apache.ibatis.mapping.BoundSql;
@@ -26,7 +26,6 @@ import java.util.Map;
 public class XMyBatisInterceptor implements Interceptor {
 
     public static final DefaultReflectorFactory DEFAULT_REFLECTOR_FACTORY = new DefaultReflectorFactory();
-    public static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
     private static void setPageSql(MappedStatement ms, BoundSql bs, StringBuilder sb, Map.Entry<String, XPage> pe) {
         List<ParameterMapping> pm = bs.getParameterMappings();
@@ -108,8 +107,12 @@ public class XMyBatisInterceptor implements Interceptor {
                     if (l.size() < pg.getLimit()) pg.setLast(true);
                     else if (!l.isEmpty()) {
                         Object r = l.getLast();
-                        Map<?, ?> m = r instanceof Map<?, ?> m1 ? m1 : OBJECT_MAPPER.convertValue(r, Map.class);
-                        for (XOrder o : pg.getOrders()) o.setValue(m.get(o.getColumn()));
+                        if (r instanceof Map<?, ?> m)
+                            for (XOrder o : pg.getOrders())
+                                o.setValue(m.get(o.getColumn()));
+                        else
+                            for (XOrder o : pg.getOrders())
+                                o.setValue(FieldUtils.readField(r, o.getColumn(), true));
                     }
                 }
             }

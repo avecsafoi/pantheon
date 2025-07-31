@@ -19,7 +19,7 @@ public class XDataTest {
 
     @Test
     void text() throws IOException {
-        DemoDataIn in = new DemoDataIn().setId("아이디").setName("이름").setDeposit(100);
+        DemoDataIn in = new DemoDataIn().id("아이디").name("이름").deposit(100);
         System.out.println(in);
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -38,7 +38,7 @@ public class XDataTest {
 
     @Test
     void binary() throws IOException {
-        DemoDataIn in = new DemoDataIn().setId("아이디").setName("이름").setDeposit(100);
+        DemoDataIn in = new DemoDataIn().id("아이디").name("이름").deposit(100);
         System.out.println(in);
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();

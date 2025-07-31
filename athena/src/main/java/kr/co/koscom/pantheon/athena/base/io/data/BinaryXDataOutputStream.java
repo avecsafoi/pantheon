@@ -153,8 +153,7 @@ public class BinaryXDataOutputStream extends XDataOutputStream {
         if (s != null && !s.isInterface()) writeFields(s, o);
         for (Field f : c.getDeclaredFields()) {
             if (!Modifier.isStatic(f.getModifiers())) {
-                boolean b = !f.canAccess(o);
-                if (b) f.setAccessible(true);
+                if (!f.canAccess(o)) f.setAccessible(true);
                 Object fo;
                 try {
                     fo = f.get(o);
@@ -162,7 +161,6 @@ public class BinaryXDataOutputStream extends XDataOutputStream {
                     throw new IOException("Failed to access Field: " + en(s, f), e);
                 }
                 writeObject(f.getType(), fo, f, 0);
-                if (b) f.setAccessible(false);
             }
         }
     }
