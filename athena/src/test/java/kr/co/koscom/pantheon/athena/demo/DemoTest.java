@@ -18,8 +18,7 @@ public class DemoTest {
 
         Charset charset = StandardCharsets.UTF_8;
 
-        DemoDataIn in1 = new DemoDataIn();
-        in1.id("selani").name("박용길").deposit(100);
+        DemoDataIn in1 = new DemoDataIn().setId("아이디").setName("이름").setDeposit(100);
 
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         TextXDataOutputStream dos = new TextXDataOutputStream(bos, charset);
