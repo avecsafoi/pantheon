@@ -44,20 +44,20 @@ public class TextXDataGenericHttpMessageConverter extends TextXDataHttpMessageCo
             if (List.class.isAssignableFrom(c)) {
                 Class<?> s = (Class<?>) p.getActualTypeArguments()[0];
                 List<Object> l = new ArrayList<>();
-                while (tdis.available() > 0) l.add(tdis.readObject(s));
+                while (tdis.available() >= 0) l.add(tdis.readObject(s));
                 return l;
             }
             if (Map.class.isAssignableFrom(c)) {
                 Class<?> a = (Class<?>) p.getActualTypeArguments()[0];
                 Class<?> b = (Class<?>) p.getActualTypeArguments()[1];
                 HashMap<Object, Object> h = new HashMap<>();
-                while (tdis.available() > 0) h.put(tdis.readObject(a), tdis.readObject(b));
+                while (tdis.available() >= 0) h.put(tdis.readObject(a), tdis.readObject(b));
                 return h;
             }
             if (c.isArray()) {
                 Class<?> s = (Class<?>) p.getActualTypeArguments()[0];
                 List<Object> l = new ArrayList<>();
-                while (tdis.available() > 0) l.add(tdis.readObject(s));
+                while (tdis.available() >= 0) l.add(tdis.readObject(s));
                 Object a = Array.newInstance(s, l.size());
                 for (int i = 0; i < l.size(); i++) Array.set(a, i, l.get(i));
                 return a;

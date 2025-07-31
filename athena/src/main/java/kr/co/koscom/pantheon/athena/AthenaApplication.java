@@ -23,24 +23,11 @@ public class AthenaApplication {
     }
 
     @Bean
+    @Description("송수신 전문을 파싱하는 기능")
     public TextXDataGenericHttpMessageConverter textXDataHttpMessageConverter() {
         // return new TextXDataHttpMessageConverter(); // 기본객체만 처리가능 (GenericType 객체는 다른 컨버터로 패스)
         return new TextXDataGenericHttpMessageConverter(); // GenericType IO 처리가능 예) @ResponseBody List<User> users(@RequestBody List<User>);
     }
-
-//    @Bean
-//    public GlobalOperationCustomizer globalOperationCustomizer() {
-//        return (Operation operation, HandlerMethod handlerMethod) -> {
-//            String textPlain = org.springframework.http.MediaType.TEXT_PLAIN_VALUE;
-//            MediaType mt = new MediaType();
-//            operation.getRequestBody().getContent().addMediaType(textPlain, mt);
-//            ApiResponse x = operation.getResponses().get("200");
-//            Content content = x.getContent();
-//            if (content == null) x.setContent(content = new Content());
-//            content.addMediaType(textPlain, mt);
-//            return operation;
-//        };
-//    }
 
     @Bean
     @Description("MyBatis XML 쿼리 구문 앞에 주석으로 /* SQLID = mybatis_sql_id */ 추가하는 기능")
