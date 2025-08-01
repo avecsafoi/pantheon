@@ -86,12 +86,12 @@ public class TextXDataInputStream extends XDataInputStream {
             try {
                 fo = readObject(f.getType(), f);
             } catch (IOException e) {
-                throw new IOException("Failed to read Object Field: " + en(c, f), e);
+                throw new IOException("Failed to read Object Field: %s%n%s".formatted(en(c, f), e.getMessage()), e);
             }
             try {
                 f.set(o, fo);
             } catch (IllegalAccessException e) {
-                throw new IOException("Failed to set Field: " + en(c, f), e);
+                throw new IOException("Failed to set Field: %s%n%s".formatted(en(c, f), e.getMessage()), e);
             }
         }
         return o;

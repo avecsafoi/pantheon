@@ -93,12 +93,12 @@ public class TextXDataOutputStream extends XDataOutputStream {
             try {
                 fo = f.get(o);
             } catch (IllegalAccessException e) {
-                throw new IOException("Failed to get Field: " + en(c, f), e);
+                throw new IOException("Failed to get Field: %s%n%s".formatted(en(c, f), e.getMessage()), e);
             }
             try {
                 writeObject(f.getType(), fo, f);
             } catch (IOException e) {
-                throw new IOException("Failed to write Object Field: " + en(c, f), e);
+                throw new IOException("Failed to write Object Field: %s%n%s".formatted(en(c, f), e.getMessage()), e);
             }
         }
     }
