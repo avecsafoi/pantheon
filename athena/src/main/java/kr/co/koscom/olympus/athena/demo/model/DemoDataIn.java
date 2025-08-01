@@ -1,0 +1,20 @@
+package kr.co.koscom.olympus.athena.demo.model;
+
+import kr.co.koscom.olympus.athena.base.io.data.TextXData;
+import kr.co.koscom.olympus.athena.base.io.data.annotations.XAText;
+import lombok.Data;
+import lombok.experimental.Accessors;
+
+@Data
+@Accessors(fluent = true)
+public class DemoDataIn implements TextXData {
+
+    @XAText(name = "아이디", size = 10)
+    public String id;
+
+    @XAText(name = "이름", size = 20)
+    public String name;
+
+    @XAText(name = "예수금", size = 10)
+    public long deposit;
+}
