@@ -10,11 +10,11 @@ import lombok.experimental.Accessors;
 public class DemoDataOut implements TextXData {
 
     @XAText(name = "아이디", size = 10)
-    private String id;
+    public String id;
 
     @XAText(name = "이름", size = 20)
-    private String name;
+    public String name;
 
     @XAText(name = "예수금", size = 10)
-    private long deposit;
+    public long deposit;
 }

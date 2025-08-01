@@ -6,8 +6,8 @@ import lombok.experimental.Accessors;
 @Data
 @Accessors(fluent = true)
 public class SysUser {
-    private String id;
-    private String name;
-    private int age;
-    private String email;
+    public String id;
+    public String name;
+    public int age;
+    public String email;
 }
