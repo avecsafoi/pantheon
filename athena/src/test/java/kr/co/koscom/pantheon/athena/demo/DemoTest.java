@@ -18,11 +18,11 @@ public class DemoTest {
 
         Charset charset = StandardCharsets.UTF_8;
 
-        DemoDataIn in1 = new DemoDataIn().setId("아이디").setName("이름").setDeposit(100);
+        DemoDataIn in = new DemoDataIn().id("아이디").name("이름").deposit(100);
 
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         TextXDataOutputStream dos = new TextXDataOutputStream(bos, charset);
-        dos.writeObject(in1);
+        dos.writeObject(in);
         dos.close();
 
         byte[] b = bos.toByteArray();
@@ -33,7 +33,7 @@ public class DemoTest {
 
         DemoDataIn in2 = dis.readObject(DemoDataIn.class);
 
-        System.out.println(in1);
+        System.out.println(in);
         System.out.println(in2);
     }
 }

@@ -6,7 +6,7 @@ import lombok.Data;
 import lombok.experimental.Accessors;
 
 @Data
-@Accessors(chain = true)
+@Accessors(fluent = true)
 public class DemoDataIn implements TextXData {
 
     @XAText(name = "아이디", size = 10)
