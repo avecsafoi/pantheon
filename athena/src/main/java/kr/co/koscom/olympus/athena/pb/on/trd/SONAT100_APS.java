@@ -1,10 +1,9 @@
 package kr.co.koscom.olympus.athena.pb.on.trd;
 
-import kr.co.koscom.olympus.athena.pb.ab.lang.st.PB_APS;
-import kr.co.koscom.olympus.athena.pb.ab.lang.ut.TIMEVAL;
-import kr.co.koscom.olympus.athena.pb.on.trd.include.SPOT_ORD_CM_INPUT_ST;
+import kr.co.koscom.olympus.athena.pb.include.base.st.PB_APS;
+import kr.co.koscom.olympus.athena.pb.include.base.ut.TIMEVAL;
 
-import static kr.co.koscom.olympus.athena.pb.ab.lang.ut.PB_FN.gettimeofday;
+import static kr.co.koscom.olympus.athena.pb.include.base.ut.PB_FN.gettimeofday;
 
 @PB_CMeta(value = """
         프로그램: SONAT100_APS
@@ -26,17 +25,51 @@ import static kr.co.koscom.olympus.athena.pb.ab.lang.ut.PB_FN.gettimeofday;
 
 public class SONAT100_APS implements PB_APS<SONAT100_ST> {
 
+    /**
+     * 서비스처리 MAIN
+     */
     @Override
     public int process(SONAT100_ST psMsg) {
 
-        TIMEVAL timeval = gettimeofday();
+        TIMEVAL timeval = new TIMEVAL();
+
+        gettimeofday(timeval, null);
+
+        /* 1. 입력데이터확인, 온라인여부 확인 */
+        // int nRet = SpotOrdInputDataChkRtn_LC();
+
+        /* 2. 일자확인 */
+
+        /* 3. 회사정보,통신매체 Check */
+
+        /* 4. 계좌확인 */
+
+        /* 2008.01.21 */
+        // GetHdrTrxRestrcTp();
+
+        /* 5. 지점정보 Check */
+
+        /* 6. 종목정보 Check */
+
+        /* 6.1 상품유형,상세유형별 매매가능종목 체크로직 추가 */
+
+        /* 7. 장운영확인 */
+
+        /* 8. 증거금률산정 */
+
+        /* 9. 증거금징수,증거수량징수, 주문내역 Insert */
+
+        /* 10. 주문 Queue Write */
+
+        /* 11. 주문output생성 및 MJF데이터 생성 */
 
         return 0;
     }
 
-    private int SpotOrdInputDataChkRtn_LC(SONAT100_ST psMsg, SPOT_ORD_CM_INPUT_ST in) {
-        return 0;
-    }
+    // private int SpotOrdInputDataChkRtn_LC(SONAT100_ST psMsg, SPOT_ORD_CM_INPUT_ST in) { return 0; }
+
+    // private int FirmInfoChkRtn_LC(SONAT100_ST st, SELMDBFIRMMBSINFO_QPA qpa, SPOT_ORD_CM_INPUT_ST st2) { return 0; }
+
 
 }
 

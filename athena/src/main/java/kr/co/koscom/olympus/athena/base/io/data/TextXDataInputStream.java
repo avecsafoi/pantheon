@@ -43,7 +43,7 @@ public class TextXDataInputStream extends XDataInputStream {
         XAText aa = f == null ? null : f.getAnnotation(XAText.class);
         if (aa == null)
             throw new IOException("Needed @%s for Field: %s".formatted(XAText.class.getSimpleName(), en(c, f)));
-        int z = aa.fix() ? aa.size() : readSize(aa.size());
+        int z = aa.fix() ? aa.size()[0] : readSize(aa.size()[0]);
         if (c.isPrimitive()) {
             if (int.class.isAssignableFrom(c)) return Integer.parseInt(readString(z).trim());
             if (long.class.isAssignableFrom(c)) return Long.parseLong(readString(z).trim());

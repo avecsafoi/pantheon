@@ -61,6 +61,7 @@ public class GlobalExceptionHandler {
     // Custom Exception class
     @Getter
     public static class CustomException extends RuntimeException {
+
         private final int errorCode;
 
         public CustomException(String message, int errorCode) {

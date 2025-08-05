@@ -24,7 +24,7 @@ public class TextXDataOutputStream extends XDataOutputStream {
     public void writeString(Class<?> c, Field f, XAText aa, Object o, int p) throws IOException {
         byte[] b = o == null ? null : String.valueOf(o).getBytes(charset);
         int n = b == null ? 0 : b.length;
-        int z = aa.fix() ? aa.size() : n;
+        int z = aa.fix() ? aa.size()[0] : n;
         if (n > z) throw new IOException("Exceeded size %d by %d(%s): %s".formatted(z, n, o, en(c, f)));
         int d = z - n;
         if (p < 1) for (int i = 0; i < d; i++) write(' ');
@@ -73,7 +73,7 @@ public class TextXDataOutputStream extends XDataOutputStream {
             @SuppressWarnings("unchecked")
             List<Object> l = (List<Object>) o;
             int n = l == null ? 0 : l.size();
-            int z = aa.fix() ? aa.size() : n;
+            int z = aa.fix() ? aa.size()[0] : n;
             if (n > z) throw new IOException("Exceeded size %d by %d(%s): %s".formatted(z, n, o, en(c, f)));
             for (int i = 0; i < z; i++) writeFields(s, i < n ? l.get(i) : null);
             return;

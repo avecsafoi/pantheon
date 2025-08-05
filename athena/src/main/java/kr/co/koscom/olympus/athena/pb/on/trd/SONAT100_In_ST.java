@@ -1,12 +1,14 @@
 package kr.co.koscom.olympus.athena.pb.on.trd;
 
-import kr.co.koscom.olympus.athena.pb.ab.lang.meta.PB_FMeta;
-import kr.co.koscom.olympus.athena.pb.ab.lang.st.PB_IN_ST;
+import kr.co.koscom.olympus.athena.pb.include.base.meta.PB_FMeta;
+import kr.co.koscom.olympus.athena.pb.include.base.st.PB_IN_ST;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
 import java.math.BigDecimal;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
 @Accessors(fluent = true)
 public class SONAT100_In_ST extends PB_IN_ST {

@@ -1,4 +1,4 @@
-package kr.co.koscom.olympus.athena.pb.ab.lang;
+package kr.co.koscom.olympus.athena.pb.include.base;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 

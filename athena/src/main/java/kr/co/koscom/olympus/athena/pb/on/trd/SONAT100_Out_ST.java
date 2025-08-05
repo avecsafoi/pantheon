@@ -1,7 +1,7 @@
 package kr.co.koscom.olympus.athena.pb.on.trd;
 
-import kr.co.koscom.olympus.athena.pb.ab.lang.meta.PB_FMeta;
-import kr.co.koscom.olympus.athena.pb.ab.lang.st.PB_OUT_ST;
+import kr.co.koscom.olympus.athena.pb.include.base.meta.PB_FMeta;
+import kr.co.koscom.olympus.athena.pb.include.base.st.PB_OUT_ST;
 
 public class SONAT100_Out_ST extends PB_OUT_ST {
 

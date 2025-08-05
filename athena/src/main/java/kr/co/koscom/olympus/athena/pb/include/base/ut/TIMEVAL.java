@@ -1,4 +1,4 @@
-package kr.co.koscom.olympus.athena.pb.ab.lang.ut;
+package kr.co.koscom.olympus.athena.pb.include.base.ut;
 
 import lombok.Data;
 import lombok.experimental.Accessors;

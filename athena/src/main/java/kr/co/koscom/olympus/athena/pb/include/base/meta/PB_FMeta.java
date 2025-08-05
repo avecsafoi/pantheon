@@ -1,4 +1,4 @@
-package kr.co.koscom.olympus.athena.pb.ab.lang.meta;
+package kr.co.koscom.olympus.athena.pb.include.base.meta;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;

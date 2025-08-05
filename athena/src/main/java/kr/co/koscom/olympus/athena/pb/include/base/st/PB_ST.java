@@ -1,6 +1,6 @@
-package kr.co.koscom.olympus.athena.pb.ab.lang.st;
+package kr.co.koscom.olympus.athena.pb.include.base.st;
 
-import kr.co.koscom.olympus.athena.pb.ab.lang.PB_DataObject;
+import kr.co.koscom.olympus.athena.pb.include.base.PB_DataObject;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;

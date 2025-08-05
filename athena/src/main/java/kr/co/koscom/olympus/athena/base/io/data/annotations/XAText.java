@@ -8,7 +8,7 @@ public @interface XAText {
 
     String name();
 
-    int size();
+    int[] size() default {0};
 
     boolean fix() default true;
 

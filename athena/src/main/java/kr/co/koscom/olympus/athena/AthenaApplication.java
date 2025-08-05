@@ -1,6 +1,5 @@
 package kr.co.koscom.olympus.athena;
 
-import kr.co.koscom.olympus.athena.base.db.plugins.XMyBatisInitializer;
 import kr.co.koscom.olympus.athena.base.db.plugins.page.XMyBatisInterceptor;
 import kr.co.koscom.olympus.athena.base.io.data.TextXDataGenericHttpMessageConverter;
 import org.springframework.boot.SpringApplication;
@@ -29,11 +28,11 @@ public class AthenaApplication {
         return new TextXDataGenericHttpMessageConverter(); // GenericType IO 처리가능 예) @ResponseBody List<User> users(@RequestBody List<User>);
     }
 
-    @Bean
-    @Description("MyBatis XML 쿼리 구문 앞에 주석으로 /* SQLID = mybatis_sql_id */ 추가하는 기능")
-    public XMyBatisInitializer xMyBatisInitializer() {
-        return new XMyBatisInitializer();
-    }
+//    @Bean
+//    @Description("MyBatis XML 쿼리 구문 앞에 주석으로 /* SQLID = mybatis_sql_id */ 추가하는 기능")
+//    public XMyBatisInitializer xMyBatisInitializer() {
+//        return new XMyBatisInitializer();
+//    }
 
     @EventListener(ApplicationReadyEvent.class)
     @Description("스프링실행(시작완료) 후 이벤트")

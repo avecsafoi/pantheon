@@ -1,4 +1,4 @@
-package kr.co.koscom.olympus.athena.pb.ab.lang;
+package kr.co.koscom.olympus.athena.pb.include.base;
 
 import java.io.Serializable;
 
