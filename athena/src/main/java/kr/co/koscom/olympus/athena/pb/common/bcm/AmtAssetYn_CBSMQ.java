@@ -20,7 +20,6 @@ public class AmtAssetYn_CBSMQ {
     public int VerifyInput_LC(AML_ASSET_YN_ST psAmlAsset, CONT_KEY_ST stContKey) {
 
 
-
         return SUCCESS;
     }
 
@@ -52,20 +51,16 @@ public class AmtAssetYn_CBSMQ {
     @Accessors(fluent = true)
     public static class AML_ASSET_YN_ST {
 
-        @XAText(name = "회사번호", size = 3)
-        String zFirmNo;
-
         @XAText(name = "실명확인번호", size = 13)
         public String zRmnno;
-
         @XAText(name = "거래일자", size = 8)
         public String zTrxDt;
-
         @XAText(name = "고액자산가여부", size = 1)
         public String zLgmnyAssetYn;
-
         @XAText(name = "에러코드")
         public int nErrCode;
+        @XAText(name = "회사번호", size = 3)
+        String zFirmNo;
 
     }
 
