@@ -1,6 +1,6 @@
 package kr.co.koscom.olympus.athena;
 
-import kr.co.koscom.olympus.athena.base.db.plugins.page.XMyBatisInterceptor;
+import kr.co.koscom.olympus.athena.base.XMyBatisInterceptor;
 import kr.co.koscom.olympus.athena.base.io.data.TextXDataGenericHttpMessageConverter;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

@@ -1,6 +1,5 @@
-package kr.co.koscom.olympus.athena.base.db.plugins.page;
+package kr.co.koscom.olympus.athena.base;
 
-import kr.co.koscom.olympus.athena.base.db.plugins.XLock;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.apache.ibatis.cache.CacheKey;

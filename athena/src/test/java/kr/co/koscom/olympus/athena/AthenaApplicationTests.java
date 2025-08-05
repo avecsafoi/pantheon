@@ -1,8 +1,8 @@
 package kr.co.koscom.olympus.athena;
 
 import jakarta.annotation.Resource;
-import kr.co.koscom.olympus.athena.base.db.plugins.page.XOrder;
-import kr.co.koscom.olympus.athena.base.db.plugins.page.XPage;
+import kr.co.koscom.olympus.athena.base.XOrder;
+import kr.co.koscom.olympus.athena.base.XPage;
 import kr.co.koscom.olympus.athena.demo.mapper.SysUserMapper;
 import kr.co.koscom.olympus.athena.demo.model.SysUser;
 import org.junit.jupiter.api.Test;

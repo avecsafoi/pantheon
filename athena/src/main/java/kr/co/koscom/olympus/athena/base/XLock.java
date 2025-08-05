@@ -1,4 +1,4 @@
-package kr.co.koscom.olympus.athena.base.db.plugins;
+package kr.co.koscom.olympus.athena.base;
 
 public record XLock(int waitTime) {
     public static final XLock NONE = new XLock(-1);

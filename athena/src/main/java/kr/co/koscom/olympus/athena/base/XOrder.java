@@ -1,4 +1,4 @@
-package kr.co.koscom.olympus.athena.base.db.plugins.page;
+package kr.co.koscom.olympus.athena.base;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

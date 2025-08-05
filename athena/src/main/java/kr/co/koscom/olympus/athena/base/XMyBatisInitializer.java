@@ -1,4 +1,4 @@
-package kr.co.koscom.olympus.athena.base.db.plugins;
+package kr.co.koscom.olympus.athena.base;
 
 import jakarta.annotation.Resource;
 import org.apache.commons.lang3.reflect.FieldUtils;
