@@ -1,5 +1,7 @@
 import java.lang.reflect.Type;
+import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class FreeTest {
 
@@ -28,5 +30,16 @@ public class FreeTest {
 
         System.out.println(x.getClass().getTypeName());
 
+
+        Date date = new Date();
+
+        Instant x1 = Instant.now();
+        long epoch = x1.getEpochSecond();
+        int nano = x1.getNano();
+
+        System.out.printf("date: %s%n", date);
+        System.out.printf("date.time: %s%n", date.getTime());
+        System.out.printf("epoch: %d%n", epoch); // seconds
+        System.out.printf("nano: %d%n", nano); // nano seconds
     }
 }

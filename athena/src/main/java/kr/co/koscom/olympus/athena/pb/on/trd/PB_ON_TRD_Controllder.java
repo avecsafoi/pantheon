@@ -15,7 +15,8 @@ public class PB_ON_TRD_Controllder {
     @PostMapping("/trd")
     public @ResponseBody byte[] trd(@RequestBody byte[] body, @RequestHeader HttpHeaders headers) {
         ByteBuffer bb = ByteBuffer.wrap(body);
-        int sss = bb.getShort();
-        return null;
+        int g1 = bb.getShort();
+        int g2 = bb.getShort();
+        return body;
     }
 }

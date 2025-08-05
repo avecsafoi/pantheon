@@ -3,6 +3,9 @@ package kr.co.koscom.olympus.athena.pb.on.trd;
 import kr.co.koscom.olympus.athena.pb.include.base.st.PB_APS;
 import kr.co.koscom.olympus.athena.pb.include.base.ut.TIMEVAL;
 
+import java.time.Instant;
+
+import static kr.co.koscom.olympus.athena.pb.include.PB_COMMON.SUCCESS;
 import static kr.co.koscom.olympus.athena.pb.include.base.ut.PB_FN.gettimeofday;
 
 @PB_CMeta(value = """
@@ -22,7 +25,6 @@ import static kr.co.koscom.olympus.athena.pb.include.base.ut.PB_FN.gettimeofday;
         ...
         2020.12.23: 골드만삭스 zDummy에 GridId 반영(김덕기)
         """)
-
 public class SONAT100_APS implements PB_APS<SONAT100_ST> {
 
     /**
@@ -34,6 +36,7 @@ public class SONAT100_APS implements PB_APS<SONAT100_ST> {
         TIMEVAL timeval = new TIMEVAL();
 
         gettimeofday(timeval, null);
+        Instant a1 = Instant.now();
 
         /* 1. 입력데이터확인, 온라인여부 확인 */
         // int nRet = SpotOrdInputDataChkRtn_LC();
@@ -63,7 +66,9 @@ public class SONAT100_APS implements PB_APS<SONAT100_ST> {
 
         /* 11. 주문output생성 및 MJF데이터 생성 */
 
-        return 0;
+        psMsg.out = new SONAT100_Out_ST();
+
+        return SUCCESS;
     }
 
     // private int SpotOrdInputDataChkRtn_LC(SONAT100_ST psMsg, SPOT_ORD_CM_INPUT_ST in) { return 0; }
