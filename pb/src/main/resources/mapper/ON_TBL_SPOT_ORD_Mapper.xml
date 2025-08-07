@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="kr.co.koscom.olympus.pb.include.table.ON_TBL_SPOT_ORD_Mapper">
+    <update id="ON_FN_SPOT_ORD_MAIN" parameterType="kr.co.koscom.olympus.pb.on.bms.SPOT_ORD_TRX_SP_ST"
+            statementType="CALLABLE">
+        {CALL ON_FN_SPOT_ORD_MAIN(
+            /* 01 */ #{st.i.zOrdDt, mode=IN},
+            /* 02 */ #{st.i.zOrdMktCode, mode=IN},
+            /* 03 */ #{st.i.zAcntNo, mode=IN},
+            /* 04 */ #{st.i.zIsuNo, mode=IN},
+            /* 05 */ #{st.i.lOrdQty, mode=IN},
+            /* 06 */ #{st.i.dOrdPrc, mode=IN},
+            /* 07 */ #{st.i.zBnsTp, mode=IN},
+            /* 08 */ #{st.i.zOrdTime, mode=IN},
+            /* 09 */ #{st.o.lOrdNo, mode=OUT, jdbcType=BIGINT},
+            /* 10 */ #{st.o.lSqlCode, mode=OUT, jdbcType=BIGINT},
+            /* 11 */ #{st.o.zErrMsgCode, mode=OUT, jdbcType=VARCHAR}
+              )}
+    </update>
+</mapper>
