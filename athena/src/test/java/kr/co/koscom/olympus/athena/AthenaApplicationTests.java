@@ -3,7 +3,7 @@ package kr.co.koscom.olympus.athena;
 import jakarta.annotation.Resource;
 import kr.co.koscom.olympus.athena.base.XOrder;
 import kr.co.koscom.olympus.athena.base.XPage;
-import kr.co.koscom.olympus.athena.demo.mapper.SysUserMapper;
+import kr.co.koscom.olympus.athena.demo.mapper.DemoMapper;
 import kr.co.koscom.olympus.athena.demo.model.SysUser;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -14,7 +14,7 @@ import java.util.List;
 class AthenaApplicationTests {
 
     @Resource
-    private SysUserMapper sysUserMapper;
+    private DemoMapper sysUserMapper;
 
     @Test
     void contextLoads() {

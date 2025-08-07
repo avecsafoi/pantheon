@@ -14,6 +14,14 @@
         </option>
         <option name="resolveExternalAnnotations" value="true" />
       </GradleProjectSettings>
+      <GradleProjectSettings>
+        <option name="externalProjectPath" value="$PROJECT_DIR$/pb" />
+        <option name="modules">
+          <set>
+            <option value="$PROJECT_DIR$/pb" />
+          </set>
+        </option>
+      </GradleProjectSettings>
     </option>
   </component>
 </project>

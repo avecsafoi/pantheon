@@ -4,11 +4,13 @@ import kr.co.koscom.olympus.athena.base.XMyBatisInterceptor;
 import kr.co.koscom.olympus.athena.base.io.data.TextXDataGenericHttpMessageConverter;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Description;
 import org.springframework.context.event.EventListener;
 
+@EntityScan(basePackageClasses = AthenaApplication.class)
 @SpringBootApplication
 public class AthenaApplication {
 
