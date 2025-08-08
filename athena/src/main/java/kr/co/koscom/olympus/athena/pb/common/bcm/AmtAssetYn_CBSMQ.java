@@ -5,7 +5,7 @@ import lombok.Data;
 import lombok.experimental.Accessors;
 import org.springframework.context.annotation.Description;
 
-import static kr.co.koscom.olympus.athena.pb.include.PB_COMMON.SUCCESS;
+import static kr.co.koscom.olympus.athena.pb.include.PB_Common.SUCCESS;
 
 @Description("AML 고액자산가여부 조회")
 public class AmtAssetYn_CBSMQ {

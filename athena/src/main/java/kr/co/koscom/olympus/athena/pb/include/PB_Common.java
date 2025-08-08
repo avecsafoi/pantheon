@@ -1,6 +1,6 @@
 package kr.co.koscom.olympus.athena.pb.include;
 
-public class PB_COMMON {
+public class PB_Common {
 
     public static final int NULL = 0;
     public static final int SUCCESS = 0;
@@ -11,5 +11,6 @@ public class PB_COMMON {
     public static final int TRUE = 1;
     public static final int FALSE = 0;
 
+    public static final String DEF_DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
 
 }

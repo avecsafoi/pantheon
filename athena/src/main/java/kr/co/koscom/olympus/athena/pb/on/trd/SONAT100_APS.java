@@ -5,7 +5,7 @@ import kr.co.koscom.olympus.athena.pb.include.base.ut.TIMEVAL;
 
 import java.time.Instant;
 
-import static kr.co.koscom.olympus.athena.pb.include.PB_COMMON.SUCCESS;
+import static kr.co.koscom.olympus.athena.pb.include.PB_Common.SUCCESS;
 import static kr.co.koscom.olympus.athena.pb.include.base.ut.PB_FN.gettimeofday;
 
 @PB_CMeta(value = """

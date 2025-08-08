@@ -4,7 +4,7 @@ import java.nio.CharBuffer;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import static kr.co.koscom.olympus.athena.pb.include.PB_COMMON.SUCCESS;
+import static kr.co.koscom.olympus.athena.pb.include.PB_Common.SUCCESS;
 
 public class CmdDtInfo_AFW {
 

@@ -1,5 +1,6 @@
 package kr.co.koscom.olympus.pb.include.io;
 
+import jakarta.annotation.Nonnull;
 import lombok.Getter;
 
 import java.io.ByteArrayInputStream;
@@ -11,7 +12,7 @@ import java.nio.charset.StandardCharsets;
 @Getter
 public abstract class PB_DataInputStream extends DataInputStream {
 
-    private final Charset charset;
+    protected final Charset charset;
 
     public PB_DataInputStream(InputStream in) {
         super(in);
@@ -33,5 +34,5 @@ public abstract class PB_DataInputStream extends DataInputStream {
         this.charset = charset;
     }
 
-    public abstract <X> X readObject(Class<X> c) throws Throwable;
+    public abstract <X> X readObject(@Nonnull Class<X> c) throws Throwable;
 }

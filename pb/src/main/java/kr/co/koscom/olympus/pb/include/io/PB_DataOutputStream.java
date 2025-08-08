@@ -10,7 +10,7 @@ import java.nio.charset.StandardCharsets;
 @Getter
 public abstract class PB_DataOutputStream extends DataOutputStream {
 
-    private final Charset charset;
+    protected final Charset charset;
 
     public PB_DataOutputStream(OutputStream out) {
         super(out);
