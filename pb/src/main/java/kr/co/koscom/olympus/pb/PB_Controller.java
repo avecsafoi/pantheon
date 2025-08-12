@@ -3,13 +3,13 @@ package kr.co.koscom.olympus.pb;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.annotation.Resource;
+import kr.co.koscom.olympus.pb.include.PBService;
 import kr.co.koscom.olympus.pb.include.PB_ST;
-import kr.co.koscom.olympus.pb.include.PB_Service;
-import kr.co.koscom.olympus.pb.include.hdr.PB_HdrAccount;
-import kr.co.koscom.olympus.pb.include.hdr.PB_HdrCommon;
-import kr.co.koscom.olympus.pb.include.hdr.PB_Json;
-import kr.co.koscom.olympus.pb.include.io.PB_TextDataInputStream;
-import kr.co.koscom.olympus.pb.include.io.PB_TextDataOutputStream;
+import kr.co.koscom.olympus.pb.include.data.io.PBTextDataInputStream;
+import kr.co.koscom.olympus.pb.include.data.io.PBTextDataOutputStream;
+import kr.co.koscom.olympus.pb.include.hdr.PBHdrAccount;
+import kr.co.koscom.olympus.pb.include.hdr.PBHdrCommon;
+import kr.co.koscom.olympus.pb.include.hdr.PBJson;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -26,7 +26,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Map;
 
-import static kr.co.koscom.olympus.pb.include.PB_COMMON.SUCCESS;
+import static kr.co.koscom.olympus.pb.include.PBCommon.SUCCESS;
 
 @Controller("/pb")
 public class PB_Controller {
@@ -38,9 +38,9 @@ public class PB_Controller {
     private ObjectMapper om;
 
     @PostMapping("/json")
-    public @ResponseBody PB_Json gatewayJson(@RequestBody PB_Json jio) throws Throwable {
-        PB_HdrAccount ha = jio.getHdrAccount();
-        PB_Service<?> svc = (PB_Service<?>) ctx.getBean("PB_SID " + ha.getASvcId());
+    public @ResponseBody PBJson gatewayJson(@RequestBody PBJson jio) throws Throwable {
+        PBHdrAccount ha = jio.getHdrAccount();
+        PBService<?> svc = (PBService<?>) ctx.getBean("PB_SID " + ha.getASvcId());
         Method m = Arrays.stream(svc.getClass().getMethods()).filter(x -> x.getName().equals("call") && x.getParameterCount() == 1).findAny().orElseThrow();
 
         Class<?> cst = m.getParameters()[0].getType();
@@ -73,13 +73,13 @@ public class PB_Controller {
     public @ResponseBody byte[] gatewayBytes(@RequestBody byte[] ib) throws Throwable {
 
         ByteArrayInputStream bais = new ByteArrayInputStream(ib);
-        PB_TextDataInputStream dis = new PB_TextDataInputStream(bais);
+        PBTextDataInputStream dis = new PBTextDataInputStream(bais);
 
-        PB_HdrCommon hc = dis.readObject(PB_HdrCommon.class);
+        PBHdrCommon hc = dis.readObject(PBHdrCommon.class);
         if (hc.getATgLen() != ib.length)
             throw new RuntimeException("전문의 길이가 일치하지 않습니다. (%d != %d)".formatted(hc.getATgLen(), ib.length));
-        PB_HdrAccount ha = dis.readObject(PB_HdrAccount.class);
-        PB_Service<?> svc = (PB_Service<?>) ctx.getBean("PB_SID " + ha.getASvcId());
+        PBHdrAccount ha = dis.readObject(PBHdrAccount.class);
+        PBService<?> svc = (PBService<?>) ctx.getBean("PB_SID " + ha.getASvcId());
         Method m = Arrays.stream(svc.getClass().getMethods()).filter(x -> x.getName().equals("call") && x.getParameterCount() == 1).findAny().orElseThrow();
 
         Class<?> cst = m.getParameters()[0].getType();
@@ -101,7 +101,7 @@ public class PB_Controller {
         if (ri != SUCCESS) throw new RuntimeException("전문처리 중 오류가 발생하였습니다.");
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream(4096);
-        PB_TextDataOutputStream dos = new PB_TextDataOutputStream(baos);
+        PBTextDataOutputStream dos = new PBTextDataOutputStream(baos);
         dos.writeObject(hc); // 공통 헤더
         dos.writeObject(ha); // 계정계 헤더
         dos.writeObject(out); // 응답자료

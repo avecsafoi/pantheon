@@ -6,7 +6,7 @@ import com.mybatisflex.core.table.TableInfoFactory;
 
 import java.util.Arrays;
 
-public interface PB_Mapper<T> extends BaseMapper<T> {
+public interface PBMapper<T> extends BaseMapper<T> {
 
     /**
      * 로직수정: @Id(pkArgs) 가 여러개일 때, 첫번째 @Id 하나만 확인하는 로직을 모든 @Id 확인하도록 수정

@@ -1,4 +1,4 @@
-package kr.co.koscom.olympus.pb.include.io;
+package kr.co.koscom.olympus.pb.include.data.io;
 
 import lombok.Getter;
 
@@ -8,16 +8,16 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 
 @Getter
-public abstract class PB_DataOutputStream extends DataOutputStream {
+public abstract class PBDataOutputStream extends DataOutputStream {
 
     protected final Charset charset;
 
-    public PB_DataOutputStream(OutputStream out) {
+    public PBDataOutputStream(OutputStream out) {
         super(out);
         this.charset = StandardCharsets.UTF_8;
     }
 
-    public PB_DataOutputStream(OutputStream out, Charset charset) {
+    public PBDataOutputStream(OutputStream out, Charset charset) {
         super(out);
         this.charset = charset;
     }

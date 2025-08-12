@@ -1,8 +1,8 @@
-package kr.co.koscom.olympus.pb.include.io;
+package kr.co.koscom.olympus.pb.include.data.io;
 
 import jakarta.annotation.Nonnull;
-import kr.co.koscom.olympus.pb.include.PB_A;
-import kr.co.koscom.olympus.pb.include.PB_Data;
+import kr.co.koscom.olympus.pb.include.PBA;
+import kr.co.koscom.olympus.pb.include.data.PBData;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.commons.lang3.time.DateUtils;
 
@@ -19,30 +19,34 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class PB_TextDataInputStream extends PB_DataInputStream {
+public class PBTextDataInputStream extends PBDataInputStream {
 
-    public PB_TextDataInputStream(InputStream in) {
+    public PBTextDataInputStream(InputStream in) {
         super(in);
     }
 
-    public PB_TextDataInputStream(InputStream in, Charset charset) {
+    public PBTextDataInputStream(InputStream in, Charset charset) {
         super(in, charset);
     }
 
-    public PB_TextDataInputStream(byte[] b) {
+    public PBTextDataInputStream(byte[] b) {
         super(b);
     }
 
-    public PB_TextDataInputStream(byte[] b, Charset charset) {
+    public PBTextDataInputStream(byte[] b, Charset charset) {
         super(b, charset);
     }
 
 
+    @SuppressWarnings("unchecked")
     @Override
     public <X> X readObject(@Nonnull Class<X> c) throws Throwable {
-        @SuppressWarnings("unchecked")
-        X x = (X) readObject(c, null);
-        return x;
+        return (X) readObject(c, null);
+    }
+
+    @Override
+    public void readObject(@Nonnull Object o) throws Throwable {
+        readFields(o.getClass(), o);
     }
 
     private String readString(int n) throws IOException {
@@ -53,10 +57,10 @@ public class PB_TextDataInputStream extends PB_DataInputStream {
 
     private Object readObject(Class<?> c, Field f) throws Throwable {
 
-        if (PB_Data.class.isAssignableFrom(c)) return readFields(c);
+        if (PBData.class.isAssignableFrom(c)) return readFields(c, c.getConstructor().newInstance());
 
-        PB_A a = f == null ? null : f.getAnnotation(PB_A.class);
-        if (a == null) throw new IOException("Field annotation required (@%s)".formatted(PB_A.class.getSimpleName()));
+        PBA a = f == null ? null : f.getAnnotation(PBA.class);
+        if (a == null) throw new IOException("Field annotation required (@%s)".formatted(PBA.class.getSimpleName()));
 
         if (String.class.isAssignableFrom(c)) {
             int z = a.fix() ? a.scale() : NumberUtils.toInt(readString(a.scale()));
@@ -119,9 +123,9 @@ public class PB_TextDataInputStream extends PB_DataInputStream {
         if (List.class.isAssignableFrom(c)) {
             Class<?> s = (Class<?>) ((ParameterizedType) f.getGenericType()).getActualTypeArguments()[0];
             int z = a.fix() ? a.scale() : NumberUtils.toInt(readString(a.scale()));
-            List<Object> o = new ArrayList<>(z);
-            for (int i = 0; i < z; i++) o.add(readObject(s, f));
-            return o;
+            List<Object> l = new ArrayList<>(z);
+            for (int i = 0; i < z; i++) l.add(readObject(s, f));
+            return l;
         }
         if (c.isArray()) {
             int z = a.fix() ? a.scale() : NumberUtils.toInt(readString(a.scale()));
@@ -131,17 +135,16 @@ public class PB_TextDataInputStream extends PB_DataInputStream {
         }
         if (Date.class.isAssignableFrom(c)) {
             if (a.format().isEmpty())
-                throw new IOException("Format required of @%s(format = ?)".formatted(PB_A.class.getSimpleName()));
+                throw new IOException("Format required of @%s(format = ?)".formatted(PBA.class.getSimpleName()));
             String s = readString(a.scale());
             return s.isEmpty() ? null : DateUtils.parseDate(s, a.format());
         }
         throw new IOException("Unexpected type (%s)".formatted(c.getCanonicalName()));
     }
 
-    private Object readFields(Class<?> c) throws Throwable {
-        Object o = c.getConstructor().newInstance();
+    public Object readFields(Class<?> c, Object o) throws Throwable {
         Class<?> s = c.getSuperclass();
-        if (s != null && !s.isInterface()) readFields(s);
+        if (s != null && !s.isInterface()) readFields(s, o);
         for (Field f : c.getDeclaredFields()) {
             if (Modifier.isStatic(f.getModifiers())) continue;
             if (!f.canAccess(o)) f.setAccessible(true);

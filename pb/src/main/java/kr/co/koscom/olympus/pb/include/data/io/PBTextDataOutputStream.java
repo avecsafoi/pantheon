@@ -1,7 +1,7 @@
-package kr.co.koscom.olympus.pb.include.io;
+package kr.co.koscom.olympus.pb.include.data.io;
 
-import kr.co.koscom.olympus.pb.include.PB_A;
-import kr.co.koscom.olympus.pb.include.PB_Data;
+import kr.co.koscom.olympus.pb.include.PBA;
+import kr.co.koscom.olympus.pb.include.data.PBData;
 import org.apache.commons.lang3.time.DateFormatUtils;
 
 import java.io.IOException;
@@ -14,13 +14,13 @@ import java.nio.charset.Charset;
 import java.util.Date;
 import java.util.List;
 
-public class PB_TextDataOutputStream extends PB_DataOutputStream {
+public class PBTextDataOutputStream extends PBDataOutputStream {
 
-    public PB_TextDataOutputStream(OutputStream out) {
+    public PBTextDataOutputStream(OutputStream out) {
         super(out);
     }
 
-    public PB_TextDataOutputStream(OutputStream out, Charset charset) {
+    public PBTextDataOutputStream(OutputStream out, Charset charset) {
         super(out, charset);
     }
 
@@ -44,13 +44,13 @@ public class PB_TextDataOutputStream extends PB_DataOutputStream {
 
     private void writeObject(Class<?> c, Object o, Field f) throws Throwable {
 
-        if (PB_Data.class.isAssignableFrom(c)) {
+        if (PBData.class.isAssignableFrom(c)) {
             writeFields(c, o);
             return;
         }
 
-        PB_A a = f == null ? null : f.getAnnotation(PB_A.class);
-        if (a == null) throw new IOException("Field annotation required (@%s)".formatted(PB_A.class.getSimpleName()));
+        PBA a = f == null ? null : f.getAnnotation(PBA.class);
+        if (a == null) throw new IOException("Field annotation required (@%s)".formatted(PBA.class.getSimpleName()));
 
         if (String.class.isAssignableFrom(c)) {
             if (a.fix()) {
@@ -107,7 +107,7 @@ public class PB_TextDataOutputStream extends PB_DataOutputStream {
         }
         if (Date.class.isAssignableFrom(c)) {
             if (a.format().isEmpty())
-                throw new IOException("Format required of @%s(format = ?)".formatted(PB_A.class.getSimpleName()));
+                throw new IOException("Format required of @%s(format = ?)".formatted(PBA.class.getSimpleName()));
             String s = o == null ? null : DateFormatUtils.format((Date) o, a.format());
             writeString(s, null, a.scale(), 0);
         }

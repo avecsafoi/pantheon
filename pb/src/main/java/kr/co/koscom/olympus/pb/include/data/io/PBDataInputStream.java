@@ -1,4 +1,4 @@
-package kr.co.koscom.olympus.pb.include.io;
+package kr.co.koscom.olympus.pb.include.data.io;
 
 import jakarta.annotation.Nonnull;
 import lombok.Getter;
@@ -10,29 +10,31 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 
 @Getter
-public abstract class PB_DataInputStream extends DataInputStream {
+public abstract class PBDataInputStream extends DataInputStream {
 
     protected final Charset charset;
 
-    public PB_DataInputStream(InputStream in) {
+    public PBDataInputStream(InputStream in) {
         super(in);
         this.charset = StandardCharsets.UTF_8;
     }
 
-    public PB_DataInputStream(InputStream in, Charset charset) {
+    public PBDataInputStream(InputStream in, Charset charset) {
         super(in);
         this.charset = charset;
     }
 
-    public PB_DataInputStream(byte[] b) {
+    public PBDataInputStream(byte[] b) {
         super(new ByteArrayInputStream(b));
         this.charset = StandardCharsets.UTF_8;
     }
 
-    public PB_DataInputStream(byte[] b, Charset charset) {
+    public PBDataInputStream(byte[] b, Charset charset) {
         super(new ByteArrayInputStream(b));
         this.charset = charset;
     }
 
     public abstract <X> X readObject(@Nonnull Class<X> c) throws Throwable;
+
+    public abstract void readObject(@Nonnull Object o) throws Throwable;
 }

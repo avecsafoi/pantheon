@@ -1,7 +1,7 @@
 package kr.co.koscom.olympus.pb.include.hdr;
 
-import kr.co.koscom.olympus.pb.include.PB_A;
-import kr.co.koscom.olympus.pb.include.PB_Object;
+import kr.co.koscom.olympus.pb.include.PBA;
+import kr.co.koscom.olympus.pb.include.data.PBObject;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
@@ -13,14 +13,14 @@ import java.util.Map;
 @Accessors(chain = true)
 @Data
 @Description("JSON 송수신 객체")
-public class PB_Json extends PB_Object {
+public class PBJson extends PBObject {
 
-    @PB_A(name = "공통 헤더")
-    public PB_HdrCommon hdrCommon;
+    @PBA(name = "공통 헤더")
+    public PBHdrCommon hdrCommon;
 
-    @PB_A(name = "계정계 헤더")
-    public PB_HdrAccount hdrAccount;
+    @PBA(name = "계정계 헤더")
+    public PBHdrAccount hdrAccount;
 
-    @PB_A(name = "송수신 데이터")
+    @PBA(name = "송수신 데이터")
     public Map<?, ?> data;
 }

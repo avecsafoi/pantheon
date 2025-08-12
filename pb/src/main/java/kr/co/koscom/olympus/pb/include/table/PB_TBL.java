@@ -1,7 +1,7 @@
 package kr.co.koscom.olympus.pb.include.table;
 
-import kr.co.koscom.olympus.pb.include.PB_Object;
+import kr.co.koscom.olympus.pb.include.data.PBObject;
 
-public class PB_TBL extends PB_Object {
+public class PB_TBL extends PBObject {
 
 }
