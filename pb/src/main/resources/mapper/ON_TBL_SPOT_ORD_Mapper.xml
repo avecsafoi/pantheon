@@ -4,17 +4,17 @@
     <update id="ON_FN_SPOT_ORD_MAIN" parameterType="kr.co.koscom.olympus.pb.on.bms.SPOT_ORD_TRX_SP_ST"
             statementType="CALLABLE">
         {CALL ON_FN_SPOT_ORD_MAIN(
-            /* 01 */ #{st.i.zOrdDt, mode=IN},
-            /* 02 */ #{st.i.zOrdMktCode, mode=IN},
-            /* 03 */ #{st.i.zAcntNo, mode=IN},
-            /* 04 */ #{st.i.zIsuNo, mode=IN},
-            /* 05 */ #{st.i.lOrdQty, mode=IN},
-            /* 06 */ #{st.i.dOrdPrc, mode=IN},
-            /* 07 */ #{st.i.zBnsTp, mode=IN},
-            /* 08 */ #{st.i.zOrdTime, mode=IN},
-            /* 09 */ #{st.o.lOrdNo, mode=OUT, jdbcType=BIGINT},
-            /* 10 */ #{st.o.lSqlCode, mode=OUT, jdbcType=BIGINT},
-            /* 11 */ #{st.o.zErrMsgCode, mode=OUT, jdbcType=VARCHAR}
+            /* 01 */ #{st.in.zOrdDt, mode=IN},
+            /* 02 */ #{st.in.zOrdMktCode, mode=IN},
+            /* 03 */ #{st.in.zAcntNo, mode=IN},
+            /* 04 */ #{st.in.zIsuNo, mode=IN},
+            /* 05 */ #{st.in.lOrdQty, mode=IN},
+            /* 06 */ #{st.in.dOrdPrc, mode=IN},
+            /* 07 */ #{st.in.zBnsTp, mode=IN},
+            /* 08 */ #{st.in.zOrdTime, mode=IN},
+            /* 09 */ #{st.out.lOrdNo, mode=OUT, jdbcType=BIGINT},
+            /* 10 */ #{st.out.lSqlCode, mode=OUT, jdbcType=BIGINT},
+            /* 11 */ #{st.out.zErrMsgCode, mode=OUT, jdbcType=VARCHAR}
               )}
     </update>
 </mapper>

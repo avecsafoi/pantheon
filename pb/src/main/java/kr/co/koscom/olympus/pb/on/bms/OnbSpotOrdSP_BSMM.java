@@ -1,7 +1,9 @@
 package kr.co.koscom.olympus.pb.on.bms;
 
 
+import jakarta.annotation.Resource;
 import kr.co.koscom.olympus.pb.include.PBService;
+import kr.co.koscom.olympus.pb.include.table.ON_TBL_SPOT_ORD_Mapper;
 import org.springframework.stereotype.Service;
 
 import static kr.co.koscom.olympus.pb.include.PBCommon.SUCCESS;
@@ -9,8 +11,13 @@ import static kr.co.koscom.olympus.pb.include.PBCommon.SUCCESS;
 @Service("PB_SID 10001000")
 public class OnbSpotOrdSP_BSMM implements PBService<SPOT_ORD_TRX_SP_ST> {
 
+    @Resource
+    private ON_TBL_SPOT_ORD_Mapper mapper;
+
+
     @Override
     public int process(SPOT_ORD_TRX_SP_ST st) {
+        mapper.ON_FN_SPOT_ORD_MAIN(st);
         return SUCCESS;
     }
 }
