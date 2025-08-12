@@ -1,15 +1,17 @@
 package kr.co.koscom.olympus.pb.include.hdr;
 
-import kr.co.koscom.olympus.pb.ab.data.PBData;
+import kr.co.koscom.olympus.pb.ab.data.PBObject;
 import kr.co.koscom.olympus.pb.ab.data.annotation.PBA;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 import org.springframework.context.annotation.Description;
 
+@EqualsAndHashCode(callSuper = true)
 @Accessors(chain = true)
 @Data
 @Description("계정계헤더")
-public class PBHdrAccount implements PBData {
+public class PBHdrAccount extends PBObject {
 
     @PBA(name = "서비스아이디", scale = 8)
     public String aSvcId;

@@ -29,7 +29,7 @@ import java.util.Map;
 import static kr.co.koscom.olympus.pb.include.PBCommon.SUCCESS;
 
 @Controller("/pb")
-public class PBController {
+public class PBGatewayController {
 
     @Resource
     private ApplicationContext ctx;

@@ -3,14 +3,15 @@ package kr.co.koscom.olympus.pb.include.table;
 import com.mybatisflex.annotation.Id;
 import com.mybatisflex.annotation.KeyType;
 import com.mybatisflex.annotation.Table;
-import kr.co.koscom.olympus.pb.ab.data.PBData;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
+@EqualsAndHashCode(callSuper = true)
 @Accessors(chain = true)
 @Data
 @Table("TEST_001")
-public class PB_TBL_TEST_01 implements PBData {
+public class PB_TBL_TEST_01 extends PB_TBL {
 
     @Id
     public Long no1;

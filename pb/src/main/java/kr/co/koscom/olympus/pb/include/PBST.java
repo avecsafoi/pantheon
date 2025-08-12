@@ -1,14 +1,16 @@
 package kr.co.koscom.olympus.pb.include;
 
-import kr.co.koscom.olympus.pb.ab.data.PBData;
+import kr.co.koscom.olympus.pb.ab.data.PBObject;
 import kr.co.koscom.olympus.pb.ab.data.annotation.PBA;
 import kr.co.koscom.olympus.pb.include.hdr.PBHdrAccount;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
+@EqualsAndHashCode(callSuper = true)
 @Accessors(chain = true)
 @Data
-public class PBST<I, O> implements PBData {
+public class PBST<I, O> extends PBObject {
 
     @PBA(name = "계정계헤더")
     public PBHdrAccount hdrAccount;

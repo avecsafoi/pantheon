@@ -25,7 +25,7 @@ public class PBToStringBuilder {
         return sb.toString();
     }
 
-    public static <vavr> void build(StringBuilder sb, Field f, Class<?> c, Object o, int d, List<Object> po) {
+    public static void build(StringBuilder sb, Field f, Class<?> c, Object o, int d, List<Object> po) {
         if (c == null || o == null) return;
         if (c.isPrimitive()) {
             if (char.class.isAssignableFrom(c)) sb.append("'").append(o).append("'");

@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller("/pb/os")
-public class PB_OS_Controller {
+public class PBOrderController {
 
     @Resource
     private ON_TBL_SPOT_ORD_Mapper mapper;
