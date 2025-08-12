@@ -28,7 +28,7 @@ public class CodeGen {
         GlobalConfig globalConfig = new GlobalConfig();
 
         // 루트 패키지 설정
-        globalConfig.setBasePackage("kr.co.koscom.olympus.pb.auto");
+        globalConfig.setBasePackage("kr.co.koscom.olympus.pb.db");
 
         // 테이블 접두사 및 생성대상 테이블 (대상 테이블을 설정하지 않으면 모든 테이블)
         // globalConfig.setTablePrefix("tb_");
@@ -43,8 +43,14 @@ public class CodeGen {
         // mapper 생성 설정
         globalConfig.setMapperGenerateEnable(true);
         globalConfig.setMapperXmlGenerateEnable(true);
-        globalConfig.setTableDefGenerateEnable(true);
         globalConfig.setMapperSuperClass(PBMapper.class);
+
+        // 기타
+        globalConfig.setTableDefGenerateEnable(true);
+        globalConfig.setControllerGenerateEnable(true);
+
+        globalConfig.setServiceGenerateEnable(true);
+        globalConfig.setServiceImplGenerateEnable(true);
 
         // 개별 설정
 //        ColumnConfig columnConfig = new ColumnConfig();

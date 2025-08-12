@@ -1,4 +1,4 @@
-package kr.co.koscom.olympus.pb.auto.entity.table;
+package kr.co.koscom.olympus.pb.db.entity.table;
 
 import com.mybatisflex.core.query.QueryColumn;
 import com.mybatisflex.core.table.TableDef;
@@ -6,34 +6,31 @@ import com.mybatisflex.core.table.TableDef;
 import java.io.Serial;
 
 /**
- *  表定义层。
+ * 表定义层。
  *
  * @author KOSCOM
  * @since 2025-08-12
  */
 public class TenantTableDef extends TableDef {
 
-    @Serial
-    private static final long serialVersionUID = 1L;
-
     /**
-     * 
+     *
      */
     public static final TenantTableDef TENANT = new TenantTableDef();
-
-    
+    @Serial
+    private static final long serialVersionUID = 1L;
     public final QueryColumn NO = new QueryColumn(this, "no");
 
-    
+
     public final QueryColumn CREATED = new QueryColumn(this, "created");
 
-    
+
     public final QueryColumn UPDATED = new QueryColumn(this, "updated");
 
-    
+
     public final QueryColumn TENANT_ID = new QueryColumn(this, "tenant_id");
 
-    
+
     public final QueryColumn TENANT_NAME = new QueryColumn(this, "tenant_name");
 
     /**

@@ -1,19 +1,18 @@
-package kr.co.koscom.olympus.pb.auto.entity;
+package kr.co.koscom.olympus.pb.db.entity;
 
 import com.mybatisflex.annotation.Id;
 import com.mybatisflex.annotation.Table;
-import java.io.Serializable;
-import java.math.BigDecimal;
-
-import java.io.Serial;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serial;
+import java.io.Serializable;
+import java.math.BigDecimal;
+
 /**
- *  实体类。
+ * 实体类。
  *
  * @author KOSCOM
  * @since 2025-08-12
