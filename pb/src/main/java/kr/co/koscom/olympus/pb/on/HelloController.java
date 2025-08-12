@@ -1,11 +1,11 @@
-package kr.co.koscom.olympus.pb;
+package kr.co.koscom.olympus.pb.on;
 
 import com.mybatisflex.core.paginate.Page;
 import com.mybatisflex.core.query.QueryWrapper;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpSession;
-import kr.co.koscom.olympus.pb.base.table.ON_TBL_SPOT_ORD;
-import kr.co.koscom.olympus.pb.base.table.ON_TBL_SPOT_ORD_Mapper;
+import kr.co.koscom.olympus.pb.include.table.ON_TBL_SPOT_ORD;
+import kr.co.koscom.olympus.pb.include.table.ON_TBL_SPOT_ORD_Mapper;
 import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

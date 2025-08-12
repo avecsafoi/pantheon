@@ -1,16 +1,16 @@
-package kr.co.koscom.olympus.pb.base.table;
+package kr.co.koscom.olympus.pb.include.table;
 
 import com.mybatisflex.annotation.Id;
 import com.mybatisflex.annotation.KeyType;
 import com.mybatisflex.annotation.Table;
-import kr.co.koscom.olympus.pb.base.PBA;
+import kr.co.koscom.olympus.pb.ab.data.annotation.PBA;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
 import java.math.BigDecimal;
 
-import static kr.co.koscom.olympus.pb.on.bms.PBCommon.*;
+import static kr.co.koscom.olympus.pb.include.PBCommon.*;
 
 @EqualsAndHashCode(callSuper = true)
 @Data

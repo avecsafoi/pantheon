@@ -1,7 +1,7 @@
-package kr.co.koscom.olympus.pb.base.data.io;
+package kr.co.koscom.olympus.pb.ab.data.io;
 
-import kr.co.koscom.olympus.pb.base.PBA;
-import kr.co.koscom.olympus.pb.base.data.PBData;
+import kr.co.koscom.olympus.pb.ab.data.PBData;
+import kr.co.koscom.olympus.pb.ab.data.annotation.PBA;
 import org.apache.commons.lang3.time.DateFormatUtils;
 
 import java.io.IOException;

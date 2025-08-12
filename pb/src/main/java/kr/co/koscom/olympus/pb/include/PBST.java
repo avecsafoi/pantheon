@@ -1,14 +1,14 @@
-package kr.co.koscom.olympus.pb.on.bms;
+package kr.co.koscom.olympus.pb.include;
 
-import kr.co.koscom.olympus.pb.base.PBA;
-import kr.co.koscom.olympus.pb.base.data.PBData;
-import kr.co.koscom.olympus.pb.base.hdr.PBHdrAccount;
+import kr.co.koscom.olympus.pb.ab.data.PBData;
+import kr.co.koscom.olympus.pb.ab.data.annotation.PBA;
+import kr.co.koscom.olympus.pb.include.hdr.PBHdrAccount;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
 @Accessors(chain = true)
 @Data
-public class PB_ST<I, O> implements PBData {
+public class PBST<I, O> implements PBData {
 
     @PBA(name = "계정계헤더")
     public PBHdrAccount hdrAccount;

@@ -1,7 +1,7 @@
-package kr.co.koscom.olympus.pb.base.data;
+package kr.co.koscom.olympus.pb.ab.data;
 
-import kr.co.koscom.olympus.pb.base.data.io.PBDataInputStream;
-import kr.co.koscom.olympus.pb.base.data.io.PBDataOutputStream;
+import kr.co.koscom.olympus.pb.ab.data.io.PBDataInputStream;
+import kr.co.koscom.olympus.pb.ab.data.io.PBDataOutputStream;
 
 import java.io.Serializable;
 

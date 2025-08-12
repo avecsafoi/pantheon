@@ -1,6 +1,6 @@
-package kr.co.koscom.olympus.pb.base.table;
+package kr.co.koscom.olympus.pb.include.table;
 
-import kr.co.koscom.olympus.pb.base.PBMapper;
+import kr.co.koscom.olympus.pb.ab.db.PBMapper;
 import org.apache.ibatis.annotations.Mapper;
 
 @Mapper

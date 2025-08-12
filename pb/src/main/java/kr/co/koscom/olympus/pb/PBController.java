@@ -3,13 +3,13 @@ package kr.co.koscom.olympus.pb;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.annotation.Resource;
-import kr.co.koscom.olympus.pb.base.data.io.PBTextDataInputStream;
-import kr.co.koscom.olympus.pb.base.data.io.PBTextDataOutputStream;
-import kr.co.koscom.olympus.pb.base.hdr.PBHdrAccount;
-import kr.co.koscom.olympus.pb.base.hdr.PBHdrCommon;
-import kr.co.koscom.olympus.pb.base.hdr.PBJson;
-import kr.co.koscom.olympus.pb.on.bms.PBService;
-import kr.co.koscom.olympus.pb.on.bms.PB_ST;
+import kr.co.koscom.olympus.pb.ab.data.io.PBTextDataInputStream;
+import kr.co.koscom.olympus.pb.ab.data.io.PBTextDataOutputStream;
+import kr.co.koscom.olympus.pb.include.PBST;
+import kr.co.koscom.olympus.pb.include.PBService;
+import kr.co.koscom.olympus.pb.include.hdr.PBHdrAccount;
+import kr.co.koscom.olympus.pb.include.hdr.PBHdrCommon;
+import kr.co.koscom.olympus.pb.include.hdr.PBJson;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -26,7 +26,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Map;
 
-import static kr.co.koscom.olympus.pb.on.bms.PBCommon.SUCCESS;
+import static kr.co.koscom.olympus.pb.include.PBCommon.SUCCESS;
 
 @Controller("/pb")
 public class PBController {
@@ -52,7 +52,7 @@ public class PBController {
         Object out = cout.getConstructor().newInstance();
 
         @SuppressWarnings("unchecked")
-        PB_ST<Object, Object> st = (PB_ST<Object, Object>) cst.getConstructor().newInstance();
+        PBST<Object, Object> st = (PBST<Object, Object>) cst.getConstructor().newInstance();
         st.setHdrAccount(ha);
         st.setIn(in);
         st.setOut(out);
@@ -91,7 +91,7 @@ public class PBController {
         Object out = cout.getConstructor().newInstance();
 
         @SuppressWarnings("unchecked")
-        PB_ST<Object, Object> st = (PB_ST<Object, Object>) cst.getConstructor().newInstance();
+        PBST<Object, Object> st = (PBST<Object, Object>) cst.getConstructor().newInstance();
         st.setHdrAccount(ha);
         st.setIn(in);
         st.setOut(out);

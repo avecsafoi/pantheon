@@ -1,6 +1,6 @@
-package kr.co.koscom.olympus.pb.base.table;
+package kr.co.koscom.olympus.pb.include.table;
 
-import kr.co.koscom.olympus.pb.base.PBMapper;
+import kr.co.koscom.olympus.pb.ab.db.PBMapper;
 import kr.co.koscom.olympus.pb.on.bms.SPOT_ORD_TRX_SP_ST;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;

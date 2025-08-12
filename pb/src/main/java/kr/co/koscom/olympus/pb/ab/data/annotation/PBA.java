@@ -1,4 +1,4 @@
-package kr.co.koscom.olympus.pb.base;
+package kr.co.koscom.olympus.pb.ab.data.annotation;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;

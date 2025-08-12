@@ -1,7 +1,7 @@
 package kr.co.koscom.olympus.pb.on.bms;
 
-import kr.co.koscom.olympus.pb.base.PBA;
-import kr.co.koscom.olympus.pb.base.data.PBData;
+import kr.co.koscom.olympus.pb.ab.data.PBData;
+import kr.co.koscom.olympus.pb.ab.data.annotation.PBA;
 import lombok.Data;
 import lombok.experimental.Accessors;
 

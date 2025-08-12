@@ -1,9 +1,9 @@
-package kr.co.koscom.olympus.pb.base.table;
+package kr.co.koscom.olympus.pb.include.table;
 
 import com.mybatisflex.annotation.Id;
 import com.mybatisflex.annotation.KeyType;
 import com.mybatisflex.annotation.Table;
-import kr.co.koscom.olympus.pb.base.data.PBData;
+import kr.co.koscom.olympus.pb.ab.data.PBData;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
