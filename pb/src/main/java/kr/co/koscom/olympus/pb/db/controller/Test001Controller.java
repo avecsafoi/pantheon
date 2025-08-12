@@ -24,7 +24,7 @@ public class Test001Controller {
     /**
      * 保存。
      *
-     * @param test001
+     * @param test001 테스트 테이블
      * @return {@code true} 保存成功，{@code false} 保存失败
      */
     @PostMapping("save")
@@ -46,7 +46,7 @@ public class Test001Controller {
     /**
      * 根据主键更新。
      *
-     * @param test001
+     * @param test001 테스트 테이블
      * @return {@code true} 更新成功，{@code false} 更新失败
      */
     @PutMapping("update")

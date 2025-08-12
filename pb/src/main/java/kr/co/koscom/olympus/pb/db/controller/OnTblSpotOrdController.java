@@ -24,7 +24,7 @@ public class OnTblSpotOrdController {
     /**
      * 保存。
      *
-     * @param onTblSpotOrd
+     * @param onTblSpotOrd 주문데이블 로우 데이터
      * @return {@code true} 保存成功，{@code false} 保存失败
      */
     @PostMapping("save")
@@ -46,7 +46,7 @@ public class OnTblSpotOrdController {
     /**
      * 根据主键更新。
      *
-     * @param onTblSpotOrd
+     * @param onTblSpotOrd 주문데이블 로우 데이터
      * @return {@code true} 更新成功，{@code false} 更新失败
      */
     @PutMapping("update")

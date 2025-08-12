@@ -24,7 +24,7 @@ public class TenantController {
     /**
      * 保存。
      *
-     * @param tenant
+     * @param tenant DB 구분용 회원사코드 값
      * @return {@code true} 保存成功，{@code false} 保存失败
      */
     @PostMapping("save")
@@ -46,7 +46,7 @@ public class TenantController {
     /**
      * 根据主键更新。
      *
-     * @param tenant
+     * @param tenant DB 구분용 회원사코드 값
      * @return {@code true} 更新成功，{@code false} 更新失败
      */
     @PutMapping("update")

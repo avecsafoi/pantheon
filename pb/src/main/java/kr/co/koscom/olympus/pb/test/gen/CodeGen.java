@@ -10,9 +10,6 @@ import javax.sql.DataSource;
 
 public class CodeGen {
 
-//    @Resource
-//    private DataSource dataSource;
-
     public static void main(String[] args) throws Exception {
         HikariDataSource dataSource = new HikariDataSource();
         dataSource.setJdbcUrl("jdbc:mariadb://127.0.0.1:3306/pb?characterEncoding=utf-8");
