@@ -4,6 +4,7 @@ import com.mybatisflex.codegen.Generator;
 import com.mybatisflex.codegen.config.ColumnConfig;
 import com.mybatisflex.codegen.config.GlobalConfig;
 import com.zaxxer.hikari.HikariDataSource;
+import kr.co.koscom.olympus.pb.ab.db.PBMapper;
 
 import javax.sql.DataSource;
 
@@ -43,6 +44,7 @@ public class CodeGen {
         globalConfig.setMapperGenerateEnable(true);
         globalConfig.setMapperXmlGenerateEnable(true);
         globalConfig.setTableDefGenerateEnable(true);
+        globalConfig.setMapperSuperClass(PBMapper.class);
 
         // 개별 설정
 //        ColumnConfig columnConfig = new ColumnConfig();
