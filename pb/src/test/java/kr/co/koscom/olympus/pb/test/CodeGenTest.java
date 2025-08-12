@@ -17,17 +17,6 @@ public class CodeGenTest {
     @Resource
     DataSource dataSource;
 
-    @Test
-    void test_main() {
-        HikariDataSource dataSource = new HikariDataSource();
-        dataSource.setJdbcUrl("jdbc:mariadb://127.0.0.1:3306/pb?characterEncoding=utf-8");
-        dataSource.setUsername("pb");
-        dataSource.setPassword("pb");
-
-        CodeGenTest test = new CodeGenTest();
-        test.generate(dataSource);
-    }
-
     public static GlobalConfig createGlobalConfigUseStyle1() {
         // 구성 콘텐츠 생성
         GlobalConfig globalConfig = new GlobalConfig();
@@ -97,6 +86,17 @@ public class CodeGenTest {
                 .setColumnConfig("tb_account", columnConfig);
 
         return globalConfig;
+    }
+
+    @Test
+    void test_main() {
+        HikariDataSource dataSource = new HikariDataSource();
+        dataSource.setJdbcUrl("jdbc:mariadb://127.0.0.1:3306/pb?characterEncoding=utf-8");
+        dataSource.setUsername("pb");
+        dataSource.setPassword("pb");
+
+        CodeGenTest test = new CodeGenTest();
+        test.generate(dataSource);
     }
 
     void generate(DataSource dataSource) {
