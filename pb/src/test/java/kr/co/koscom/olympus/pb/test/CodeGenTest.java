@@ -4,15 +4,21 @@ import com.mybatisflex.codegen.Generator;
 import com.mybatisflex.codegen.config.ColumnConfig;
 import com.mybatisflex.codegen.config.GlobalConfig;
 import com.zaxxer.hikari.HikariDataSource;
+import jakarta.annotation.Resource;
+import kr.co.koscom.olympus.pb.ab.db.PBMapper;
+import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import javax.sql.DataSource;
 
+@SpringBootTest
 public class CodeGenTest {
 
-//    @Resource
-//    private DataSource dataSource;
+    @Resource
+    DataSource dataSource;
 
-    public static void main(String[] args) throws Exception {
+    @Test
+    void test_main() {
         HikariDataSource dataSource = new HikariDataSource();
         dataSource.setJdbcUrl("jdbc:mariadb://127.0.0.1:3306/pb?characterEncoding=utf-8");
         dataSource.setUsername("pb");
@@ -27,7 +33,7 @@ public class CodeGenTest {
         GlobalConfig globalConfig = new GlobalConfig();
 
         // 루트 패키지 설정
-        globalConfig.setBasePackage("kr.co.koscom.olympus.pb.gen");
+        globalConfig.setBasePackage("kr.co.koscom.olympus.pb.db");
 
         // 테이블 접두사 및 생성대상 테이블 (대상 테이블을 설정하지 않으면 모든 테이블)
         // globalConfig.setTablePrefix("tb_");
@@ -41,6 +47,15 @@ public class CodeGenTest {
 
         // mapper 생성 설정
         globalConfig.setMapperGenerateEnable(true);
+        globalConfig.setMapperXmlGenerateEnable(true);
+        globalConfig.setMapperSuperClass(PBMapper.class);
+
+        // 기타
+        globalConfig.setTableDefGenerateEnable(true);
+        globalConfig.setControllerGenerateEnable(true);
+
+        globalConfig.setServiceGenerateEnable(true);
+        globalConfig.setServiceImplGenerateEnable(true);
 
         // 개별 설정
 //        ColumnConfig columnConfig = new ColumnConfig();
