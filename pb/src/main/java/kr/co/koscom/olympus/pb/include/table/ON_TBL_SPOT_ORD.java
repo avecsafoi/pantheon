@@ -10,7 +10,7 @@ import lombok.experimental.Accessors;
 
 import java.math.BigDecimal;
 
-import static kr.co.koscom.olympus.pb.include.PBCommon.*;
+import static kr.co.koscom.olympus.pb.on.bms.PBCommon.*;
 
 @EqualsAndHashCode(callSuper = true)
 @Data

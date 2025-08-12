@@ -3,13 +3,13 @@ package kr.co.koscom.olympus.pb;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.annotation.Resource;
-import kr.co.koscom.olympus.pb.include.PBService;
-import kr.co.koscom.olympus.pb.include.PB_ST;
 import kr.co.koscom.olympus.pb.include.data.io.PBTextDataInputStream;
 import kr.co.koscom.olympus.pb.include.data.io.PBTextDataOutputStream;
 import kr.co.koscom.olympus.pb.include.hdr.PBHdrAccount;
 import kr.co.koscom.olympus.pb.include.hdr.PBHdrCommon;
 import kr.co.koscom.olympus.pb.include.hdr.PBJson;
+import kr.co.koscom.olympus.pb.on.bms.PBService;
+import kr.co.koscom.olympus.pb.on.bms.PB_ST;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -26,7 +26,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Map;
 
-import static kr.co.koscom.olympus.pb.include.PBCommon.SUCCESS;
+import static kr.co.koscom.olympus.pb.on.bms.PBCommon.SUCCESS;
 
 @Controller("/pb")
 public class PB_Controller {

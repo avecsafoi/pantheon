@@ -1,6 +1,5 @@
 package kr.co.koscom.olympus.pb.on.bms;
 
-import kr.co.koscom.olympus.pb.include.PB_ST;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;

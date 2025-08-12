@@ -1,4 +1,4 @@
-package kr.co.koscom.olympus.pb.include;
+package kr.co.koscom.olympus.pb.on.bms;
 
 public class PBCommon {
 

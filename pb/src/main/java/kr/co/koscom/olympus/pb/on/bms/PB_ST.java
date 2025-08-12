@@ -1,5 +1,6 @@
-package kr.co.koscom.olympus.pb.include;
+package kr.co.koscom.olympus.pb.on.bms;
 
+import kr.co.koscom.olympus.pb.include.PBA;
 import kr.co.koscom.olympus.pb.include.data.PBObject;
 import kr.co.koscom.olympus.pb.include.hdr.PBHdrAccount;
 import lombok.Data;
