@@ -41,6 +41,8 @@ public class CodeGen {
 
         // mapper 생성 설정
         globalConfig.setMapperGenerateEnable(true);
+        globalConfig.setMapperXmlGenerateEnable(true);
+        globalConfig.setTableDefGenerateEnable(true);
 
         // 개별 설정
 //        ColumnConfig columnConfig = new ColumnConfig();
