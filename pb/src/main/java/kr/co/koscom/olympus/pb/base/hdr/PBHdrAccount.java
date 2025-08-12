@@ -1,7 +1,7 @@
-package kr.co.koscom.olympus.pb.include.hdr;
+package kr.co.koscom.olympus.pb.base.hdr;
 
-import kr.co.koscom.olympus.pb.include.PBA;
-import kr.co.koscom.olympus.pb.include.data.PBData;
+import kr.co.koscom.olympus.pb.base.PBA;
+import kr.co.koscom.olympus.pb.base.data.PBData;
 import lombok.Data;
 import lombok.experimental.Accessors;
 import org.springframework.context.annotation.Description;

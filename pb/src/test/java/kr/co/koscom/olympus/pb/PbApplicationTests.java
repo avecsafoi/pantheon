@@ -3,10 +3,10 @@ package kr.co.koscom.olympus.pb;
 import com.mybatisflex.core.paginate.Page;
 import com.mybatisflex.core.query.QueryWrapper;
 import jakarta.annotation.Resource;
-import kr.co.koscom.olympus.pb.include.table.ON_TBL_SPOT_ORD;
-import kr.co.koscom.olympus.pb.include.table.ON_TBL_SPOT_ORD_Mapper;
-import kr.co.koscom.olympus.pb.include.table.TEST_001;
-import kr.co.koscom.olympus.pb.include.table.TEST_001_Mapper;
+import kr.co.koscom.olympus.pb.base.table.ON_TBL_SPOT_ORD;
+import kr.co.koscom.olympus.pb.base.table.ON_TBL_SPOT_ORD_Mapper;
+import kr.co.koscom.olympus.pb.base.table.PB_TBL_TEST_01;
+import kr.co.koscom.olympus.pb.base.table.PB_TBL_TEST_01_Mapper;
 import kr.co.koscom.olympus.pb.on.bms.SPOT_ORD_TRX_SP_ST;
 import kr.co.koscom.olympus.pb.on.bms.SPOT_ORD_TRX_SP_ST_IN;
 import kr.co.koscom.olympus.pb.on.bms.SPOT_ORD_TRX_SP_ST_OUT;
@@ -20,7 +20,7 @@ class PbApplicationTests {
     ON_TBL_SPOT_ORD_Mapper mapper;
 
     @Resource
-    TEST_001_Mapper m1;
+    PB_TBL_TEST_01_Mapper m1;
 
     @Test
     void contextLoads() {
@@ -84,7 +84,7 @@ class PbApplicationTests {
 
     @Test
     void test001() {
-        TEST_001 t = new TEST_001().setId1("Orange").setId2("purple").setId3("코스콤").setNo1(1L).setNo2(2L);
+        PB_TBL_TEST_01 t = new PB_TBL_TEST_01().setId1("Orange").setId2("purple").setId3("코스콤").setNo1(1L).setNo2(2L);
         m1.insertOrUpdate(t, false);
         m1.insertOrUpdate(t, false);
     }

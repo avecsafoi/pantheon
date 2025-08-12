@@ -1,16 +1,16 @@
-package kr.co.koscom.olympus.pb.include.table;
+package kr.co.koscom.olympus.pb.base.table;
 
 import com.mybatisflex.annotation.Id;
 import com.mybatisflex.annotation.KeyType;
 import com.mybatisflex.annotation.Table;
-import kr.co.koscom.olympus.pb.include.data.PBData;
+import kr.co.koscom.olympus.pb.base.data.PBData;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
 @Accessors(chain = true)
 @Data
 @Table("TEST_001")
-public class TEST_001 implements PBData {
+public class PB_TBL_TEST_01 implements PBData {
 
     @Id
     public Long no1;

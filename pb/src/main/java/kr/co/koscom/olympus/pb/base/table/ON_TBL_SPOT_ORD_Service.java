@@ -1,4 +1,4 @@
-package kr.co.koscom.olympus.pb.include.table;
+package kr.co.koscom.olympus.pb.base.table;
 
 import com.mybatisflex.spring.service.impl.ServiceImpl;
 

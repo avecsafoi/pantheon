@@ -1,4 +1,4 @@
-package kr.co.koscom.olympus.pb.include.data.io;
+package kr.co.koscom.olympus.pb.base.data.io;
 
 import jakarta.annotation.Nonnull;
 import lombok.Getter;
