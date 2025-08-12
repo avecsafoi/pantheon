@@ -10,7 +10,7 @@ import static kr.co.koscom.olympus.pb.include.PBCommon.SUCCESS;
 public class OnbSpotOrdSP_BSMM implements PBService<SPOT_ORD_TRX_SP_ST> {
 
     @Override
-    public int call(SPOT_ORD_TRX_SP_ST st) {
+    public int process(SPOT_ORD_TRX_SP_ST st) {
         return SUCCESS;
     }
 }
