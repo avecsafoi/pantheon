@@ -28,7 +28,7 @@ import java.util.Map;
 
 import static kr.co.koscom.olympus.pb.include.PBCommon.SUCCESS;
 
-@Controller("/pb")
+@Controller("/pb/gw")
 public class PBGatewayController {
 
     @Resource

@@ -1,3 +1,5 @@
+package kr.co.koscom.olympus.pb.test;
+
 import kr.co.koscom.olympus.pb.include.table.ON_TBL_SPOT_ORD;
 import org.apache.commons.lang3.reflect.FieldUtils;
 

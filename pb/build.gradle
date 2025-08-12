@@ -23,6 +23,7 @@ repositories {
     mavenCentral()
 }
 
+
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter'
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
@@ -32,13 +33,20 @@ dependencies {
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.9'
     implementation 'org.apache.commons:commons-lang3:3.18.0'
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    implementation 'com.mybatis-flex:mybatis-flex-codegen:1.11.1'
+    implementation 'com.zaxxer:HikariCP:7.0.1'
+    implementation 'org.mapstruct:mapstruct-processor:1.6.3'
 
     compileOnly 'org.projectlombok:lombok'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
-    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+    // annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
     annotationProcessor 'org.projectlombok:lombok'
+    annotationProcessor 'com.mybatis-flex:mybatis-flex-processor:1.11.1'
+
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.mockito:mockito-core:5.18.0'
+    testImplementation 'com.zaxxer:HikariCP:7.0.1'
+    testImplementation 'org.mapstruct:mapstruct-processor:1.6.3'
     runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }

@@ -1,17 +1,18 @@
 package kr.co.koscom.olympus.pb.include.table;
 
-import com.mybatisflex.annotation.Id;
-import com.mybatisflex.annotation.KeyType;
-import com.mybatisflex.annotation.Table;
+import com.mybatisflex.annotation.*;
+import com.mybatisflex.core.mask.Masks;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
+
+import java.util.Date;
 
 @EqualsAndHashCode(callSuper = true)
 @Accessors(chain = true)
 @Data
 @Table("TEST_001")
-public class PB_TBL_TEST_01 extends PB_TBL {
+public class PB_TBL_TEST_001 extends PB_TBL {
 
     @Id
     public Long no1;
@@ -35,5 +36,12 @@ public class PB_TBL_TEST_01 extends PB_TBL {
 
     public String name2;
 
+    @ColumnMask(Masks.EMAIL)
     public String name3;
+
+    @Column(onInsertValue = "now()")
+    public Date created;
+
+    @Column(ignore = true)
+    public String remark; // 테이블에 존재하지 않는 컬럼 (데이터 송수신할 때만 사용)
 }

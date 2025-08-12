@@ -1,4 +1,4 @@
-package kr.co.koscom.olympus.pb;
+package kr.co.koscom.olympus.pb.test.vue;
 
 import com.mybatisflex.core.paginate.Page;
 import com.mybatisflex.core.query.QueryWrapper;
@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-@Controller("/pb/os")
+@Controller("/pb/view")
 public class VueTestController {
 
     @Resource
