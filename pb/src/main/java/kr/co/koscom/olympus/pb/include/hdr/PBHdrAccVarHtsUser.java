@@ -1,17 +1,15 @@
 package kr.co.koscom.olympus.pb.include.hdr;
 
 import kr.co.koscom.olympus.pb.include.PBA;
-import kr.co.koscom.olympus.pb.include.data.PBObject;
+import kr.co.koscom.olympus.pb.include.data.PBData;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 import org.springframework.context.annotation.Description;
 
-@EqualsAndHashCode(callSuper = true)
 @Accessors(chain = true)
 @Data
 @Description("가변 헤더")
-public class PBHdrAccVarHtsUser extends PBObject {
+public class PBHdrAccVarHtsUser implements PBData {
 
     @PBA(name = "처리제한", scale = 1)
     public String aTrxRestrcTp;

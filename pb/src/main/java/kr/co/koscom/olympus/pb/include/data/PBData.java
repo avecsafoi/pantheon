@@ -7,10 +7,6 @@ import java.io.Serializable;
 
 public interface PBData extends Serializable {
 
-    default String toString(Object o) {
-        return XToStringBuilder.toString(o);
-    }
-
     default void readPBData(PBDataInputStream in) throws Throwable {
         in.readObject(this);
     }

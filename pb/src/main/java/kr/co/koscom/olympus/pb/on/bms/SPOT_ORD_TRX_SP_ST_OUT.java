@@ -1,17 +1,15 @@
 package kr.co.koscom.olympus.pb.on.bms;
 
 import kr.co.koscom.olympus.pb.include.PBA;
-import kr.co.koscom.olympus.pb.include.data.PBObject;
+import kr.co.koscom.olympus.pb.include.data.PBData;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
 import java.math.BigDecimal;
 
-@EqualsAndHashCode(callSuper = true)
 @Accessors(chain = true)
 @Data
-public class SPOT_ORD_TRX_SP_ST_OUT extends PBObject {
+public class SPOT_ORD_TRX_SP_ST_OUT implements PBData {
 
     @PBA(name = "주문번호")
     public long lOrdNo;
