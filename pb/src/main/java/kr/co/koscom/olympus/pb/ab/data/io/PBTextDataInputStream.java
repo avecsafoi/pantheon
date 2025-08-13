@@ -55,12 +55,7 @@ public class PBTextDataInputStream extends PBDataInputStream {
 
     private Object readObject(Class<?> c, Field f) throws IOException {
 
-        if (PBData.class.isAssignableFrom(c)) try {
-            return readFields(c, c.getConstructor().newInstance());
-        } catch (NoSuchMethodException | InstantiationException | IllegalAccessException |
-                 InvocationTargetException e) {
-            throw new IOException(e);
-        }
+        if (PBData.class.isAssignableFrom(c)) return readFields(c, null);
 
         PBA a = f == null ? null : f.getAnnotation(PBA.class);
         if (a == null) throw new IOException("Field annotation required (@%s)".formatted(PBA.class.getSimpleName()));
@@ -150,6 +145,12 @@ public class PBTextDataInputStream extends PBDataInputStream {
     }
 
     public Object readFields(Class<?> c, Object o) throws IOException {
+        if (o == null) try {
+            o = c.getConstructor().newInstance();
+        } catch (NoSuchMethodException | InstantiationException | IllegalAccessException |
+                 InvocationTargetException e) {
+            throw new IOException(e);
+        }
         Class<?> s = c.getSuperclass();
         if (s != null && !s.isInterface()) readFields(s, o);
         for (Field f : c.getDeclaredFields()) {
@@ -157,7 +158,7 @@ public class PBTextDataInputStream extends PBDataInputStream {
             if (!f.canAccess(o)) f.setAccessible(true);
             try {
                 f.set(o, readObject(f.getType(), f));
-            } catch (IllegalAccessException e) {
+            } catch (Throwable e) {
                 throw new IOException("Failed to read field (%s.%s): %s".formatted(c.getCanonicalName(), f.getName(), e.getMessage()), e);
             }
         }

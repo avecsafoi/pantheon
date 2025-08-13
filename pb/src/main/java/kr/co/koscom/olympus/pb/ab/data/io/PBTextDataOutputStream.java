@@ -95,14 +95,22 @@ public class PBTextDataOutputStream extends PBDataOutputStream {
             List<?> l = (List<?>) o;
             int n = l == null ? 0 : l.size();
             int z = a.fix() ? a.scale() : n;
-            if (a.fix()) writeNumber(n, a.scale());
+            if (a.fix()) {
+                if (n > z) throw new IOException("ListSize(%d) is exceeded FixedSize(%d)".formatted(n, z));
+            } else {
+                writeNumber(n, a.scale());
+            }
             for (int i = 0; i < z; i++) writeObject(s, i < n ? l.get(i) : null, f);
             return;
         }
         if (c.isArray()) {
             int n = o == null ? 0 : Array.getLength(o);
             int z = a.fix() ? a.scale() : n;
-            if (a.fix()) writeNumber(n, a.scale());
+            if (a.fix()) {
+                if (n > z) throw new IOException("ArrayLength(%d) is exceeded FixedLength(%d)".formatted(n, z));
+            } else {
+                writeNumber(n, a.scale());
+            }
             for (int i = 0; i < z; i++) writeObject(c.getComponentType(), i < n ? Array.get(o, i) : null, f);
             return;
         }
@@ -120,11 +128,11 @@ public class PBTextDataOutputStream extends PBDataOutputStream {
         if (s != null && !s.isInterface()) writeFields(s, o);
         for (Field f : c.getDeclaredFields()) {
             if (Modifier.isStatic(f.getModifiers())) continue;
-            if (!f.canAccess(o)) f.setAccessible(true);
+            if (o != null && !f.canAccess(o)) f.setAccessible(true);
             try {
                 writeObject(f.getType(), o == null ? null : f.get(o), f);
-            } catch (IllegalAccessException e) {
-                throw new IOException("Failed to write field (%s.%s): %s".formatted(c.getCanonicalName(), f.getName(), e.getMessage()), e);
+            } catch (Throwable t) {
+                throw new IOException("Failed to write field (%s.%s): %s".formatted(c.getCanonicalName(), f.getName(), t.getMessage()), t);
             }
         }
     }

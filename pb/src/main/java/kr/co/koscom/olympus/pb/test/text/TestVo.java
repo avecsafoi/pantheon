@@ -33,7 +33,7 @@ public class TestVo extends PBObject {
     @PBA(name = "예수금", scale = 20)
     private BigDecimal deposit;
 
-    @PBA(name = "배열", scale = 2)
+    @PBA(name = "배열", scale = 2, fix = false)
     private TestSubVo[] subArray;
 
     @PBA(name = "목록", scale = 3, fix = false)
