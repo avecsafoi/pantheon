@@ -25,7 +25,7 @@ public class PbApplication {
     }
 
     @Bean
-    @Description("쿼리구문에 연속조회 구문을 추가하는 기능")
+    @Description("CPage 객체를 사용하는 쿼리구문에 연속조회 구문을 추가하는 기능")
     public PBMyBatisInterceptor pbMyBatisInterceptor() {
         return new PBMyBatisInterceptor();
     }
