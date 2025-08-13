@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.Random;
 
-@Controller("/pb/flex/")
+@Controller("/pb/flex")
 class FlexController {
 
     @Resource

@@ -10,19 +10,19 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-@Controller("/pb/vue/")
+@Controller("/pb/vue")
 public class VueTestController {
 
     @Resource
     private OnTblSpotOrdMapper mapper;
 
-    @PostMapping("vList")
+    @PostMapping("list")
     public @ResponseBody Page<OnTblSpotOrd> list(@RequestBody Page<OnTblSpotOrd> pg) throws Throwable {
         QueryWrapper qw = new QueryWrapper();
         return mapper.paginate(pg, qw);
     }
 
-    @PostMapping("vOrder")
+    @PostMapping("order")
     public @ResponseBody Page<OnTblSpotOrd> order(@RequestBody Page<OnTblSpotOrd> pg) throws Throwable {
 
         int[] i = {0};

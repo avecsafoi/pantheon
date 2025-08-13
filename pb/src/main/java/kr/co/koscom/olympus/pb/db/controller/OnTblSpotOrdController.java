@@ -6,6 +6,9 @@ import kr.co.koscom.olympus.pb.ab.db.page.PBCPage;
 import kr.co.koscom.olympus.pb.db.entity.OnTblSpotOrd;
 import kr.co.koscom.olympus.pb.db.mapper.OnTblSpotOrdMapper;
 import kr.co.koscom.olympus.pb.db.service.impl.OnTblSpotOrdServiceImpl;
+import kr.co.koscom.olympus.pb.on.bms.SPOT_ORD_TRX_SP_ST;
+import kr.co.koscom.olympus.pb.on.bms.SPOT_ORD_TRX_SP_ST_IN;
+import kr.co.koscom.olympus.pb.on.bms.SPOT_ORD_TRX_SP_ST_OUT;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -90,4 +93,12 @@ public class OnTblSpotOrdController {
         return onTblSpotOrdService.page(page);
     }
 
+    @PostMapping("procedure")
+    public SPOT_ORD_TRX_SP_ST_OUT procedure(SPOT_ORD_TRX_SP_ST_IN in) {
+        SPOT_ORD_TRX_SP_ST st = new SPOT_ORD_TRX_SP_ST();
+        st.setIn(in);
+        st.setOut(new SPOT_ORD_TRX_SP_ST_OUT());
+        onTblSpotOrdService.getMapper().ON_FN_SPOT_ORD_MAIN(st);
+        return st.getOut();
+    }
 }

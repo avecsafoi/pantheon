@@ -37,18 +37,18 @@ public class PBGatewayController {
     @Resource
     private ObjectMapper om;
 
-    @PostMapping("/json")
-    public @ResponseBody PBJson gatewayJson(@RequestBody PBJson jio) throws Throwable {
-        PBHdrAccount ha = jio.getHdrAccount();
+    @PostMapping("json")
+    public @ResponseBody PBJson gatewayJson(@RequestBody PBJson js) throws Throwable {
+        PBHdrAccount ha = js.getHdrAccount();
         PBService<?> svc = (PBService<?>) ctx.getBean("PB_SID " + ha.getASvcId());
-        Method m = Arrays.stream(svc.getClass().getMethods()).filter(x -> x.getName().equals("call") && x.getParameterCount() == 1).findAny().orElseThrow();
+        Method m = Arrays.stream(svc.getClass().getMethods()).filter(x -> x.getName().equals("process") && x.getParameterCount() == 1).findAny().orElseThrow();
 
         Class<?> cst = m.getParameters()[0].getType();
         Type[] ta = ((ParameterizedType) cst.getGenericSuperclass()).getActualTypeArguments();
         Class<?> cin = (Class<?>) ta[0];
         Class<?> cout = (Class<?>) ta[1];
 
-        Object in = jio.getData() == null ? cin.getConstructor().newInstance() : om.convertValue(jio.getData(), cin);
+        Object in = js.getData() == null ? cin.getConstructor().newInstance() : om.convertValue(js.getData(), cin);
         Object out = cout.getConstructor().newInstance();
 
         @SuppressWarnings("unchecked")
@@ -59,17 +59,17 @@ public class PBGatewayController {
         m.invoke(svc, st);
         Map<String, Object> map = om.convertValue(st.getOut(), new TypeReference<>() {
         });
-        jio.setData(map);
+        js.setData(map);
 
-        return jio;
+        return js;
     }
 
-    @PostMapping("/text")
+    @PostMapping("text")
     public @ResponseBody String gatewayText(@RequestBody String s) throws Throwable {
         return new String(gatewayBytes(s.getBytes(StandardCharsets.UTF_8)), StandardCharsets.UTF_8);
     }
 
-    @PostMapping("/bytes")
+    @PostMapping("bytes")
     public @ResponseBody byte[] gatewayBytes(@RequestBody byte[] ib) throws Throwable {
 
         ByteArrayInputStream bais = new ByteArrayInputStream(ib);
@@ -80,7 +80,7 @@ public class PBGatewayController {
             throw new RuntimeException("전문의 길이가 일치하지 않습니다. (%d != %d)".formatted(hc.getATgLen(), ib.length));
         PBHdrAccount ha = dis.readObject(PBHdrAccount.class);
         PBService<?> svc = (PBService<?>) ctx.getBean("PB_SID " + ha.getASvcId());
-        Method m = Arrays.stream(svc.getClass().getMethods()).filter(x -> x.getName().equals("call") && x.getParameterCount() == 1).findAny().orElseThrow();
+        Method m = Arrays.stream(svc.getClass().getMethods()).filter(x -> x.getName().equals("process") && x.getParameterCount() == 1).findAny().orElseThrow();
 
         Class<?> cst = m.getParameters()[0].getType();
         Type[] ta = ((ParameterizedType) cst.getGenericSuperclass()).getActualTypeArguments();

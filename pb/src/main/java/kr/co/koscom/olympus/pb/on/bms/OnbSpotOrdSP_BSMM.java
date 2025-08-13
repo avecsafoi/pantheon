@@ -14,7 +14,6 @@ public class OnbSpotOrdSP_BSMM implements PBService<SPOT_ORD_TRX_SP_ST> {
     @Resource
     private OnTblSpotOrdMapper mapper;
 
-
     @Override
     public int process(SPOT_ORD_TRX_SP_ST st) {
         mapper.ON_FN_SPOT_ORD_MAIN(st);

@@ -4,6 +4,7 @@ import com.mybatisflex.core.paginate.Page;
 import jakarta.annotation.Resource;
 import kr.co.koscom.olympus.pb.db.entity.Test001;
 import kr.co.koscom.olympus.pb.db.service.Test001Service;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -41,8 +42,9 @@ public class Test001Controller {
      * @return {@code true} 删除成功，{@code false} 删除失败
      */
     @DeleteMapping("remove/{id}")
-    public boolean remove(@PathVariable long id) {
-        return test001Service.removeById(id);
+    public boolean remove(@PathVariable String id) {
+        String[] sa = id.split(",");
+        return test001Service.removeById(sa);
     }
 
     /**
@@ -75,8 +77,18 @@ public class Test001Controller {
      * @return 详情
      */
     @GetMapping("getInfo/{id}")
-    public Test001 getInfo(@PathVariable long id) {
-        return test001Service.getById(id);
+    public Test001 getInfo(@PathVariable String id) {
+        String[] a = id.split(",");
+        Object[] o = new Object[a.length];
+        o[0] = NumberUtils.toLong(a[0]);
+        o[1] = NumberUtils.toLong(a[1]);
+        o[2] = NumberUtils.toLong(a[2]);
+        o[3] = a[3];
+        o[4] = a[4];
+        o[5] = a[5];
+        Test001 r = test001Service.getById(o);
+        System.err.printf("getInfo/%s = [ %s ]%n", id, r);
+        return r;
     }
 
     /**
@@ -85,9 +97,11 @@ public class Test001Controller {
      * @param page 分页对象
      * @return 分页对象
      */
-    @GetMapping("page")
+    @PostMapping("page")
     public Page<Test001> page(Page<Test001> page) {
-        return test001Service.page(page);
+        Page<Test001> r = test001Service.page(page);
+        System.err.printf("page = [ %s ]%n", r);
+        return r;
     }
 
 }

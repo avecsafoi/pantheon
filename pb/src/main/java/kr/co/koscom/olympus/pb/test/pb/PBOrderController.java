@@ -12,13 +12,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import static kr.co.koscom.olympus.pb.include.PBCommon.SUCCESS;
 
 @Controller
-@RequestMapping("/home")
+@RequestMapping("/pb/st")
 public class PBOrderController {
 
     @Resource
     private OnbSpotOrdSP_BSMM ordSPBsmm;
 
-    @PostMapping("/List")
+    @PostMapping("ord")
     public @ResponseBody SPOT_ORD_TRX_SP_ST list(@RequestBody SPOT_ORD_TRX_SP_ST st) throws Throwable {
         int n = ordSPBsmm.process(st);
         if (n != SUCCESS) {

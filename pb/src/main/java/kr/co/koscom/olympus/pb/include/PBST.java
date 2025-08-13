@@ -8,8 +8,10 @@ import kr.co.koscom.olympus.pb.include.hdr.PBHdrAccount;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
+import org.apache.commons.lang3.reflect.FieldUtils;
 
 import java.io.IOException;
+import java.lang.reflect.Field;
 
 @EqualsAndHashCode(callSuper = true)
 @Accessors(chain = true)
@@ -27,6 +29,21 @@ public class PBST<I, O> extends PBObject {
 
     @PBA(name = "출력")
     public O out;
+
+    public PBST() {
+        this.hdrCommon = new PBHdrAccount();
+        this.hdrAccount = new PBHdrAccount();
+        try {
+            Field f1 = FieldUtils.getField(getClass(), "in", true);
+            Field f2 = FieldUtils.getField(getClass(), "out", true);
+            Object o1 = f1.getType().getConstructor().newInstance();
+            Object o2 = f2.getType().getConstructor().newInstance();
+            f1.set(this, o1);
+            f2.set(this, o2);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     @Override
     public void readPBData(PBDataInputStream in) throws IOException {
