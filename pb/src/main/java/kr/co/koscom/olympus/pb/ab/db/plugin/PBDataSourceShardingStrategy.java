@@ -4,7 +4,7 @@ import com.mybatisflex.core.datasource.DataSourceShardingStrategy;
 
 import java.lang.reflect.Method;
 
-public class MyStrategy implements DataSourceShardingStrategy {
+public class PBDataSourceShardingStrategy implements DataSourceShardingStrategy {
 
     public String doSharding(String currentDataSourceKey, Object mapper, Method mapperMethod, Object[] methodArgs) {
         String mn = mapperMethod.getName();

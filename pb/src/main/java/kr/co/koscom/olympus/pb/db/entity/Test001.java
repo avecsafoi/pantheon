@@ -2,6 +2,7 @@ package kr.co.koscom.olympus.pb.db.entity;
 
 import com.mybatisflex.annotation.Column;
 import com.mybatisflex.annotation.Id;
+import com.mybatisflex.annotation.KeyType;
 import com.mybatisflex.annotation.Table;
 import kr.co.koscom.olympus.pb.ab.db.entity.PBEntity;
 import lombok.Data;
@@ -32,7 +33,7 @@ public class Test001 extends PBEntity {
     @Id
     private Long no2;
 
-    @Id
+    @Id(keyType = KeyType.Sequence, value = "SELECT NEXT VALUE FOR SEQ_ON_TBL_SPOT_ORD")
     private Long no3;
 
     @Id
