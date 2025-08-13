@@ -1,5 +1,6 @@
 package kr.co.koscom.olympus.pb.db.entity;
 
+import com.mybatisflex.annotation.Column;
 import com.mybatisflex.annotation.Id;
 import com.mybatisflex.annotation.Table;
 import lombok.AllArgsConstructor;
@@ -50,5 +51,8 @@ public class OnTblSpotOrd implements Serializable {
     private Long execQty;
 
     private Long execAmt;
+
+    @Column(ignore = true) // 테이블에 없는 컬럼
+    private String mark;
 
 }

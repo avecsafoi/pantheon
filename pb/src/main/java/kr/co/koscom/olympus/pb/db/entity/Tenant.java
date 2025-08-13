@@ -1,5 +1,6 @@
 package kr.co.koscom.olympus.pb.db.entity;
 
+import com.mybatisflex.annotation.Column;
 import com.mybatisflex.annotation.Id;
 import com.mybatisflex.annotation.KeyType;
 import com.mybatisflex.annotation.Table;
@@ -31,6 +32,7 @@ public class Tenant implements Serializable {
     @Id(keyType = KeyType.Auto)
     private Long no;
 
+    @Column(tenantId = true)
     private String tenantId;
 
     private String tenantName;
@@ -39,4 +41,6 @@ public class Tenant implements Serializable {
 
     private Timestamp updated;
 
+    @Column(ignore = true) // 테이블에 없는 컬럼
+    private String mark;
 }
