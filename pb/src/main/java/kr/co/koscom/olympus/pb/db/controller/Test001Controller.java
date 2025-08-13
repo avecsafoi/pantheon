@@ -28,8 +28,10 @@ public class Test001Controller {
      * @return {@code true} 保存成功，{@code false} 保存失败
      */
     @PostMapping("save")
-    public boolean save(@RequestBody Test001 test001) {
-        return test001Service.save(test001);
+    public Test001 save(@RequestBody Test001 test001) {
+        boolean b = test001Service.save(test001);
+        test001.setMark(String.valueOf(b));
+        return test001;
     }
 
     /**
@@ -50,8 +52,10 @@ public class Test001Controller {
      * @return {@code true} 更新成功，{@code false} 更新失败
      */
     @PutMapping("update")
-    public boolean update(@RequestBody Test001 test001) {
-        return test001Service.updateById(test001);
+    public Test001 update(@RequestBody Test001 test001) {
+        boolean b = test001Service.updateById(test001);
+        test001.setMark(String.valueOf(b));
+        return test001;
     }
 
     /**

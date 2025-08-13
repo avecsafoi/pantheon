@@ -23,6 +23,6 @@ public class TestController {
             , produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE})
     public @ResponseBody ResponseEntity<TestVo> test2(@RequestBody TestVo o) {
         ResponseEntity<TestVo> response = ResponseEntity.noContent().cacheControl(CacheControl.noCache()).build();
-        return ResponseEntity.ok().header("Content-Type", MediaType.APPLICATION_JSON_VALUE).body(o);
+        return ResponseEntity.ok().header("Content-Type", MediaType.TEXT_PLAIN_VALUE).body(o);
     }
 }
