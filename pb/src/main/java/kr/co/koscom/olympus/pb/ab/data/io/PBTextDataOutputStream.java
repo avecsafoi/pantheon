@@ -25,7 +25,7 @@ public class PBTextDataOutputStream extends PBDataOutputStream {
     }
 
     @Override
-    public void writeObject(Object o) throws Throwable {
+    public void writeObject(Object o) throws IOException {
         if (o != null) writeObject(o.getClass(), o, null);
     }
 
@@ -42,7 +42,7 @@ public class PBTextDataOutputStream extends PBDataOutputStream {
         writeString(o, null, z, 1);
     }
 
-    private void writeObject(Class<?> c, Object o, Field f) throws Throwable {
+    private void writeObject(Class<?> c, Object o, Field f) throws IOException {
 
         if (PBData.class.isAssignableFrom(c)) {
             writeFields(c, o);
@@ -102,6 +102,7 @@ public class PBTextDataOutputStream extends PBDataOutputStream {
         if (c.isArray()) {
             int n = o == null ? 0 : Array.getLength(o);
             int z = a.fix() ? a.scale() : n;
+            if (a.fix()) writeNumber(n, a.scale());
             for (int i = 0; i < z; i++) writeObject(c.getComponentType(), i < n ? Array.get(o, i) : null, f);
             return;
         }
@@ -114,7 +115,7 @@ public class PBTextDataOutputStream extends PBDataOutputStream {
         throw new IOException("Unexpected type (%s)".formatted(c.getCanonicalName()));
     }
 
-    private void writeFields(Class<?> c, Object o) throws Throwable {
+    private void writeFields(Class<?> c, Object o) throws IOException {
         Class<?> s = c.getSuperclass();
         if (s != null && !s.isInterface()) writeFields(s, o);
         for (Field f : c.getDeclaredFields()) {
@@ -122,8 +123,8 @@ public class PBTextDataOutputStream extends PBDataOutputStream {
             if (!f.canAccess(o)) f.setAccessible(true);
             try {
                 writeObject(f.getType(), o == null ? null : f.get(o), f);
-            } catch (Throwable t) {
-                throw new Throwable("Failed to write field (%s.%s): %s".formatted(c.getCanonicalName(), f.getName(), t.getMessage()), t);
+            } catch (IllegalAccessException e) {
+                throw new IOException("Failed to write field (%s.%s): %s".formatted(c.getCanonicalName(), f.getName(), e.getMessage()), e);
             }
         }
     }

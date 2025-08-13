@@ -8,13 +8,11 @@ import org.apache.commons.lang3.time.DateUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.lang.reflect.Array;
-import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
-import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.*;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.nio.charset.Charset;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -40,12 +38,12 @@ public class PBTextDataInputStream extends PBDataInputStream {
 
     @SuppressWarnings("unchecked")
     @Override
-    public <X> X readObject(@Nonnull Class<X> c) throws Throwable {
+    public <X> X readObject(@Nonnull Class<X> c) throws IOException {
         return (X) readObject(c, null);
     }
 
     @Override
-    public void readObject(@Nonnull Object o) throws Throwable {
+    public void readObject(@Nonnull Object o) throws IOException {
         readFields(o.getClass(), o);
     }
 
@@ -55,9 +53,14 @@ public class PBTextDataInputStream extends PBDataInputStream {
         return new String(b, super.charset).trim();
     }
 
-    private Object readObject(Class<?> c, Field f) throws Throwable {
+    private Object readObject(Class<?> c, Field f) throws IOException {
 
-        if (PBData.class.isAssignableFrom(c)) return readFields(c, c.getConstructor().newInstance());
+        if (PBData.class.isAssignableFrom(c)) try {
+            return readFields(c, c.getConstructor().newInstance());
+        } catch (NoSuchMethodException | InstantiationException | IllegalAccessException |
+                 InvocationTargetException e) {
+            throw new IOException(e);
+        }
 
         PBA a = f == null ? null : f.getAnnotation(PBA.class);
         if (a == null) throw new IOException("Field annotation required (@%s)".formatted(PBA.class.getSimpleName()));
@@ -137,12 +140,16 @@ public class PBTextDataInputStream extends PBDataInputStream {
             if (a.format().isEmpty())
                 throw new IOException("Format required of @%s(format = ?)".formatted(PBA.class.getSimpleName()));
             String s = readString(a.scale());
-            return s.isEmpty() ? null : DateUtils.parseDate(s, a.format());
+            try {
+                return s.isEmpty() ? null : DateUtils.parseDate(s, a.format());
+            } catch (ParseException e) {
+                throw new RuntimeException(e);
+            }
         }
         throw new IOException("Unexpected type (%s)".formatted(c.getCanonicalName()));
     }
 
-    public Object readFields(Class<?> c, Object o) throws Throwable {
+    public Object readFields(Class<?> c, Object o) throws IOException {
         Class<?> s = c.getSuperclass();
         if (s != null && !s.isInterface()) readFields(s, o);
         for (Field f : c.getDeclaredFields()) {
@@ -150,8 +157,8 @@ public class PBTextDataInputStream extends PBDataInputStream {
             if (!f.canAccess(o)) f.setAccessible(true);
             try {
                 f.set(o, readObject(f.getType(), f));
-            } catch (Throwable t) {
-                throw new Throwable("Failed to read field (%s.%s): %s".formatted(c.getCanonicalName(), f.getName(), t.getMessage()), t);
+            } catch (IllegalAccessException e) {
+                throw new IOException("Failed to read field (%s.%s): %s".formatted(c.getCanonicalName(), f.getName(), e.getMessage()), e);
             }
         }
         return o;
