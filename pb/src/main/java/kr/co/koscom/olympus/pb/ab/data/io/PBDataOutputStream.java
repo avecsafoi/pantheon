@@ -24,4 +24,7 @@ public abstract class PBDataOutputStream extends DataOutputStream {
     }
 
     public abstract void writeObject(Object o) throws IOException;
+
+    public abstract void writePBData(Class<?> c, Object o) throws IOException;
+
 }

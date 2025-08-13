@@ -37,5 +37,5 @@ public abstract class PBDataInputStream extends DataInputStream {
 
     public abstract <X> X readObject(@Nonnull Class<X> c) throws IOException;
 
-    public abstract void readObject(@Nonnull Object o) throws IOException;
+    public abstract void readPBData(@Nonnull Class<?> c, Object o) throws IOException;
 }

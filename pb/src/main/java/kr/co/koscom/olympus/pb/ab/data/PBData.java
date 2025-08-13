@@ -9,10 +9,10 @@ import java.io.Serializable;
 public interface PBData extends Serializable {
 
     default void readPBData(PBDataInputStream in) throws IOException {
-        in.readObject(this);
+        in.readPBData(this.getClass(), this);
     }
 
     default void writePBData(PBDataOutputStream os) throws IOException {
-        os.writeObject(this);
+        os.writePBData(this.getClass(), this);
     }
 }

@@ -26,10 +26,15 @@ public class PBTextDataOutputStream extends PBDataOutputStream {
 
     @Override
     public void writeObject(Object o) throws IOException {
-        if (o != null) writeObject(o.getClass(), o, null);
+        writeObject(o.getClass(), o, null);
     }
 
-    private void writeString(Object o, byte[] b, int z, int s) throws IOException {
+    @Override
+    public void writePBData(Class<?> c, Object o) throws IOException {
+        writeFields(c, o);
+    }
+
+    public void writeString(Object o, byte[] b, int z, int s) throws IOException {
         if (b == null && o != null) b = String.valueOf(o).getBytes(charset);
         int n = b == null ? 0 : b.length;
         if (n > z) throw new IndexOutOfBoundsException("Scale = %d, Data = %d (%s)".formatted(z, n, o));
@@ -38,11 +43,11 @@ public class PBTextDataOutputStream extends PBDataOutputStream {
         if (s == 0) for (int i = 0, j = z - n; i < j; i++) write(' ');
     }
 
-    private void writeNumber(Object o, int z) throws IOException {
+    public void writeNumber(Object o, int z) throws IOException {
         writeString(o, null, z, 1);
     }
 
-    private void writeObject(Class<?> c, Object o, Field f) throws IOException {
+    public void writeObject(Class<?> c, Object o, Field f) throws IOException {
 
         if (PBData.class.isAssignableFrom(c)) {
             try {
@@ -129,7 +134,7 @@ public class PBTextDataOutputStream extends PBDataOutputStream {
         throw new IOException("Unexpected type (%s)".formatted(c.getCanonicalName()));
     }
 
-    private void writeFields(Class<?> c, Object o) throws IOException {
+    public void writeFields(Class<?> c, Object o) throws IOException {
         Class<?> s = c.getSuperclass();
         if (s != null && !s.isInterface()) writeFields(s, o);
         for (Field f : c.getDeclaredFields()) {

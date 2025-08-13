@@ -43,23 +43,23 @@ public class PBTextDataInputStream extends PBDataInputStream {
     }
 
     @Override
-    public void readObject(@Nonnull Object o) throws IOException {
-        readFields(o.getClass(), o);
+    public void readPBData(@Nonnull Class<?> c, Object o) throws IOException {
+        readFields(c, o);
     }
 
-    private String readString(int n) throws IOException {
+    public String readString(int n) throws IOException {
         byte[] b = new byte[n];
         super.readFully(b, 0, b.length);
         return new String(b, super.charset).trim();
     }
 
-    private Object readObject(Class<?> c, Field f) throws IOException {
+    public Object readObject(Class<?> c, Field f) throws IOException {
 
         if (PBData.class.isAssignableFrom(c)) {
             try {
-                PBData o = (PBData) c.getConstructor().newInstance();
-                o.readPBData(this);
-                return o;
+                PBData x = (PBData) c.getConstructor().newInstance();
+                x.readPBData(this);
+                return x;
             } catch (Exception e) {
                 throw new IOException(e);
             }
@@ -152,7 +152,7 @@ public class PBTextDataInputStream extends PBDataInputStream {
         throw new IOException("Unexpected type (%s)".formatted(c.getCanonicalName()));
     }
 
-    public Object readFields(Class<?> c, Object o) throws IOException {
+    public void readFields(Class<?> c, Object o) throws IOException {
         if (o == null) try {
             o = c.getConstructor().newInstance();
         } catch (NoSuchMethodException | InstantiationException | IllegalAccessException |
@@ -170,6 +170,5 @@ public class PBTextDataInputStream extends PBDataInputStream {
                 throw new IOException("Failed to read field (%s.%s): %s".formatted(c.getCanonicalName(), f.getName(), e.getMessage()), e);
             }
         }
-        return o;
     }
 }
