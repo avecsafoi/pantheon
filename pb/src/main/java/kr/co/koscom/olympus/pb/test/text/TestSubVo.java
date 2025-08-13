@@ -16,4 +16,7 @@ public class TestSubVo extends PBObject {
 
     @PBA(name = "수량", scale = 5)
     private short qty;
+
+    @PBA(name = "기타", scale = 20)
+    private String mark;
 }

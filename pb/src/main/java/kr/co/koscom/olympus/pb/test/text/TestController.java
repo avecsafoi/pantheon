@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-@Controller("/pb/test")
+@Controller("/test/text")
 public class TestController {
 
     @PostMapping(value = "/test1"

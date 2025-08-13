@@ -38,4 +38,7 @@ public class TestVo extends PBObject {
 
     @PBA(name = "목록", scale = 3, fix = false)
     private List<TestSubVo> subList;
+
+    @PBA(name = "기타", scale = 20)
+    private String mark;
 }
