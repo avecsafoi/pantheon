@@ -4,8 +4,8 @@ import com.mybatisflex.core.paginate.Page;
 import com.mybatisflex.core.query.QueryWrapper;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpSession;
-import kr.co.koscom.olympus.pb.include.table.ON_TBL_SPOT_ORD;
-import kr.co.koscom.olympus.pb.include.table.ON_TBL_SPOT_ORD_Mapper;
+import kr.co.koscom.olympus.pb.db.entity.OnTblSpotOrd;
+import kr.co.koscom.olympus.pb.db.mapper.OnTblSpotOrdMapper;
 import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 public class HelloController {
 
     @Resource
-    private ON_TBL_SPOT_ORD_Mapper mapper;
+    private OnTblSpotOrdMapper mapper;
 
     @GetMapping("/test")
     public @ResponseBody String test(@RequestBody String name) {
@@ -26,7 +26,7 @@ public class HelloController {
     @RequestMapping(value = "/hello", method = {RequestMethod.GET, RequestMethod.POST})
     public String hello(Model model, HttpSession sess, HttpRequest rq) {
 
-        Page<ON_TBL_SPOT_ORD> pg = (Page<ON_TBL_SPOT_ORD>) model.getAttribute("pg");
+        Page<OnTblSpotOrd> pg = (Page<OnTblSpotOrd>) model.getAttribute("pg");
         QueryWrapper qw = (QueryWrapper) model.getAttribute("qw");
 
         if (pg == null) pg = new Page<>();

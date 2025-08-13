@@ -1,4 +1,4 @@
-package kr.co.koscom.olympus.pb.ab.db;
+package kr.co.koscom.olympus.pb.ab.db.mapper;
 
 import com.mybatisflex.core.BaseMapper;
 import com.mybatisflex.core.constant.SqlOperator;

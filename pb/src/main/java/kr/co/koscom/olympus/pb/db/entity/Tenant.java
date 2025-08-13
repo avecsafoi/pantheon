@@ -4,13 +4,12 @@ import com.mybatisflex.annotation.Column;
 import com.mybatisflex.annotation.Id;
 import com.mybatisflex.annotation.KeyType;
 import com.mybatisflex.annotation.Table;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
+import kr.co.koscom.olympus.pb.ab.db.entity.PBEntity;
 import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.experimental.Accessors;
 
 import java.io.Serial;
-import java.io.Serializable;
 import java.sql.Timestamp;
 
 /**
@@ -19,12 +18,11 @@ import java.sql.Timestamp;
  * @author KOSCOM
  * @since 2025-08-12
  */
+@EqualsAndHashCode(callSuper = true)
+@Accessors(chain = true)
 @Data
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
 @Table("tenant")
-public class Tenant implements Serializable {
+public class Tenant extends PBEntity {
 
     @Serial
     private static final long serialVersionUID = 1L;

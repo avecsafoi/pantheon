@@ -4,7 +4,7 @@ import com.mybatisflex.codegen.Generator;
 import com.mybatisflex.codegen.config.GlobalConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import jakarta.annotation.Resource;
-import kr.co.koscom.olympus.pb.ab.db.PBMapper;
+import kr.co.koscom.olympus.pb.ab.db.mapper.PBMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 

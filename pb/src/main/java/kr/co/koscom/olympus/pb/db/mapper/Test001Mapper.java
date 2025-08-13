@@ -1,6 +1,7 @@
 package kr.co.koscom.olympus.pb.db.mapper;
 
-import kr.co.koscom.olympus.pb.ab.db.PBMapper;
+import com.mybatisflex.annotation.UseDataSource;
+import kr.co.koscom.olympus.pb.ab.db.mapper.PBMapper;
 import kr.co.koscom.olympus.pb.db.entity.Test001;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -13,4 +14,9 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface Test001Mapper extends PBMapper<Test001> {
 
+    @UseDataSource("ds1")
+    int insert_db1(Test001 o);
+
+    @UseDataSource("#last")
+    int insert_db_last(Test001 o);
 }

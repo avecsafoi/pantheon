@@ -3,10 +3,10 @@ package kr.co.koscom.olympus.pb;
 import com.mybatisflex.core.paginate.Page;
 import com.mybatisflex.core.query.QueryWrapper;
 import jakarta.annotation.Resource;
-import kr.co.koscom.olympus.pb.include.table.ON_TBL_SPOT_ORD;
-import kr.co.koscom.olympus.pb.include.table.ON_TBL_SPOT_ORD_Mapper;
-import kr.co.koscom.olympus.pb.include.table.PB_TBL_TEST_001;
-import kr.co.koscom.olympus.pb.include.table.PB_TBL_TEST_001_Mapper;
+import kr.co.koscom.olympus.pb.db.entity.OnTblSpotOrd;
+import kr.co.koscom.olympus.pb.db.entity.Test001;
+import kr.co.koscom.olympus.pb.db.mapper.OnTblSpotOrdMapper;
+import kr.co.koscom.olympus.pb.db.mapper.Test001Mapper;
 import kr.co.koscom.olympus.pb.on.bms.SPOT_ORD_TRX_SP_ST;
 import kr.co.koscom.olympus.pb.on.bms.SPOT_ORD_TRX_SP_ST_IN;
 import kr.co.koscom.olympus.pb.on.bms.SPOT_ORD_TRX_SP_ST_OUT;
@@ -17,10 +17,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 class PbApplicationTests {
 
     @Resource
-    ON_TBL_SPOT_ORD_Mapper mapper;
+    OnTblSpotOrdMapper mapper;
 
     @Resource
-    PB_TBL_TEST_001_Mapper m1;
+    Test001Mapper m1;
 
     @Test
     void contextLoads() {
@@ -44,16 +44,16 @@ class PbApplicationTests {
      */
     @Test
     void insertOrUpdate() {
-        ON_TBL_SPOT_ORD r = new ON_TBL_SPOT_ORD().setOrdDt("20121212");
+        OnTblSpotOrd r = new OnTblSpotOrd().setOrdDt("20121212");
         mapper.insertOrUpdate(r, true); // INSERT
         mapper.insertOrUpdate(r, true); // UPDATE
     }
 
     @Test
     void select_continue_1() {
-        ON_TBL_SPOT_ORD r = new ON_TBL_SPOT_ORD();
+        OnTblSpotOrd r = new OnTblSpotOrd();
         r.setOrdDt("20010101");
-        Page<ON_TBL_SPOT_ORD> p1 = new Page<>(1, 3);
+        Page<OnTblSpotOrd> p1 = new Page<>(1, 3);
         QueryWrapper qw = new QueryWrapper();
         qw.where("(ord_dt > ? or (ord_dt = ? and (ord_qty > ? or (ord_qty = ? and (ord_prc > ? or (ord_prc = ? and (ord_no > ?)))))))",
                 r.getOrdDt(), r.getOrdDt(), r.getOrdQty(), r.getOrdQty(), r.getOrdPrc(), r.getOrdPrc(), r.getOrdNo());
@@ -66,15 +66,15 @@ class PbApplicationTests {
 
     @Test
     void select_continue_2() {
-        ON_TBL_SPOT_ORD r = new ON_TBL_SPOT_ORD();
+        OnTblSpotOrd r = new OnTblSpotOrd();
         r.setOrdDt("20010101");
-        Page<ON_TBL_SPOT_ORD> p1 = new Page<>(1, 3);
+        Page<OnTblSpotOrd> p1 = new Page<>(1, 3);
         while (true) {
             QueryWrapper qw = new QueryWrapper();
             qw.where("(ord_dt > ? or (ord_dt = ? and (ord_qty > ? or (ord_qty = ? and (ord_prc > ? or (ord_prc = ? and (ord_no > ?)))))))",
                     r.getOrdDt(), r.getOrdDt(), r.getOrdQty(), r.getOrdQty(), r.getOrdPrc(), r.getOrdPrc(), r.getOrdNo());
-            Page<ON_TBL_SPOT_ORD> p2 = mapper.paginate(p1, qw);
-            for (ON_TBL_SPOT_ORD x : p2.getRecords()) System.out.println(x);
+            Page<OnTblSpotOrd> p2 = mapper.paginate(p1, qw);
+            for (OnTblSpotOrd x : p2.getRecords()) System.out.println(x);
             if (p2.hasNext() && !p2.getRecords().isEmpty()) {
                 r = p2.getRecords().getLast();
                 p2.setTotalRow(-1);
@@ -84,7 +84,7 @@ class PbApplicationTests {
 
     @Test
     void test001() {
-        PB_TBL_TEST_001 t = new PB_TBL_TEST_001().setId1("Orange").setId2("purple").setId3("코스콤").setNo1(1L).setNo2(2L);
+        Test001 t = new Test001().setId1("Orange").setId2("purple").setId3("코스콤").setNo1(1L).setNo2(2L);
         m1.insertOrUpdate(t, false);
         m1.insertOrUpdate(t, false);
     }

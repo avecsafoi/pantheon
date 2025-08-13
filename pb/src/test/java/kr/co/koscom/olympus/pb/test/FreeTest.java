@@ -1,6 +1,6 @@
 package kr.co.koscom.olympus.pb.test;
 
-import kr.co.koscom.olympus.pb.include.table.ON_TBL_SPOT_ORD;
+import kr.co.koscom.olympus.pb.db.entity.OnTblSpotOrd;
 import org.apache.commons.lang3.reflect.FieldUtils;
 
 import java.lang.reflect.Field;
@@ -8,7 +8,7 @@ import java.lang.reflect.Field;
 public class FreeTest {
 
     public static void main(String[] args) {
-        Field f = FieldUtils.getField(ON_TBL_SPOT_ORD.class, "ordQty");
+        Field f = FieldUtils.getField(OnTblSpotOrd.class, "ordQty");
         Class<?> c = f.getType();
         System.out.println(c.getSimpleName());
 

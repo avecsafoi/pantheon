@@ -4,8 +4,8 @@ import com.mybatisflex.annotation.UseDataSource;
 import com.mybatisflex.core.datasource.DataSourceKey;
 import io.micrometer.common.util.StringUtils;
 import jakarta.annotation.Resource;
-import kr.co.koscom.olympus.pb.include.table.PB_TBL_TEST_001;
-import kr.co.koscom.olympus.pb.include.table.PB_TBL_TEST_001_Mapper;
+import kr.co.koscom.olympus.pb.db.entity.Test001;
+import kr.co.koscom.olympus.pb.db.mapper.Test001Mapper;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,10 +16,10 @@ import java.util.Random;
 class FlexController {
 
     @Resource
-    private PB_TBL_TEST_001_Mapper mapper;
+    private Test001Mapper mapper;
 
     @PostMapping("insertOrupdate")
-    public PB_TBL_TEST_001 insert1(PB_TBL_TEST_001 o) {
+    public Test001 insert1(Test001 o) {
 
         Random random = new Random();
         RandomStringUtils rs = RandomStringUtils.insecure();
@@ -41,7 +41,7 @@ class FlexController {
         return o;
     }
 
-    public PB_TBL_TEST_001 db(PB_TBL_TEST_001 o) {
+    public Test001 db(Test001 o) {
         Long n = o.getNo1();
         int i = Math.floorMod(n, 2) + 1;
         String nm = "ds" + i;
@@ -59,7 +59,7 @@ class FlexController {
 
     @UseDataSource("ds4")
     @PostMapping("db4")
-    public PB_TBL_TEST_001 db4(PB_TBL_TEST_001 o) {
+    public Test001 db4(Test001 o) {
         o.setName2(DataSourceKey.get());
         mapper.insertOrUpdate(o);
         return o;
@@ -67,7 +67,7 @@ class FlexController {
 
     @UseDataSource("ds5")
     @PostMapping("ds5")
-    public PB_TBL_TEST_001 db5(PB_TBL_TEST_001 o) {
+    public Test001 db5(Test001 o) {
         o.setName2(DataSourceKey.get());
         mapper.insertOrUpdate(o);
         return o;

@@ -3,14 +3,12 @@ package kr.co.koscom.olympus.pb.db.entity;
 import com.mybatisflex.annotation.Column;
 import com.mybatisflex.annotation.Id;
 import com.mybatisflex.annotation.Table;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
+import kr.co.koscom.olympus.pb.ab.db.entity.PBEntity;
 import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.experimental.Accessors;
 
 import java.io.Serial;
-import java.io.Serializable;
-import java.math.BigInteger;
 import java.sql.Timestamp;
 
 /**
@@ -19,24 +17,23 @@ import java.sql.Timestamp;
  * @author KOSCOM
  * @since 2025-08-12
  */
+@EqualsAndHashCode(callSuper = true)
+@Accessors(chain = true)
 @Data
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
 @Table("test_001")
-public class Test001 implements Serializable {
+public class Test001 extends PBEntity {
 
     @Serial
     private static final long serialVersionUID = 1L;
 
     @Id
-    private BigInteger no1;
+    private Long no1;
 
     @Id
-    private BigInteger no2;
+    private Long no2;
 
     @Id
-    private BigInteger no3;
+    private Long no3;
 
     @Id
     private String id1;

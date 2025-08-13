@@ -1,6 +1,6 @@
 package kr.co.koscom.olympus.pb.db.mapper;
 
-import kr.co.koscom.olympus.pb.ab.db.PBMapper;
+import kr.co.koscom.olympus.pb.ab.db.mapper.PBMapper;
 import kr.co.koscom.olympus.pb.db.entity.Tenant;
 import org.apache.ibatis.annotations.Mapper;
 
