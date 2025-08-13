@@ -36,11 +36,8 @@ public class PBTextDataHttpMessageConverter implements HttpMessageConverter<Obje
 
     @Override
     public boolean canRead(@Nonnull Class<?> c, @Nullable MediaType t) {
-        if (PBData.class.isAssignableFrom(c))
-            if (t == null) return true;
-            else if (PBData.class.isAssignableFrom(c))
-                for (MediaType a : getSupportedMediaTypes())
-                    if (t.isCompatibleWith(a)) return true;
+        if (t != null && PBData.class.isAssignableFrom(c)) for (MediaType a : getSupportedMediaTypes())
+            if (t.isCompatibleWith(a)) return true;
         return false;
     }
 
@@ -78,8 +75,7 @@ public class PBTextDataHttpMessageConverter implements HttpMessageConverter<Obje
     public void write(@Nonnull Object o, @Nullable MediaType t, HttpOutputMessage m) throws IOException, HttpMessageNotWritableException {
         Charset charset = t != null && t.getCharset() != null ? t.getCharset() : defaultCharset;
         HttpHeaders h = m.getHeaders();
-        if (h.getContentType() == null)
-            h.setContentType(new MediaType("text", "plain", charset));
+        if (h.getContentType() == null) h.setContentType(new MediaType("text", "plain", charset));
         ByteArrayOutputStream baos = new ByteArrayOutputStream(4096);
         try (PBTextDataOutputStream tdos = new PBTextDataOutputStream(baos, charset)) {
             tdos.writeObject(o);
