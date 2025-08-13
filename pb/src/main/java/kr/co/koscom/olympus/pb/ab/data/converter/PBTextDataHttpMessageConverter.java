@@ -12,6 +12,7 @@ import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.http.converter.HttpMessageNotWritableException;
 import org.springframework.lang.Nullable;
+import org.springframework.util.StreamUtils;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -64,9 +65,11 @@ public class PBTextDataHttpMessageConverter implements HttpMessageConverter<Obje
         Charset charset = t != null && t.getCharset() != null ? t.getCharset() : defaultCharset;
         PBTextDataInputStream is = new PBTextDataInputStream(m.getBody(), charset);
         try {
-            return is.readObject(c);
+            Object o = is.readObject(c);
+            StreamUtils.drain(is); // 남은 데이터 흘려 보내기
+            return o;
         } catch (Throwable e) {
-            throw new IOException(e.getMessage(), e);
+            throw new RuntimeException(e.getMessage(), e);
         }
     }
 
@@ -76,11 +79,11 @@ public class PBTextDataHttpMessageConverter implements HttpMessageConverter<Obje
         HttpHeaders h = m.getHeaders();
         if (h.getContentType() == null)
             h.setContentType(new MediaType("text", "plain", charset));
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        ByteArrayOutputStream baos = new ByteArrayOutputStream(4096);
         try (PBTextDataOutputStream tdos = new PBTextDataOutputStream(baos, charset)) {
             tdos.writeObject(o);
         } catch (Throwable e) {
-            throw new IOException(e.getMessage(), e);
+            throw new RuntimeException(e.getMessage(), e);
         }
         byte[] b = baos.toByteArray();
         h.setContentLength(b.length);
