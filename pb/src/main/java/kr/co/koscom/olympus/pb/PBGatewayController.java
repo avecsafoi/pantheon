@@ -11,10 +11,10 @@ import kr.co.koscom.olympus.pb.include.hdr.PBHdrAccount;
 import kr.co.koscom.olympus.pb.include.hdr.PBHdrCommon;
 import kr.co.koscom.olympus.pb.include.hdr.PBJson;
 import org.springframework.context.ApplicationContext;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -28,7 +28,7 @@ import java.util.Map;
 
 import static kr.co.koscom.olympus.pb.include.PBCommon.SUCCESS;
 
-@Controller("/pb/gw")
+@RestController("/pb/gw")
 public class PBGatewayController {
 
     @Resource

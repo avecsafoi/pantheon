@@ -2,8 +2,10 @@ package kr.co.koscom.olympus.pb.db.controller;
 
 import com.mybatisflex.core.paginate.Page;
 import jakarta.annotation.Resource;
+import kr.co.koscom.olympus.pb.ab.db.page.PBCPage;
 import kr.co.koscom.olympus.pb.db.entity.OnTblSpotOrd;
-import kr.co.koscom.olympus.pb.db.service.OnTblSpotOrdService;
+import kr.co.koscom.olympus.pb.db.mapper.OnTblSpotOrdMapper;
+import kr.co.koscom.olympus.pb.db.service.impl.OnTblSpotOrdServiceImpl;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,7 +21,7 @@ import java.util.List;
 public class OnTblSpotOrdController {
 
     @Resource
-    private OnTblSpotOrdService onTblSpotOrdService;
+    private OnTblSpotOrdServiceImpl onTblSpotOrdService;
 
     /**
      * 保存。
@@ -60,7 +62,9 @@ public class OnTblSpotOrdController {
      * @return 所有数据
      */
     @GetMapping("list")
-    public List<OnTblSpotOrd> list() {
+    public List<OnTblSpotOrd> list(@RequestBody PBCPage pg) {
+        OnTblSpotOrdMapper m = onTblSpotOrdService.getMapper();
+
         return onTblSpotOrdService.list();
     }
 
