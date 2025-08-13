@@ -9,6 +9,8 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
+import java.io.IOException;
+
 @EqualsAndHashCode(callSuper = true)
 @Accessors(chain = true)
 @Data
@@ -27,7 +29,7 @@ public class PBST<I, O> extends PBObject {
     public O out;
 
     @Override
-    public void readPBData(PBDataInputStream in) throws Throwable {
+    public void readPBData(PBDataInputStream in) throws IOException {
 //        this.hdrCommon = in.readObject(PBHdrAccount.class);
 //        this.hdrAccount = in.readObject(PBHdrAccount.class);
 //        String svcId = this.hdrAccount.getASvcId();
@@ -35,7 +37,7 @@ public class PBST<I, O> extends PBObject {
     }
 
     @Override
-    public void writePBData(PBDataOutputStream os) throws Throwable {
+    public void writePBData(PBDataOutputStream os) throws IOException {
         super.writePBData(os);
     }
 }

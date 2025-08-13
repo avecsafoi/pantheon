@@ -55,7 +55,15 @@ public class PBTextDataInputStream extends PBDataInputStream {
 
     private Object readObject(Class<?> c, Field f) throws IOException {
 
-        if (PBData.class.isAssignableFrom(c)) return readFields(c, null);
+        if (PBData.class.isAssignableFrom(c)) {
+            try {
+                PBData o = (PBData) c.getConstructor().newInstance();
+                o.readPBData(this);
+                return o;
+            } catch (Exception e) {
+                throw new IOException(e);
+            }
+        }
 
         PBA a = f == null ? null : f.getAnnotation(PBA.class);
         if (a == null) throw new IOException("Field annotation required (@%s)".formatted(PBA.class.getSimpleName()));

@@ -5,6 +5,7 @@ import lombok.Getter;
 
 import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
@@ -34,7 +35,7 @@ public abstract class PBDataInputStream extends DataInputStream {
         this.charset = charset;
     }
 
-    public abstract <X> X readObject(@Nonnull Class<X> c) throws Throwable;
+    public abstract <X> X readObject(@Nonnull Class<X> c) throws IOException;
 
-    public abstract void readObject(@Nonnull Object o) throws Throwable;
+    public abstract void readObject(@Nonnull Object o) throws IOException;
 }

@@ -3,6 +3,7 @@ package kr.co.koscom.olympus.pb.ab.data.io;
 import lombok.Getter;
 
 import java.io.DataOutputStream;
+import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
@@ -22,5 +23,5 @@ public abstract class PBDataOutputStream extends DataOutputStream {
         this.charset = charset;
     }
 
-    public abstract void writeObject(Object o) throws Throwable;
+    public abstract void writeObject(Object o) throws IOException;
 }

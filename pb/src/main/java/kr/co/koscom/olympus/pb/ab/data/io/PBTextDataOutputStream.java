@@ -45,8 +45,14 @@ public class PBTextDataOutputStream extends PBDataOutputStream {
     private void writeObject(Class<?> c, Object o, Field f) throws IOException {
 
         if (PBData.class.isAssignableFrom(c)) {
-            writeFields(c, o);
-            return;
+            try {
+                if (o == null) o = c.getConstructor().newInstance();
+                PBData x = (PBData) o;
+                x.writePBData(this);
+                return;
+            } catch (Exception e) {
+                throw new IOException(e);
+            }
         }
 
         PBA a = f == null ? null : f.getAnnotation(PBA.class);
