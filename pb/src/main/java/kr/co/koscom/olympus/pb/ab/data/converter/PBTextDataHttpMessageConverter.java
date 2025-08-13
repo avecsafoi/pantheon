@@ -69,6 +69,7 @@ public class PBTextDataHttpMessageConverter implements HttpMessageConverter<Obje
             StreamUtils.drain(is); // 남은 데이터 흘려 보내기
             return o;
         } catch (Throwable e) {
+            e.printStackTrace(System.err);
             throw new RuntimeException(e.getMessage(), e);
         }
     }
@@ -83,6 +84,7 @@ public class PBTextDataHttpMessageConverter implements HttpMessageConverter<Obje
         try (PBTextDataOutputStream tdos = new PBTextDataOutputStream(baos, charset)) {
             tdos.writeObject(o);
         } catch (Throwable e) {
+            e.printStackTrace(System.err);
             throw new RuntimeException(e.getMessage(), e);
         }
         byte[] b = baos.toByteArray();

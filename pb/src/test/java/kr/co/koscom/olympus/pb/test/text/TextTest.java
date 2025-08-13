@@ -10,7 +10,7 @@ public class TextTest {
 
     public static void main(String[] args) throws Throwable {
         TestVo v1 = new TestVo();
-        v1.setMark("ornage");
+        // v1.setMark("ornage");
         System.out.println(v1);
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream(4096);
