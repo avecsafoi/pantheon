@@ -1,4 +1,4 @@
-package kr.co.koscom.olympus.pb;
+package kr.co.koscom.olympus.pb.test.pb;
 
 import jakarta.annotation.Resource;
 import kr.co.koscom.olympus.pb.on.bms.OnbSpotOrdSP_BSMM;

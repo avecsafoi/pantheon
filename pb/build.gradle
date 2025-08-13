@@ -26,7 +26,6 @@ repositories {
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter'
-    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
 
@@ -46,12 +45,11 @@ dependencies {
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.mockito:mockito-core:5.18.0'
-    testImplementation 'com.zaxxer:HikariCP:7.0.1'
-    testImplementation 'org.mapstruct:mapstruct-processor:1.6.3'
 
+    testImplementation 'org.mapstruct:mapstruct-processor:1.6.3'
     testImplementation 'com.mybatis-flex:mybatis-flex-codegen:1.11.1'
     testImplementation 'com.zaxxer:HikariCP:7.0.1'
-    testImplementation 'org.mapstruct:mapstruct-processor:1.6.3'
+
     testAnnotationProcessor 'com.mybatis-flex:mybatis-flex-processor:1.11.1'
 
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'

@@ -1,4 +1,4 @@
-package kr.co.koscom.olympus.pb.on;
+package kr.co.koscom.olympus.pb.test.page;
 
 import com.mybatisflex.core.paginate.Page;
 import com.mybatisflex.core.query.QueryWrapper;
@@ -12,7 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 @Controller()
-public class HelloController {
+public class PageController {
 
     @Resource
     private OnTblSpotOrdMapper mapper;
@@ -23,8 +23,8 @@ public class HelloController {
     }
 
     @SuppressWarnings("unchecked")
-    @RequestMapping(value = "/hello", method = {RequestMethod.GET, RequestMethod.POST})
-    public String hello(Model model, HttpSession sess, HttpRequest rq) {
+    @RequestMapping(value = "/page", method = {RequestMethod.GET, RequestMethod.POST})
+    public String page(Model model, HttpSession sess, HttpRequest rq) {
 
         Page<OnTblSpotOrd> pg = (Page<OnTblSpotOrd>) model.getAttribute("pg");
         QueryWrapper qw = (QueryWrapper) model.getAttribute("qw");
