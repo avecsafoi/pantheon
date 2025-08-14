@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.annotation.Resource;
 import kr.co.koscom.olympus.pb.ab.data.io.PBTextDataInputStream;
 import kr.co.koscom.olympus.pb.ab.data.io.PBTextDataOutputStream;
-import kr.co.koscom.olympus.pb.ab.util.PBUtil;
+import kr.co.koscom.olympus.pb.ab.util.PBDataUtil;
 import kr.co.koscom.olympus.pb.include.PBST;
 import kr.co.koscom.olympus.pb.include.PBService;
 import kr.co.koscom.olympus.pb.include.hdr.PBHdrAccount;
@@ -21,6 +21,7 @@ import java.lang.reflect.Type;
 import java.nio.ByteBuffer;
 import java.util.Arrays;
 
+import static kr.co.koscom.olympus.pb.ab.util.PBDataUtil.createObject;
 import static kr.co.koscom.olympus.pb.include.PBCommon.SUCCESS;
 
 @RestController
@@ -35,7 +36,7 @@ public class PBGatewayController {
             , produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE})
     public @ResponseBody PBJson json(@RequestBody PBJson js) throws Throwable {
         PBHdrAccount ha = js.getHdrAccount();
-        PBService<?> svc = PBUtil.findPBService(ha.getASvcId());
+        PBService<?> svc = PBDataUtil.findPBService(ha.getASvcId());
         Method m = Arrays.stream(svc.getClass().getMethods()).filter(x -> x.getName().equals("process") && x.getParameterCount() == 1).findAny().orElseThrow();
 
         Class<?> cst = m.getParameters()[0].getType();
@@ -43,11 +44,10 @@ public class PBGatewayController {
         Class<?> cin = (Class<?>) ta[0];
         Class<?> cout = (Class<?>) ta[1];
 
-        Object in = js.getData() == null ? cin.getConstructor().newInstance() : om.convertValue(js.getData(), cin);
-        Object out = cout.getConstructor().newInstance();
+        Object in = js.getData() == null ? createObject(cin) : om.convertValue(js.getData(), cin);
+        Object out = createObject(cout);
 
-        @SuppressWarnings("unchecked")
-        PBST<Object, Object> st = (PBST<Object, Object>) cst.getConstructor().newInstance();
+        PBST<Object, Object> st = createObject(cst);
         st.setHdrAccount(ha);
         st.setIn(in);
         st.setOut(out);
@@ -64,7 +64,7 @@ public class PBGatewayController {
     @PostMapping("st")
     public @ResponseBody PBST binary(@RequestBody PBST st) throws Throwable {
         String svcId = st.getHdrAccount().getASvcId();
-        PBService svc = PBUtil.findPBService(svcId);
+        PBService svc = PBDataUtil.findPBService(svcId);
         if (svc == null) throw new Exception("SvcId(%s) not found".formatted(svcId));
         svc.process(st);
         return st;
@@ -80,7 +80,7 @@ public class PBGatewayController {
         if (hc.getATgLen() != ib.length)
             throw new RuntimeException("전문의 길이가 일치하지 않습니다. (%d != %d)".formatted(hc.getATgLen(), ib.length));
         PBHdrAccount ha = dis.readObject(PBHdrAccount.class);
-        PBService<?> svc = PBUtil.findPBService(ha.getASvcId());
+        PBService<?> svc = PBDataUtil.findPBService(ha.getASvcId());
         Method m = Arrays.stream(svc.getClass().getMethods()).filter(x -> x.getName().equals("process") && x.getParameterCount() == 1).findAny().orElseThrow();
 
         Class<?> cst = m.getParameters()[0].getType();
@@ -89,10 +89,9 @@ public class PBGatewayController {
         Class<?> cout = (Class<?>) ta[1];
 
         Object in = dis.readObject(cin); // 요청자료 읽기
-        Object out = cout.getConstructor().newInstance();
+        Object out = createObject(cout);
 
-        @SuppressWarnings("unchecked")
-        PBST<Object, Object> st = (PBST<Object, Object>) cst.getConstructor().newInstance();
+        PBST<Object, Object> st = createObject(cst);
         st.setHdrAccount(ha);
         st.setIn(in);
         st.setOut(out);

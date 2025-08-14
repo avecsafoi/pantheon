@@ -5,7 +5,7 @@ import kr.co.koscom.olympus.pb.PbApplication;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 
-public class PBUtil {
+public class PBDataUtil {
 
     @SuppressWarnings("unchecked")
     public static <X> X findPBService(String id) {

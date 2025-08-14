@@ -6,10 +6,15 @@ import org.apache.commons.lang3.time.DateFormatUtils;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.lang.reflect.*;
+import java.lang.reflect.Array;
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
+import java.lang.reflect.ParameterizedType;
 import java.nio.charset.Charset;
 import java.util.Date;
 import java.util.List;
+
+import static kr.co.koscom.olympus.pb.ab.util.PBDataUtil.createObject;
 
 public class PBTextDataOutputStream extends PBDataOutputStream {
 
@@ -49,12 +54,7 @@ public class PBTextDataOutputStream extends PBDataOutputStream {
         if (PBData.class.isAssignableFrom(c)) {
             if (o == null) {
                 if (c.isInterface()) return;
-                try {
-                    o = c.getConstructor().newInstance();
-                } catch (NoSuchMethodException | InstantiationException | IllegalAccessException |
-                         InvocationTargetException e) {
-                    throw new IOException(e);
-                }
+                o = createObject(c);
             }
             PBData x = (PBData) o;
             x.writePBData(this);

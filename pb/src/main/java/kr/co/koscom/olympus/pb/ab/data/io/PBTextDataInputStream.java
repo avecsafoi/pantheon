@@ -8,7 +8,10 @@ import org.apache.commons.lang3.time.DateUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.lang.reflect.*;
+import java.lang.reflect.Array;
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
+import java.lang.reflect.ParameterizedType;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.nio.charset.Charset;
@@ -16,6 +19,8 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import static kr.co.koscom.olympus.pb.ab.util.PBDataUtil.createObject;
 
 public class PBTextDataInputStream extends PBDataInputStream {
 
@@ -57,13 +62,7 @@ public class PBTextDataInputStream extends PBDataInputStream {
 
         if (PBData.class.isAssignableFrom(c)) {
             if (c.isInterface()) return null;
-            PBData x;
-            try {
-                x = (PBData) c.getConstructor().newInstance();
-            } catch (NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException |
-                     IllegalArgumentException | InvocationTargetException e) {
-                throw new IOException(e);
-            }
+            PBData x = createObject(c);
             x.readPBData(this);
             return x;
         }
@@ -156,12 +155,7 @@ public class PBTextDataInputStream extends PBDataInputStream {
     }
 
     public void readFields(Class<?> c, Object o) throws IOException {
-        if (o == null) try {
-            o = c.getConstructor().newInstance();
-        } catch (NoSuchMethodException | InstantiationException | IllegalAccessException |
-                 InvocationTargetException e) {
-            throw new IOException(e);
-        }
+        if (o == null) o = createObject(c);
         Class<?> s = c.getSuperclass();
         if (s != null && !s.isInterface()) readFields(s, o);
         for (Field f : c.getDeclaredFields()) {

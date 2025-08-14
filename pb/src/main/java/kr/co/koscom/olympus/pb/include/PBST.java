@@ -5,7 +5,7 @@ import kr.co.koscom.olympus.pb.ab.data.PBObject;
 import kr.co.koscom.olympus.pb.ab.data.annotation.PBA;
 import kr.co.koscom.olympus.pb.ab.data.io.PBDataInputStream;
 import kr.co.koscom.olympus.pb.ab.data.io.PBDataOutputStream;
-import kr.co.koscom.olympus.pb.ab.util.PBUtil;
+import kr.co.koscom.olympus.pb.ab.util.PBDataUtil;
 import kr.co.koscom.olympus.pb.include.hdr.PBHdrAccount;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -16,7 +16,7 @@ import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 
-import static kr.co.koscom.olympus.pb.ab.util.PBUtil.createObject;
+import static kr.co.koscom.olympus.pb.ab.util.PBDataUtil.createObject;
 
 @EqualsAndHashCode(callSuper = true)
 @Accessors(chain = true)
@@ -57,14 +57,14 @@ public class PBST<I, O> extends PBObject {
         hdrAccount = is.readObject(PBHdrAccount.class);
 
         String svcId = hdrAccount.getASvcId();
-        PBService<?> svc = PBUtil.findPBService(svcId);
+        PBService<?> svc = PBDataUtil.findPBService(svcId);
         if (svc == null) throw new IOException("Not found PBService for svcId(%s)".formatted(svcId));
 
-        ParameterizedType p1 = PBUtil.findInterfaceParameterizedType(svc.getClass(), PBService.class);
+        ParameterizedType p1 = PBDataUtil.findInterfaceParameterizedType(svc.getClass(), PBService.class);
         if (p1 == null) throw new IOException("Not found PBST class for svcId(%s)".formatted(svcId));
 
         PBST<PBData, PBData> st = createObject(p1.getActualTypeArguments()[0]);
-        ParameterizedType p2 = PBUtil.findInterfaceParameterizedType(st.getClass(), PBST.class);
+        ParameterizedType p2 = PBDataUtil.findInterfaceParameterizedType(st.getClass(), PBST.class);
         if (p2 == null) throw new IOException("Not found IN,OUT class for svcId(%s)".formatted(svcId));
 
         PBData in = createObject(p2.getActualTypeArguments()[0]);

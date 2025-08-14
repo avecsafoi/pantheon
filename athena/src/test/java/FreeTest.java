@@ -3,6 +3,9 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Date;
 
+import static kr.co.koscom.olympus.athena.base.io.data.XDataUtils.createObject;
+
+
 public class FreeTest {
 
     public static void main(String[] args) throws Throwable {
@@ -26,7 +29,7 @@ public class FreeTest {
         System.out.println(c2.getTypeName());
         System.out.println(c3.getTypeName());
 
-        Object x = o.getClass().getDeclaredConstructor().newInstance();
+        Object x = createObject(c1, null);
 
         System.out.println(x.getClass().getTypeName());
 
