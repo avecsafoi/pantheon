@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.annotation.Resource;
 import kr.co.koscom.olympus.pb.ab.data.io.PBTextDataInputStream;
 import kr.co.koscom.olympus.pb.ab.data.io.PBTextDataOutputStream;
-import kr.co.koscom.olympus.pb.ab.util.PBDataUtil;
 import kr.co.koscom.olympus.pb.include.PBST;
 import kr.co.koscom.olympus.pb.include.PBService;
 import kr.co.koscom.olympus.pb.include.hdr.PBHdrAccount;
@@ -22,6 +21,7 @@ import java.nio.ByteBuffer;
 import java.util.Arrays;
 
 import static kr.co.koscom.olympus.pb.ab.util.PBDataUtil.createObject;
+import static kr.co.koscom.olympus.pb.ab.util.PBDataUtil.findPBService;
 import static kr.co.koscom.olympus.pb.include.PBCommon.SUCCESS;
 
 @RestController
@@ -34,9 +34,9 @@ public class PBGatewayController {
     @PostMapping(value = "json"
             , consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE}
             , produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE})
-    public @ResponseBody PBJson json(@RequestBody PBJson js) throws Throwable {
+    public @ResponseBody PBJson text(@RequestBody PBJson js) throws Throwable {
         PBHdrAccount ha = js.getHdrAccount();
-        PBService<?> svc = PBDataUtil.findPBService(ha.getASvcId());
+        PBService<?> svc = findPBService(ha.getASvcId());
         Method m = Arrays.stream(svc.getClass().getMethods()).filter(x -> x.getName().equals("process") && x.getParameterCount() == 1).findAny().orElseThrow();
 
         Class<?> cst = m.getParameters()[0].getType();
@@ -64,7 +64,7 @@ public class PBGatewayController {
     @PostMapping("st")
     public @ResponseBody PBST binary(@RequestBody PBST st) throws Throwable {
         String svcId = st.getHdrAccount().getASvcId();
-        PBService svc = PBDataUtil.findPBService(svcId);
+        PBService svc = findPBService(svcId);
         if (svc == null) throw new Exception("SvcId(%s) not found".formatted(svcId));
         svc.process(st);
         return st;
@@ -80,7 +80,7 @@ public class PBGatewayController {
         if (hc.getATgLen() != ib.length)
             throw new RuntimeException("전문의 길이가 일치하지 않습니다. (%d != %d)".formatted(hc.getATgLen(), ib.length));
         PBHdrAccount ha = dis.readObject(PBHdrAccount.class);
-        PBService<?> svc = PBDataUtil.findPBService(ha.getASvcId());
+        PBService<?> svc = findPBService(ha.getASvcId());
         Method m = Arrays.stream(svc.getClass().getMethods()).filter(x -> x.getName().equals("process") && x.getParameterCount() == 1).findAny().orElseThrow();
 
         Class<?> cst = m.getParameters()[0].getType();
