@@ -9,7 +9,8 @@ import kr.co.koscom.olympus.pb.db.mapper.OnTblSpotOrdMapper;
 import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 @Controller("/pb/page")
 public class PageController {
@@ -17,13 +18,8 @@ public class PageController {
     @Resource
     private OnTblSpotOrdMapper mapper;
 
-    @GetMapping("/test")
-    public @ResponseBody String test(@RequestBody String name) {
-        return "Hello %s, it is the test for you".formatted(name);
-    }
-
     @SuppressWarnings("unchecked")
-    @RequestMapping(value = "/page", method = {RequestMethod.GET, RequestMethod.POST})
+    @RequestMapping(value = "pg1", method = {RequestMethod.GET, RequestMethod.POST})
     public String page(Model model, HttpSession sess, HttpRequest rq) {
 
         Page<OnTblSpotOrd> pg = (Page<OnTblSpotOrd>) model.getAttribute("pg");

@@ -43,6 +43,7 @@ class FlexController {
         return o;
     }
 
+    @PostMapping("db")
     public Test001 db(Test001 o) {
         Long n = o.getNo1();
         int i = Math.floorMod(n, 2) + 1;
@@ -51,8 +52,6 @@ class FlexController {
             DataSourceKey.use(nm);
             o.setName2(nm);
             mapper.insertOrUpdate(o);
-        } catch (Exception e) {
-            throw e;
         } finally {
             DataSourceKey.clear();
         }
