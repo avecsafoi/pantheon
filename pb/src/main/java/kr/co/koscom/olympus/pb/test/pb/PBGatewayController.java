@@ -63,7 +63,7 @@ public class PBGatewayController {
         return js;
     }
 
-    @PostMapping("bytes")
+    @PostMapping("binary")
     public @ResponseBody byte[] gatewayBytes(@RequestBody byte[] ib) throws Throwable {
 
         ByteArrayInputStream bais = new ByteArrayInputStream(ib);
