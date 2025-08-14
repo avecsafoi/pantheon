@@ -15,7 +15,8 @@ import org.apache.commons.lang3.reflect.FieldUtils;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
+
+import static kr.co.koscom.olympus.pb.ab.util.PBUtil.createObject;
 
 @EqualsAndHashCode(callSuper = true)
 @Accessors(chain = true)
@@ -44,29 +45,6 @@ public class PBST<I, O> extends PBObject {
             Object o2 = f2.getType().getConstructor().newInstance();
             f1.set(this, o1);
             f2.set(this, o2);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    @SuppressWarnings("unchecked")
-    public static <X> X createObject(Type t) {
-        return createObject((Class<X>) t);
-    }
-
-    @SuppressWarnings("unchecked")
-    public static <X> X createObject(Class<?> c) {
-        try {
-            return (X) c.getConstructor().newInstance();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    @SuppressWarnings("unchecked")
-    public static <X> X createObject(Class<?> c, Class<?>[] a, Object[] o) {
-        try {
-            return (X) c.getConstructor(a).newInstance(o);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
