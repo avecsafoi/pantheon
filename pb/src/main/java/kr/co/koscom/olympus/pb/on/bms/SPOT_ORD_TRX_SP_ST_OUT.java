@@ -13,19 +13,18 @@ import java.math.BigDecimal;
 @Data
 public class SPOT_ORD_TRX_SP_ST_OUT extends PBObject {
 
-    @PBA(name = "주문번호")
+    @PBA(name = "주문번호", scale = 10)
     public long lOrdNo;
 
-    @PBA(name = "체결수량")
+    @PBA(name = "체결수량", scale = 10)
     public long lExecQty;
 
-    @PBA(name = "체결가")
+    @PBA(name = "체결가", scale = 20)
     public BigDecimal dExecPrc;
 
-    @PBA(name = "쿼리코드")
+    @PBA(name = "쿼리코드", scale = 4)
     public long lSqlCode;
 
-    @PBA(name = "오류메시지코드")
+    @PBA(name = "오류메시지코드", scale = 10)
     public String zErrMsgCode;
-
 }

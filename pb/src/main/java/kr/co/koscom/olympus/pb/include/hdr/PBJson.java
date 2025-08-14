@@ -7,8 +7,6 @@ import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 import org.springframework.context.annotation.Description;
 
-import java.util.Map;
-
 @EqualsAndHashCode(callSuper = true)
 @Accessors(chain = true)
 @Data
@@ -22,5 +20,5 @@ public class PBJson extends PBObject {
     public PBHdrAccount hdrAccount;
 
     @PBA(name = "송수신 데이터")
-    public Map<?, ?> data;
+    public Object data;
 }

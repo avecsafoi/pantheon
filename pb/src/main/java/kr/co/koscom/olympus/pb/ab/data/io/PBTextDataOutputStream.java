@@ -111,10 +111,15 @@ public class PBTextDataOutputStream extends PBDataOutputStream {
             } else {
                 writeNumber(n, a.scale());
             }
-            for (int i = 0; i < z; i++) writeObject(s, i < n ? l.get(i) : null, f);
+            for (int i = 0; i < z; i++) {
+                Object x = i < n ? l.get(i) : null;
+                if (x == null) writeObject(s, null, f);
+                else writeObject(x.getClass(), x, f);
+            }
             return;
         }
         if (c.isArray()) {
+            Class<?> s = c.getComponentType();
             int n = o == null ? 0 : Array.getLength(o);
             int z = a.fix() ? a.scale() : n;
             if (a.fix()) {
@@ -122,7 +127,11 @@ public class PBTextDataOutputStream extends PBDataOutputStream {
             } else {
                 writeNumber(n, a.scale());
             }
-            for (int i = 0; i < z; i++) writeObject(c.getComponentType(), i < n ? Array.get(o, i) : null, f);
+            for (int i = 0; i < z; i++) {
+                Object x = i < n ? Array.get(o, i) : null;
+                if (x == null) writeObject(s, null, f);
+                else writeObject(x.getClass(), x, f);
+            }
             return;
         }
         if (Date.class.isAssignableFrom(c)) {
@@ -141,7 +150,9 @@ public class PBTextDataOutputStream extends PBDataOutputStream {
             if (Modifier.isStatic(f.getModifiers())) continue;
             if (o != null && !f.canAccess(o)) f.setAccessible(true);
             try {
-                writeObject(f.getType(), o == null ? null : f.get(o), f);
+                Object x = o == null ? null : f.get(o);
+                if (x == null) writeObject(f.getType(), null, f);
+                else writeObject(x.getClass(), x, f);
             } catch (Throwable t) {
                 throw new IOException("Failed to write field (%s.%s): %s".formatted(c.getCanonicalName(), f.getName(), t.getMessage()), t);
             }

@@ -1,6 +1,5 @@
 package kr.co.koscom.olympus.pb.test.pb;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.annotation.Resource;
 import kr.co.koscom.olympus.pb.ab.data.io.PBTextDataInputStream;
@@ -22,7 +21,6 @@ import java.lang.reflect.Type;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
-import java.util.Map;
 
 import static kr.co.koscom.olympus.pb.include.PBCommon.SUCCESS;
 
@@ -56,9 +54,10 @@ public class PBGatewayController {
         st.setIn(in);
         st.setOut(out);
         m.invoke(svc, st);
-        Map<String, Object> map = om.convertValue(st.getOut(), new TypeReference<>() {
-        });
-        js.setData(map);
+//        Map<String, Object> map = om.convertValue(st.getOut(), new TypeReference<>() {
+//        });
+//        js.setData(map);
+        js.setData(out);
 
         return js;
     }

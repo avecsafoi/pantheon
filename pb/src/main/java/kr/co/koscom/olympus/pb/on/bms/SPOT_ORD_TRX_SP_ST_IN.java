@@ -16,7 +16,7 @@ public class SPOT_ORD_TRX_SP_ST_IN extends PBObject {
     @PBA(name = "주문일자", scale = 8)
     public String zOrdDt;
 
-    @PBA(name = "주문번호")
+    @PBA(name = "주문번호", scale = 20)
     public long lOrdNo;
 
     @PBA(name = "주문시장코드", scale = 4)
@@ -28,10 +28,10 @@ public class SPOT_ORD_TRX_SP_ST_IN extends PBObject {
     @PBA(name = "종목번호", scale = 9)
     public String zIsuNo;
 
-    @PBA(name = "주문수량")
+    @PBA(name = "주문수량", scale = 20)
     public long lOrdQty;
 
-    @PBA(name = "주문가격")
+    @PBA(name = "주문가격", scale = 20)
     public BigDecimal dOrdPrc;
 
     @PBA(name = "주문시간", scale = 9)
