@@ -19,7 +19,6 @@ import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.nio.ByteBuffer;
-import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 
 import static kr.co.koscom.olympus.pb.include.PBCommon.SUCCESS;
@@ -34,7 +33,9 @@ public class PBGatewayController {
     @Resource
     private ObjectMapper om;
 
-    @PostMapping(value = "json", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE})
+    @PostMapping(value = "text"
+            , consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE}
+            , produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE})
     public @ResponseBody PBJson gatewayJson(@RequestBody PBJson js) throws Throwable {
         PBHdrAccount ha = js.getHdrAccount();
         PBService<?> svc = (PBService<?>) ctx.getBean("PB_SID " + ha.getASvcId());
@@ -60,11 +61,6 @@ public class PBGatewayController {
         js.setData(out);
 
         return js;
-    }
-
-    @PostMapping("text")
-    public @ResponseBody String gatewayText(@RequestBody String s) throws Throwable {
-        return new String(gatewayBytes(s.getBytes(StandardCharsets.UTF_8)), StandardCharsets.UTF_8);
     }
 
     @PostMapping("bytes")
