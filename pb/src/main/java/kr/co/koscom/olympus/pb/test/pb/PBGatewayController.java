@@ -65,7 +65,7 @@ public class PBGatewayController {
     public @ResponseBody PBST binary(@RequestBody PBST st) throws Throwable {
         String svcId = st.getHdrAccount().getASvcId();
         PBService svc = findPBService(svcId);
-        if (svc == null) throw new Exception("SvcId(%s) not found".formatted(svcId));
+        if (svc == null) throw new Exception("Not found PBService for (%s)".formatted(svcId));
         svc.process(st);
         return st;
     }
