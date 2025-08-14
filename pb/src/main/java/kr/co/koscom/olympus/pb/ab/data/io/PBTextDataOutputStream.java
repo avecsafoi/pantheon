@@ -6,10 +6,7 @@ import org.apache.commons.lang3.time.DateFormatUtils;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.lang.reflect.Array;
-import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
-import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.*;
 import java.nio.charset.Charset;
 import java.util.Date;
 import java.util.List;
@@ -50,17 +47,18 @@ public class PBTextDataOutputStream extends PBDataOutputStream {
     public void writeObject(Class<?> c, Object o, Field f) throws IOException {
 
         if (PBData.class.isAssignableFrom(c)) {
-            try {
-                if (o == null) {
-                    if (c.isInterface()) return;
+            if (o == null) {
+                if (c.isInterface()) return;
+                try {
                     o = c.getConstructor().newInstance();
+                } catch (NoSuchMethodException | InstantiationException | IllegalAccessException |
+                         InvocationTargetException e) {
+                    throw new IOException(e);
                 }
-                PBData x = (PBData) o;
-                x.writePBData(this);
-                return;
-            } catch (Exception e) {
-                throw new IOException(e);
             }
+            PBData x = (PBData) o;
+            x.writePBData(this);
+            return;
         }
 
         PBA a = f == null ? null : f.getAnnotation(PBA.class);

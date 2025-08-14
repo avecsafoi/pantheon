@@ -56,14 +56,16 @@ public class PBTextDataInputStream extends PBDataInputStream {
     public Object readObject(Class<?> c, Field f) throws IOException {
 
         if (PBData.class.isAssignableFrom(c)) {
+            if (c.isInterface()) return null;
+            PBData x;
             try {
-                if (c.isInterface()) return null;
-                PBData x = (PBData) c.getConstructor().newInstance();
-                x.readPBData(this);
-                return x;
-            } catch (Exception e) {
+                x = (PBData) c.getConstructor().newInstance();
+            } catch (NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException |
+                     IllegalArgumentException | InvocationTargetException e) {
                 throw new IOException(e);
             }
+            x.readPBData(this);
+            return x;
         }
 
         PBA a = f == null ? null : f.getAnnotation(PBA.class);
