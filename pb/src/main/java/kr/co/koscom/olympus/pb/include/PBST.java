@@ -1,9 +1,11 @@
 package kr.co.koscom.olympus.pb.include;
 
+import kr.co.koscom.olympus.pb.ab.data.PBData;
 import kr.co.koscom.olympus.pb.ab.data.PBObject;
 import kr.co.koscom.olympus.pb.ab.data.annotation.PBA;
 import kr.co.koscom.olympus.pb.ab.data.io.PBDataInputStream;
 import kr.co.koscom.olympus.pb.ab.data.io.PBDataOutputStream;
+import kr.co.koscom.olympus.pb.ab.util.PBUtil;
 import kr.co.koscom.olympus.pb.include.hdr.PBHdrAccount;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -12,6 +14,8 @@ import org.apache.commons.lang3.reflect.FieldUtils;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 
 @EqualsAndHashCode(callSuper = true)
 @Accessors(chain = true)
@@ -31,8 +35,8 @@ public class PBST<I, O> extends PBObject {
     public O out;
 
     public PBST() {
-        this.hdrCommon = new PBHdrAccount();
-        this.hdrAccount = new PBHdrAccount();
+        hdrCommon = new PBHdrAccount();
+        hdrAccount = new PBHdrAccount();
         try {
             Field f1 = FieldUtils.getField(getClass(), "in", true);
             Field f2 = FieldUtils.getField(getClass(), "out", true);
@@ -46,15 +50,57 @@ public class PBST<I, O> extends PBObject {
     }
 
     @Override
-    public void readPBData(PBDataInputStream in) throws IOException {
-//        this.hdrCommon = in.readObject(PBHdrAccount.class);
-//        this.hdrAccount = in.readObject(PBHdrAccount.class);
-//        String svcId = this.hdrAccount.getASvcId();
-        super.readPBData(in);
+    public void readPBData(PBDataInputStream is) throws IOException {
+
+        hdrCommon = is.readObject(PBHdrAccount.class);
+        hdrAccount = is.readObject(PBHdrAccount.class);
+
+        String svcId = hdrAccount.getASvcId();
+        PBService<?> svc = PBUtil.findPBService(svcId);
+        if (svc == null) throw new IOException("Not found PBService for svcId(%s)".formatted(svcId));
+
+        ParameterizedType p1 = PBUtil.findInterfaceParameterizedType(svc.getClass(), PBService.class);
+        if (p1 == null) throw new IOException("Not found PBST class for svcId(%s)".formatted(svcId));
+
+        PBST<PBData, PBData> st = createObject(p1.getActualTypeArguments()[0]);
+        ParameterizedType p2 = PBUtil.findInterfaceParameterizedType(st.getClass(), PBST.class);
+        if (p2 == null) throw new IOException("Not found IN,OUT class for svcId(%s)".formatted(svcId));
+
+        PBData in = createObject(p2.getActualTypeArguments()[0]);
+        PBData out = createObject(p2.getActualTypeArguments()[1]);
+
+        in.readPBData(is);
+        out.readPBData(is);
     }
 
     @Override
     public void writePBData(PBDataOutputStream os) throws IOException {
-        super.writePBData(os);
+        os.writeObject(hdrCommon);
+        os.writeObject(hdrAccount);
+        os.writeObject(in);
+        os.writeObject(out);
+    }
+
+    @SuppressWarnings("unchecked")
+    public static <X> X createObject(Type t) {
+        return createObject((Class<X>) t);
+    }
+
+    @SuppressWarnings("unchecked")
+    public static <X> X createObject(Class<?> c) {
+        try {
+            return (X) c.getConstructor().newInstance();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    public static <X> X createObject(Class<?> c, Class<?>[] a, Object[] o) {
+        try {
+            return (X) c.getConstructor(a).newInstance(o);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 }

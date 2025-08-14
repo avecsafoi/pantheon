@@ -1,4 +1,4 @@
-package kr.co.koscom.olympus.pb.ab.data.converter;
+package kr.co.koscom.olympus.pb.ab.db.plugin;
 
 import jakarta.annotation.Nonnull;
 import kr.co.koscom.olympus.pb.ab.data.PBData;
