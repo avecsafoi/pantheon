@@ -6,13 +6,11 @@ import kr.co.koscom.olympus.pb.on.bms.SPOT_ORD_TRX_SP_ST;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import static kr.co.koscom.olympus.pb.include.PBCommon.SUCCESS;
 
-@Controller
-@RequestMapping("/pb/st")
+@Controller("/pb/st")
 public class PBOrderController {
 
     @Resource

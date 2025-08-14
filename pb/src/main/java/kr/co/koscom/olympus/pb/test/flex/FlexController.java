@@ -9,10 +9,12 @@ import kr.co.koscom.olympus.pb.db.mapper.Test001Mapper;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.Random;
 
 @Controller("/pb/flex")
+@RequestMapping
 class FlexController {
 
     @Resource
