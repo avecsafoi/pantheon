@@ -49,6 +49,29 @@ public class PBST<I, O> extends PBObject {
         }
     }
 
+    @SuppressWarnings("unchecked")
+    public static <X> X createObject(Type t) {
+        return createObject((Class<X>) t);
+    }
+
+    @SuppressWarnings("unchecked")
+    public static <X> X createObject(Class<?> c) {
+        try {
+            return (X) c.getConstructor().newInstance();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    public static <X> X createObject(Class<?> c, Class<?>[] a, Object[] o) {
+        try {
+            return (X) c.getConstructor(a).newInstance(o);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     @Override
     public void readPBData(PBDataInputStream is) throws IOException {
 
@@ -79,28 +102,5 @@ public class PBST<I, O> extends PBObject {
         os.writeObject(hdrAccount);
         os.writeObject(in);
         os.writeObject(out);
-    }
-
-    @SuppressWarnings("unchecked")
-    public static <X> X createObject(Type t) {
-        return createObject((Class<X>) t);
-    }
-
-    @SuppressWarnings("unchecked")
-    public static <X> X createObject(Class<?> c) {
-        try {
-            return (X) c.getConstructor().newInstance();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    @SuppressWarnings("unchecked")
-    public static <X> X createObject(Class<?> c, Class<?>[] a, Object[] o) {
-        try {
-            return (X) c.getConstructor(a).newInstance(o);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
     }
 }

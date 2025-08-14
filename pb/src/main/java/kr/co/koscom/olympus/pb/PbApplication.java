@@ -21,6 +21,10 @@ import java.util.Map;
 @SpringBootApplication
 public class PbApplication {
 
+    public static final Map<String, Object> PBServiceMap = new HashMap<>();
+    @Resource
+    private ApplicationContext ctx;
+
     public static void main(String[] args) {
         SpringApplication.run(PbApplication.class, args);
     }
@@ -53,11 +57,6 @@ public class PbApplication {
         // PBServiceMap 만들기
         buildPBServiceMap();
     }
-
-    public static final Map<String, Object> PBServiceMap = new HashMap<>();
-
-    @Resource
-    private ApplicationContext ctx;
 
     private void buildPBServiceMap() {
         Arrays.stream(ctx.getBeanNamesForType(PBService.class)).forEach(n -> PBServiceMap.put(n, ctx.getBean(n)));
