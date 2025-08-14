@@ -57,6 +57,7 @@ public class PBTextDataInputStream extends PBDataInputStream {
 
         if (PBData.class.isAssignableFrom(c)) {
             try {
+                if (c.isInterface()) return null;
                 PBData x = (PBData) c.getConstructor().newInstance();
                 x.readPBData(this);
                 return x;

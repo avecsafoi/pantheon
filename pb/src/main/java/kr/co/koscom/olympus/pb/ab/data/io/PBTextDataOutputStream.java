@@ -51,7 +51,10 @@ public class PBTextDataOutputStream extends PBDataOutputStream {
 
         if (PBData.class.isAssignableFrom(c)) {
             try {
-                if (o == null) o = c.getConstructor().newInstance();
+                if (o == null) {
+                    if (c.isInterface()) return;
+                    o = c.getConstructor().newInstance();
+                }
                 PBData x = (PBData) o;
                 x.writePBData(this);
                 return;
