@@ -35,27 +35,27 @@ public interface PBMapper<T> extends BaseMapper<T> {
         return cpage(pg, null);
     }
 
-    default List<T> cpage(PBCPage pg, QueryWrapper q) {
-        QueryWrapper qw = q == null ? new QueryWrapper() : QueryWrapper.create().from(q);
+    default List<T> cpage(PBCPage pg, QueryWrapper qw) {
+        QueryWrapper q = qw == null ? new QueryWrapper() : QueryWrapper.create().from(qw);
         if (pg.getOrders() != null) {
             int i = 0, z = pg.getOrders().size();
-            QueryCondition ct = null;
+            QueryCondition c = null;
             for (PBOrder o : pg.getOrders()) {
                 if (!pg.isFirst()) {
                     QueryCondition c1 = QueryCondition.create(new QueryColumn(o.getColumn()), o.isAsc() ? SqlOperator.GT : SqlOperator.LT, o.getValue());
-                    if (ct == null) qw.and(c1);
-                    else ct.and(c1);
+                    if (c == null) q.and(c1);
+                    else c.and(c1);
                     if (i++ < z) {
                         QueryCondition c2 = QueryCondition.create(new QueryColumn(o.getColumn()), SqlOperator.EQUALS, o.getValue());
                         c1.or(c2);
-                        ct = c2;
-                    } else ct = c1;
+                        c = c2;
+                    } else c = c1;
                 }
-                qw.orderBy(o.getColumn(), o.isAsc());
+                q.orderBy(o.getColumn(), o.isAsc());
             }
         }
-        qw.limit(pg.getLimit());
-        List<T> l = this.selectListByQuery(qw);
+        q.limit(pg.getLimit());
+        List<T> l = this.selectListByQuery(q);
         boolean b = l.isEmpty() || l.size() < pg.getLimit();
         if (b) pg.setLast(b);
         else {
