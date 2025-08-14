@@ -36,7 +36,7 @@ public class PBGatewayController {
     @PostMapping(value = "text"
             , consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE}
             , produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE})
-    public @ResponseBody PBJson gatewayJson(@RequestBody PBJson js) throws Throwable {
+    public @ResponseBody PBJson text(@RequestBody PBJson js) throws Throwable {
         PBHdrAccount ha = js.getHdrAccount();
         PBService<?> svc = (PBService<?>) ctx.getBean("PB_SID " + ha.getASvcId());
         Method m = Arrays.stream(svc.getClass().getMethods()).filter(x -> x.getName().equals("process") && x.getParameterCount() == 1).findAny().orElseThrow();
@@ -64,7 +64,7 @@ public class PBGatewayController {
     }
 
     @PostMapping("binary")
-    public @ResponseBody byte[] gatewayBytes(@RequestBody byte[] ib) throws Throwable {
+    public @ResponseBody byte[] binary(@RequestBody byte[] ib) throws Throwable {
 
         ByteArrayInputStream bais = new ByteArrayInputStream(ib);
         PBTextDataInputStream dis = new PBTextDataInputStream(bais);
