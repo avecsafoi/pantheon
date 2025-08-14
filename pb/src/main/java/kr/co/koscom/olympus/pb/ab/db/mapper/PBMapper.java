@@ -31,8 +31,12 @@ public interface PBMapper<T> extends BaseMapper<T> {
         return x ? insert(entity, ignoreNulls) : update(entity, ignoreNulls);
     }
 
-    default List<T> cpage(PBCPage pg, QueryWrapper qw) {
-        qw = QueryWrapper.create().from(qw);
+    default List<T> cpage(PBCPage pg) {
+        return cpage(pg, null);
+    }
+
+    default List<T> cpage(PBCPage pg, QueryWrapper q) {
+        QueryWrapper qw = q == null ? new QueryWrapper() : QueryWrapper.create().from(q);
         if (pg.getOrders() != null) {
             int i = 0, z = pg.getOrders().size();
             QueryCondition ct = null;

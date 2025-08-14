@@ -67,8 +67,7 @@ public class OnTblSpotOrdController {
     @GetMapping("list")
     public List<OnTblSpotOrd> list(@RequestBody PBCPage pg) {
         OnTblSpotOrdMapper m = onTblSpotOrdService.getMapper();
-
-        return onTblSpotOrdService.list();
+        return m.cpage(pg);
     }
 
     /**
