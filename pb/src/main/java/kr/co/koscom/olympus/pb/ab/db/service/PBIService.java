@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface PBIService<T> extends IService<T> {
 
-    public List<T> cpage(PBCPage pg);
+    List<T> cpage(PBCPage pg);
 
-    public List<T> cpage(PBCPage pg, QueryWrapper qw);
+    List<T> cpage(PBCPage pg, QueryWrapper qw);
 }
