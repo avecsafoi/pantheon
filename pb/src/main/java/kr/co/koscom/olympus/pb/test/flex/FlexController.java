@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.Random;
 
-@Controller("/pb/flex")
-@RequestMapping
+@Controller
+@RequestMapping("/pb/flex")
 class FlexController {
 
     @Resource

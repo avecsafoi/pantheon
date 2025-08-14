@@ -11,10 +11,8 @@ import kr.co.koscom.olympus.pb.include.hdr.PBHdrAccount;
 import kr.co.koscom.olympus.pb.include.hdr.PBHdrCommon;
 import kr.co.koscom.olympus.pb.include.hdr.PBJson;
 import org.springframework.context.ApplicationContext;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -28,7 +26,8 @@ import java.util.Map;
 
 import static kr.co.koscom.olympus.pb.include.PBCommon.SUCCESS;
 
-@RestController("/pb/gw")
+@RestController
+@RequestMapping("/pb/gw")
 public class PBGatewayController {
 
     @Resource
@@ -37,7 +36,7 @@ public class PBGatewayController {
     @Resource
     private ObjectMapper om;
 
-    @PostMapping("json")
+    @PostMapping(value = "json", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE})
     public @ResponseBody PBJson gatewayJson(@RequestBody PBJson js) throws Throwable {
         PBHdrAccount ha = js.getHdrAccount();
         PBService<?> svc = (PBService<?>) ctx.getBean("PB_SID " + ha.getASvcId());

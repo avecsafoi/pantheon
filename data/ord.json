@@ -1,0 +1,50 @@
+{
+  "hdrCommon": {
+    "aTgLen": 0,
+    "aTgTp": "1",
+    "aCmprstype": "1",
+    "aEncrpType": "1",
+    "aDataOfst": 0,
+    "atgTp": "1",
+    "atgLen": 0,
+    "aencrpType": "1",
+    "adataOfst": 0,
+    "acmprstype": "1"
+  },
+  "hdrAccount": {
+    "aoutMsgTp": "1",
+    "asvcId": "10001000",
+    "afirmNo": "1",
+    "apubIP": "1",
+    "auserId": "1",
+    "afiller": "1",
+    "aprvtIP": "1",
+    "abrnNo": "1",
+    "atermNo": "1",
+    "acontYn": "1",
+    "avarMsg": "1",
+    "alngTp": "1",
+    "avarMsgLen": 0,
+    "aconnChnNo": "1",
+    "atrxSeqNo": "1",
+    "atrxBrnNo": "1",
+    "aaptrxTime": "1",
+    "aconnClntNo": "1",
+    "aconnClssCode": "1",
+    "acmprReqstTp": "1",
+    "afuncKeyList": "1",
+    "aexcpTRx": "1",
+    "afiller1": "1",
+    "areqstRecQty": 0,
+    "ahostClntNo": "1",
+    "avarSysLen": 0,
+    "atermClssCode": "1",
+    "amsgCode": "1",
+    "acontKey": "1",
+    "asmsSndYn": "1",
+    "avarHederLen": 0
+  },
+  "data": {
+    "zOrdDt": "20260101"
+  }
+}
