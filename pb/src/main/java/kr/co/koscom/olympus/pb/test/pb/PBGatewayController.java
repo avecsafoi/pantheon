@@ -11,7 +11,7 @@ public class PBGatewayController {
     @PostMapping(value = "json"
             , consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE}
             , produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE})
-    public @ResponseBody PBJson json(@RequestBody PBJson js) throws Throwable {
+    public @ResponseBody PBJson json(@RequestBody PBJson js) throws Exception {
         js.processForJson();
         return js;
     }

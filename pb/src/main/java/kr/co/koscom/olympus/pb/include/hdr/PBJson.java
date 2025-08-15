@@ -1,6 +1,7 @@
 package kr.co.koscom.olympus.pb.include.hdr;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import kr.co.koscom.olympus.pb.ab.data.PBData;
 import kr.co.koscom.olympus.pb.ab.data.PBObject;
 import kr.co.koscom.olympus.pb.ab.data.annotation.PBA;
@@ -32,7 +33,7 @@ public class PBJson extends PBObject {
     private PBHdrAccount hdrAccount;
 
     @PBA(name = "송수신 데이터")
-    private PBData data;
+    private Object data;
 
     @PBA(name = "서비스", skip = true)
     @JsonIgnore
@@ -42,12 +43,12 @@ public class PBJson extends PBObject {
     @JsonIgnore
     private PBST<PBData, PBData> st;
 
-
     public void processForJson() throws IOException {
         boolean b = service == null;
         if (b) {
             initService();
-            st.setIn(data);
+            ObjectMapper om = new ObjectMapper();
+            om.updateValue(st.getIn(), data);
         }
         service.process(st);
         if (b) data = st.getOut();
