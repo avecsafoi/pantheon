@@ -1,6 +1,8 @@
 package kr.co.koscom.olympus.pb.include;
 
-public interface PBService<T extends PBSTImpl<?, ?>> {
+import kr.co.koscom.olympus.pb.ab.data.PBData;
+
+public interface PBService<T extends PBST<?,?>> {
 
     int process(T st);
 }

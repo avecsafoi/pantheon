@@ -1,5 +1,6 @@
 package kr.co.koscom.olympus.pb.include;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import kr.co.koscom.olympus.pb.ab.data.PBData;
 import kr.co.koscom.olympus.pb.ab.data.annotation.PBA;
 import kr.co.koscom.olympus.pb.ab.data.io.PBDataInputStream;
@@ -16,64 +17,21 @@ import static kr.co.koscom.olympus.pb.ab.util.PBDataUtil.*;
 @SuppressWarnings({"unchecked", "rawtypes"})
 @Accessors(chain = true)
 @Data
-public class PBSTWrapper implements PBST, PBService {
+public class PBSTWrapper implements PBData, PBService {
 
     @PBA(name = "서비스")
+    @JsonIgnore
     private transient PBService service;
 
     @PBA(name = "트랜스퍼")
-    private transient PBSTImpl st;
-
-    @Override
-    public PBHdrAccount getHdrCommon() {
-        return st.getHdrCommon();
-    }
-
-    @Override
-    public PBST setHdrCommon(PBHdrAccount hdrCommon) {
-        st.setHdrCommon(hdrCommon);
-        return this;
-    }
-
-    @Override
-    public PBHdrAccount getHdrAccount() {
-        return st.getHdrAccount();
-    }
-
-    @Override
-    public PBST setHdrAccount(PBHdrAccount hdrAccount) {
-        st.setHdrAccount(hdrAccount);
-        return this;
-    }
-
-    @Override
-    public Object getIn() {
-        return st.getIn();
-    }
-
-    @Override
-    public PBST setIn(Object in) {
-        st.setIn(in);
-        return this;
-    }
-
-    @Override
-    public Object getOut() {
-        return st.getOut();
-    }
-
-    @Override
-    public PBST setOut(Object out) {
-        st.setOut(out);
-        return this;
-    }
+    private transient PBST st;
 
     public int process() {
         return service.process(st);
     }
 
     @Override
-    public int process(PBSTImpl st) {
+    public int process(PBST st) {
         return service.process(st);
     }
 

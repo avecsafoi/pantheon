@@ -2,9 +2,10 @@ package kr.co.koscom.olympus.pb.test.pb;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.annotation.Resource;
+import kr.co.koscom.olympus.pb.ab.data.PBData;
 import kr.co.koscom.olympus.pb.ab.data.io.PBTextDataInputStream;
 import kr.co.koscom.olympus.pb.ab.data.io.PBTextDataOutputStream;
-import kr.co.koscom.olympus.pb.include.PBSTImpl;
+import kr.co.koscom.olympus.pb.include.PBST;
 import kr.co.koscom.olympus.pb.include.PBSTWrapper;
 import kr.co.koscom.olympus.pb.include.PBService;
 import kr.co.koscom.olympus.pb.include.hdr.PBHdrAccount;
@@ -37,7 +38,7 @@ public class PBGatewayController {
             , produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE})
     public @ResponseBody PBJson json(@RequestBody PBJson js) throws Throwable {
         PBHdrAccount ha = js.getHdrAccount();
-        PBService<?> svc = findPBService(ha.getASvcId());
+        PBService<PBST<?, ?>> svc = findPBService(ha.getASvcId());
         Method m = Arrays.stream(svc.getClass().getMethods()).filter(x -> x.getName().equals("process") && x.getParameterCount() == 1).findAny().orElseThrow();
 
         Class<?> cst = m.getParameters()[0].getType();
@@ -45,14 +46,15 @@ public class PBGatewayController {
         Class<?> cin = (Class<?>) ta[0];
         Class<?> cout = (Class<?>) ta[1];
 
-        Object in = js.getData() == null ? createObject(cin) : om.convertValue(js.getData(), cin);
-        Object out = createObject(cout);
+        PBData in = js.getData() == null ? createObject(cin) : (PBData) om.convertValue(js.getData(), cin);
+        PBData out = createObject(cout);
 
-        PBSTImpl<Object, Object> st = createObject(cst);
+        PBST<PBData, PBData> st = createObject(cst);
         st.setHdrAccount(ha);
         st.setIn(in);
         st.setOut(out);
         m.invoke(svc, st);
+        // svc.process(st);
 //        Map<String, Object> map = om.convertValue(st.getOut(), new TypeReference<>() {
 //        });
 //        js.setData(map);
@@ -88,7 +90,7 @@ public class PBGatewayController {
         Object in = dis.readObject(cin); // 요청자료 읽기
         Object out = createObject(cout);
 
-        PBSTImpl<Object, Object> st = createObject(cst);
+        PBST<Object, Object> st = createObject(cst);
         st.setHdrAccount(ha);
         st.setIn(in);
         st.setOut(out);

@@ -23,23 +23,23 @@ public class PBDataUtil {
     }
 
     @SuppressWarnings("unchecked")
-    public static <X> X createObject(Type t) {
-        return createObject((Class<X>) t);
+    public static <T> T createObject(Type t) {
+        return createObject((Class<T>) t);
     }
 
     @SuppressWarnings("unchecked")
-    public static <X> X createObject(Class<?> c) {
+    public static <T> T createObject(Class<?> c) {
         try {
-            return (X) c.getConstructor().newInstance();
+            return (T) c.getConstructor().newInstance();
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
 
     @SuppressWarnings("unchecked")
-    public static <X> X createObject(Class<?> c, Class<?>[] a, Object[] o) {
+    public static <T> T createObject(Class<?> c, Class<?>[] a, Object[] o) {
         try {
-            return (X) c.getConstructor(a).newInstance(o);
+            return (T) c.getConstructor(a).newInstance(o);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
