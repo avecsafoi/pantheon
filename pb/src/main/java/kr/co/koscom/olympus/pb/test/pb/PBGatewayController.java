@@ -4,7 +4,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.annotation.Resource;
 import kr.co.koscom.olympus.pb.ab.data.io.PBTextDataInputStream;
 import kr.co.koscom.olympus.pb.ab.data.io.PBTextDataOutputStream;
-import kr.co.koscom.olympus.pb.include.PBST;
+import kr.co.koscom.olympus.pb.include.PBSTImpl;
+import kr.co.koscom.olympus.pb.include.PBSTWrapper;
 import kr.co.koscom.olympus.pb.include.PBService;
 import kr.co.koscom.olympus.pb.include.hdr.PBHdrAccount;
 import kr.co.koscom.olympus.pb.include.hdr.PBHdrCommon;
@@ -34,7 +35,7 @@ public class PBGatewayController {
     @PostMapping(value = "json"
             , consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE}
             , produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE})
-    public @ResponseBody PBJson text(@RequestBody PBJson js) throws Throwable {
+    public @ResponseBody PBJson json(@RequestBody PBJson js) throws Throwable {
         PBHdrAccount ha = js.getHdrAccount();
         PBService<?> svc = findPBService(ha.getASvcId());
         Method m = Arrays.stream(svc.getClass().getMethods()).filter(x -> x.getName().equals("process") && x.getParameterCount() == 1).findAny().orElseThrow();
@@ -47,7 +48,7 @@ public class PBGatewayController {
         Object in = js.getData() == null ? createObject(cin) : om.convertValue(js.getData(), cin);
         Object out = createObject(cout);
 
-        PBST<Object, Object> st = createObject(cst);
+        PBSTImpl<Object, Object> st = createObject(cst);
         st.setHdrAccount(ha);
         st.setIn(in);
         st.setOut(out);
@@ -60,14 +61,10 @@ public class PBGatewayController {
         return js;
     }
 
-    @SuppressWarnings({"rawtypes", "unchecked"})
     @PostMapping("st")
-    public @ResponseBody PBST binary(@RequestBody PBST st) throws Throwable {
-        String svcId = st.getHdrAccount().getASvcId();
-        PBService svc = findPBService(svcId);
-        if (svc == null) throw new Exception("Not found PBService for (%s)".formatted(svcId));
-        svc.process(st);
-        return st;
+    public @ResponseBody <T extends PBSTWrapper> T st(@RequestBody T transfer) throws Throwable {
+        int n = transfer.process();
+        return transfer;
     }
 
     @PostMapping("binary")
@@ -91,7 +88,7 @@ public class PBGatewayController {
         Object in = dis.readObject(cin); // 요청자료 읽기
         Object out = createObject(cout);
 
-        PBST<Object, Object> st = createObject(cst);
+        PBSTImpl<Object, Object> st = createObject(cst);
         st.setHdrAccount(ha);
         st.setIn(in);
         st.setOut(out);

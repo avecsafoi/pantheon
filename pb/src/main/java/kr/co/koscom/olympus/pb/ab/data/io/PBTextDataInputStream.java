@@ -159,7 +159,8 @@ public class PBTextDataInputStream extends PBDataInputStream {
         Class<?> s = c.getSuperclass();
         if (s != null && !s.isInterface()) readFields(s, o);
         for (Field f : c.getDeclaredFields()) {
-            if (Modifier.isStatic(f.getModifiers())) continue;
+            int i = f.getModifiers();
+            if (Modifier.isStatic(i) || Modifier.isTransient(i)) continue;
             if (!f.canAccess(o)) f.setAccessible(true);
             try {
                 f.set(o, readObject(f.getType(), f));

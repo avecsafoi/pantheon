@@ -18,6 +18,8 @@ public @interface PBA {
 
     Mask mask() default Mask.NONE;
 
+    boolean skip() default false;
+
     public static enum Mask {
         NONE, PASSWORD, JUMIN, NAME
     }

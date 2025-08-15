@@ -25,10 +25,5 @@ public class TextTest {
         TestVo v2 = dis.readObject(TestVo.class);
         System.out.println(v2);
 
-        String s1 = v1.toString();
-        String s2 = v2.toString();
-        System.out.println(s1);
-        System.out.println(s2);
-        System.out.println(s1.equals(s2));
     }
 }

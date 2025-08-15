@@ -8,8 +8,8 @@ import java.io.Serializable;
 
 public interface PBData extends Serializable {
 
-    default void readPBData(PBDataInputStream in) throws IOException {
-        in.readPBData(this.getClass(), this);
+    default void readPBData(PBDataInputStream is) throws IOException {
+        is.readPBData(this.getClass(), this);
     }
 
     default void writePBData(PBDataOutputStream os) throws IOException {
