@@ -7,13 +7,13 @@ import jakarta.annotation.Resource;
 import kr.co.koscom.olympus.pb.db.entity.Test001;
 import kr.co.koscom.olympus.pb.db.mapper.Test001Mapper;
 import org.apache.commons.lang3.RandomStringUtils;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Random;
 
-@Controller
+@RestController
 @RequestMapping("/pb/flex")
 class FlexController {
 
@@ -43,7 +43,7 @@ class FlexController {
         return o;
     }
 
-    @PostMapping("db")
+    @PostMapping("ds")
     public Test001 db(Test001 o) {
         Long n = o.getNo1();
         int i = Math.floorMod(n, 2) + 1;
@@ -59,7 +59,7 @@ class FlexController {
     }
 
     @UseDataSource("ds4")
-    @PostMapping("db4")
+    @PostMapping("ds4")
     public Test001 db4(Test001 o) {
         o.setName2(DataSourceKey.get());
         mapper.insertOrUpdate(o);

@@ -1,4 +1,4 @@
-package kr.co.koscom.olympus.pb.ab.db.plugin;
+package kr.co.koscom.olympus.pb.ab.plugin;
 
 import com.mybatisflex.core.tenant.TenantFactory;
 import org.springframework.web.context.request.RequestAttributes;

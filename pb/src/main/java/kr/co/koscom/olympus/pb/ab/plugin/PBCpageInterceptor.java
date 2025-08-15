@@ -1,4 +1,4 @@
-package kr.co.koscom.olympus.pb.ab.db.plugin;
+package kr.co.koscom.olympus.pb.ab.plugin;
 
 import kr.co.koscom.olympus.pb.ab.db.page.PBCPage;
 import kr.co.koscom.olympus.pb.ab.db.page.PBLock;
@@ -25,7 +25,7 @@ import java.util.Map;
 
 @Intercepts(@Signature(type = Executor.class, method = "query", args = {MappedStatement.class, Object.class, RowBounds.class, ResultHandler.class}))
 @Slf4j
-public class PBMyBatisInterceptor implements Interceptor {
+public class PBCpageInterceptor implements Interceptor {
 
     public static final DefaultReflectorFactory DEFAULT_REFLECTOR_FACTORY = new DefaultReflectorFactory();
 
