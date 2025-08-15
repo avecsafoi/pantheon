@@ -41,7 +41,7 @@ public class PBJson extends PBObject {
 
     @PBA(name = "서비스", skip = true)
     @JsonIgnore
-    private PBST<PBData, PBData> st;
+    private transient PBST<PBData, PBData> st;
 
     public void processForJson() throws IOException {
         boolean b = service == null;
