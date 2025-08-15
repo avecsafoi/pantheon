@@ -12,11 +12,15 @@ public class PBDataUtil {
         return (X) PbApplication.PBServiceMap.get("PB_SID " + id);
     }
 
-    public static ParameterizedType findInterfaceParameterizedType(Class<?> c, Class<?> f) {
-        for (Type t : c.getGenericInterfaces()) {
-            if (t instanceof ParameterizedType p) {
-                Class<?> x = (Class<?>) p.getRawType();
-                if (f.isAssignableFrom(x)) return p;
+    public static ParameterizedType findInterfaceParameterizedType(Type t, Class<?> f) {
+        if (t instanceof ParameterizedType p) {
+            Class<?> y = (Class<?>) p.getRawType();
+            if (f.isAssignableFrom(y)) return p;
+            return findInterfaceParameterizedType(p.getRawType(), f);
+        } else if (t instanceof Class<?> c) {
+            for (Type x : c.getGenericInterfaces()) {
+                ParameterizedType p = findInterfaceParameterizedType(x, f);
+                if (p != null) return p;
             }
         }
         return null;

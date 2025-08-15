@@ -3,6 +3,7 @@ package kr.co.koscom.olympus.pb.include;
 import kr.co.koscom.olympus.pb.ab.data.PBObject;
 import kr.co.koscom.olympus.pb.ab.data.annotation.PBA;
 import kr.co.koscom.olympus.pb.include.hdr.PBHdrAccount;
+import kr.co.koscom.olympus.pb.include.hdr.PBHdrCommon;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
@@ -13,7 +14,7 @@ import lombok.experimental.Accessors;
 public class PBST<I, O> extends PBObject {
 
     @PBA(name = "공통 헤더")
-    public PBHdrAccount hdrCommon;
+    public PBHdrCommon hdrCommon;
 
     @PBA(name = "계정계 헤더")
     public PBHdrAccount hdrAccount;
