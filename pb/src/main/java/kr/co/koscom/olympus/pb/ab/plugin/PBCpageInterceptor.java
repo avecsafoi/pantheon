@@ -1,5 +1,6 @@
 package kr.co.koscom.olympus.pb.ab.plugin;
 
+import kr.co.koscom.olympus.pb.ab.data.PBData;
 import kr.co.koscom.olympus.pb.ab.db.page.PBCPage;
 import kr.co.koscom.olympus.pb.ab.db.page.PBLock;
 import kr.co.koscom.olympus.pb.ab.db.page.PBOrder;
@@ -20,6 +21,7 @@ import org.apache.ibatis.reflection.SystemMetaObject;
 import org.apache.ibatis.session.ResultHandler;
 import org.apache.ibatis.session.RowBounds;
 
+import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
 
@@ -69,13 +71,37 @@ public class PBCpageInterceptor implements Interceptor {
         }
     }
 
-    @SuppressWarnings("unchecked")
     public static <T> Map.Entry<String, T> findTypeEntry(Object o, Class<T> t) {
-        if (o != null) {
-            if (o instanceof Map<?, ?> m)
-                for (Map.Entry<?, ?> e : m.entrySet())
-                    if (t.isAssignableFrom(e.getValue().getClass())) return (Map.Entry<String, T>) e;
-            if (t.isAssignableFrom(o.getClass())) return Map.entry("", (T) o);
+        return findTypeEntry(o, t, "");
+    }
+
+    @SuppressWarnings("unchecked")
+    public static <T> Map.Entry<String, T> findTypeEntry(Object o, Class<T> t, String n) {
+        if (o == null) return null;
+        Class<?> c = o.getClass();
+        if (t.isAssignableFrom(c)) return Map.entry(n, (T) o);
+        else if (o instanceof Map<?, ?> m) {
+            for (Map.Entry<?, ?> e : m.entrySet()) {
+                Object v = e.getValue();
+                if (v == null) continue;
+                String k = e.getKey().toString();
+                if (t.isAssignableFrom(v.getClass())) {
+                    n = n.isEmpty() ? k : n + "." + k;
+                    return Map.entry(n, (T) v);
+                }
+            }
+        } else if (o instanceof PBData) {
+            List<Field> ls = FieldUtils.getAllFieldsList(c);
+            for (Field f : ls)
+                if (t.isAssignableFrom(f.getType()))
+                    try {
+                        Object fo = FieldUtils.readField(f, o, true);
+                        if (fo == null) continue;
+                        n = n.isEmpty() ? f.getName() : n + "." + f.getName();
+                        return Map.entry(n, (T) fo);
+                    } catch (IllegalAccessException e) {
+                        throw new RuntimeException(e);
+                    }
         }
         return null;
     }
