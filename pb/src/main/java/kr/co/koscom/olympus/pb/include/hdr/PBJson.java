@@ -18,7 +18,6 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 
 import static kr.co.koscom.olympus.pb.ab.util.PBDataUtil.*;
-import static kr.co.koscom.olympus.pb.include.PBCommon.SUCCESS;
 
 @EqualsAndHashCode(callSuper = true)
 @Accessors(chain = true)
@@ -27,13 +26,13 @@ import static kr.co.koscom.olympus.pb.include.PBCommon.SUCCESS;
 public class PBJson extends PBObject {
 
     @PBA(name = "공통 헤더")
-    public PBHdrCommon hdrCommon;
+    private PBHdrCommon hdrCommon;
 
     @PBA(name = "계정계 헤더")
-    public PBHdrAccount hdrAccount;
+    private PBHdrAccount hdrAccount;
 
     @PBA(name = "송수신 데이터")
-    public Object data;
+    private PBData data;
 
     @PBA(name = "서비스", skip = true)
     @JsonIgnore
@@ -43,9 +42,18 @@ public class PBJson extends PBObject {
     @JsonIgnore
     private PBST<PBData, PBData> st;
 
-    public PBService<PBST<?, ?>> initService() throws IOException {
 
-        if (service != null) return service;
+    public void processForJson() throws IOException {
+        boolean b = service == null;
+        if (b) {
+            initService();
+            st.setIn(data);
+        }
+        service.process(st);
+        if (b) data = st.getOut();
+    }
+
+    public PBService<PBST<?, ?>> initService() throws IOException {
 
         String svcId = hdrAccount.getASvcId();
         service = findPBService(svcId);
@@ -82,7 +90,9 @@ public class PBJson extends PBObject {
         service = initService();
 
         st.getIn().readPBData(is);
-        // out 일지 않음
+        // out 읽지 않음
+
+        this.setData(st.getIn());
     }
 
     @Override
@@ -90,12 +100,8 @@ public class PBJson extends PBObject {
         hdrCommon.writePBData(os);
         hdrAccount.writePBData(os);
         // in 쓰지 않음
-        ((PBData) data).writePBData(os);
-    }
+        st.getOut().writePBData(os);
 
-    public void process() throws IOException {
-        int n = service.process(st);
-        if (n != SUCCESS) throw new IOException("Failed to process %s".formatted(service.getClass().getSimpleName()));
-        data = st.getOut();
+        this.setData(st.getOut());
     }
 }
