@@ -84,7 +84,8 @@ class PbApplicationTests {
 
     @Test
     void test001() {
-        Test001 t = new Test001().setId1("Orange").setId2("purple").setId3("코스콤").setNo1(1L).setNo2(2L);
+        Test001 t = new Test001();
+        t.setId1("Orange").setId2("purple").setId3("코스콤").setNo1(1L).setNo2(2L);
         m1.insertOrUpdate(t, false);
         m1.insertOrUpdate(t, false);
     }

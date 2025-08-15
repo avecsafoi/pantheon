@@ -9,7 +9,6 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
-import java.io.Serial;
 import java.sql.Timestamp;
 
 /**
@@ -23,9 +22,6 @@ import java.sql.Timestamp;
 @Data
 @Table("test_001")
 public class Test001 extends PBEntity {
-
-    @Serial
-    private static final long serialVersionUID = 1L;
 
     @Id
     private Long no1;
