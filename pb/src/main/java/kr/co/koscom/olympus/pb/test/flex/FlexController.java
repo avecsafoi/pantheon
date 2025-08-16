@@ -44,7 +44,7 @@ class FlexController {
     }
 
     @PostMapping("ds")
-    public Test001 db(Test001 o) {
+    public Test001 ds(Test001 o) {
         Long n = o.getNo1();
         int i = Math.floorMod(n, 2) + 1;
         String nm = "ds" + i;
@@ -60,7 +60,7 @@ class FlexController {
 
     @UseDataSource("ds4")
     @PostMapping("ds4")
-    public Test001 db4(Test001 o) {
+    public Test001 ds4(Test001 o) {
         o.setName2(DataSourceKey.get());
         mapper.insertOrUpdate(o);
         return o;
@@ -68,7 +68,7 @@ class FlexController {
 
     @UseDataSource("ds5")
     @PostMapping("ds5")
-    public Test001 db5(Test001 o) {
+    public Test001 ds5(Test001 o) {
         o.setName2(DataSourceKey.get());
         mapper.insertOrUpdate(o);
         return o;

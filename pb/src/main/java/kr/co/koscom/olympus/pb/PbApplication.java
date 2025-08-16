@@ -2,9 +2,9 @@ package kr.co.koscom.olympus.pb;
 
 import com.mybatisflex.core.FlexGlobalConfig;
 import jakarta.annotation.Resource;
-import kr.co.koscom.olympus.pb.ab.db.plugin.PBDataSourceShardingStrategy;
-import kr.co.koscom.olympus.pb.ab.db.plugin.PBMyBatisInterceptor;
-import kr.co.koscom.olympus.pb.ab.db.plugin.PBTextDataHttpMessageConverter;
+import kr.co.koscom.olympus.pb.ab.plugin.PBDataSourceShardingStrategy;
+import kr.co.koscom.olympus.pb.ab.plugin.PBPageInterceptor;
+import kr.co.koscom.olympus.pb.ab.plugin.PBTextDataHttpMessageConverter;
 import kr.co.koscom.olympus.pb.include.PBService;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -37,8 +37,8 @@ public class PbApplication {
 
     @Bean
     @Description("CPage 객체를 사용하는 쿼리구문에 연속조회 구문을 추가하는 기능")
-    public PBMyBatisInterceptor pbMyBatisInterceptor() {
-        return new PBMyBatisInterceptor();
+    public PBPageInterceptor pbPageInterceptor() {
+        return new PBPageInterceptor();
     }
 
     @Bean
