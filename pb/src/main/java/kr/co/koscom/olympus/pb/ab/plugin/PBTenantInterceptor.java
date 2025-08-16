@@ -12,6 +12,18 @@ import java.util.List;
 
 public class PBTenantInterceptor implements HandlerInterceptor {
 
+    protected static final List<String> headerList = List.of(
+            "X-Forwarded-For",
+            "HTTP_CLIENT_IP",
+            "HTTP_X_FORWARDED_FOR",
+            "HTTP_X_FORWARDED",
+            "HTTP_FORWARDED_FOR",
+            "HTTP_FORWARDED",
+            "Proxy-Client-IP",
+            "WL-Proxy-Client-IP",
+            "HTTP_VIA",
+            "IPV6_ADR");
+
     @Override
     public boolean preHandle(@Nonnull HttpServletRequest request, @Nonnull HttpServletResponse response, @Nonnull Object handler) throws Exception {
 
@@ -41,16 +53,4 @@ public class PBTenantInterceptor implements HandlerInterceptor {
     public void afterCompletion(@Nonnull HttpServletRequest request, @Nonnull HttpServletResponse response, @Nonnull Object handler, Exception ex) throws Exception {
         // NOTHING TODO
     }
-
-    protected static final List<String> headerList = List.of(
-            "X-Forwarded-For",
-            "HTTP_CLIENT_IP",
-            "HTTP_X_FORWARDED_FOR",
-            "HTTP_X_FORWARDED",
-            "HTTP_FORWARDED_FOR",
-            "HTTP_FORWARDED",
-            "Proxy-Client-IP",
-            "WL-Proxy-Client-IP",
-            "HTTP_VIA",
-            "IPV6_ADR");
 }
