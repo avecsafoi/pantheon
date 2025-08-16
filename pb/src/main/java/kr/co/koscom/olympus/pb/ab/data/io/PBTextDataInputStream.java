@@ -10,7 +10,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
 import java.lang.reflect.ParameterizedType;
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -44,13 +43,13 @@ public class PBTextDataInputStream extends PBDataInputStream {
     @SuppressWarnings("unchecked")
     @Override
     public <X> X readObject(@Nonnull Class<X> c) throws IOException {
-        PBDataT t = new PBDataT(null, c, null, null);
+        PBDataT t = new PBDataT(null, c, null, null, null);
         return (X) readObject(t);
     }
 
     @Override
     public void readPBData(@Nonnull Class<?> c, Object o) throws IOException {
-        PBDataT t = new PBDataT(null, c, o, null);
+        PBDataT t = new PBDataT(null, c, o, null, null);
         readFields(t);
     }
 
@@ -70,7 +69,7 @@ public class PBTextDataInputStream extends PBDataInputStream {
             return x;
         }
 
-        PBA a = t.f == null ? null : t.f.getAnnotation(PBA.class);
+        PBA a = t.a;
         if (a == null) throw new IOException("Field annotation required (@%s)".formatted(PBA.class.getSimpleName()));
 
         if (String.class.isAssignableFrom(t.c)) {
@@ -136,7 +135,7 @@ public class PBTextDataInputStream extends PBDataInputStream {
             int z = a.fix() ? a.scale() : NumberUtils.toInt(readString(a.scale()));
             List<Object> l = new ArrayList<>(z);
             for (int i = 0; i < z; i++) {
-                PBDataT u = new PBDataT(t, s, null, t.f);
+                PBDataT u = new PBDataT(t, s, null, t.f, null);
                 Object x = readObject(u);
                 l.add(x);
             }
@@ -147,7 +146,7 @@ public class PBTextDataInputStream extends PBDataInputStream {
             int z = a.fix() ? a.scale() : NumberUtils.toInt(readString(a.scale()));
             Object o = Array.newInstance(t.c.getComponentType(), z);
             for (int i = 0; i < z; i++) {
-                PBDataT u = new PBDataT(t, s, null, t.f);
+                PBDataT u = new PBDataT(t, s, null, t.f, null);
                 Object x = readObject(u);
                 Array.set(o, i, x);
             }
@@ -168,17 +167,18 @@ public class PBTextDataInputStream extends PBDataInputStream {
 
     public void readFields(PBDataT t) throws IOException {
         if (t.o == null) t.o = createObject(t.c);
+        // List<Field> l = FieldUtils.getAllFieldsList(t.c).stream().filter(f -> f.getAnnotation(PBA.class) != null).toList();
         Class<?> s = t.c.getSuperclass();
         if (s != null && !s.isInterface()) {
-            PBDataT u = new PBDataT(t, s, t.o, null);
+            PBDataT u = new PBDataT(t, s, t.o, null, null);
             readFields(u);
         }
         for (Field f : t.c.getDeclaredFields()) {
-            int i = f.getModifiers();
-            if (Modifier.isStatic(i) || Modifier.isTransient(i)) continue;
+            PBA a = f.getAnnotation(PBA.class);
+            if (a == null || a.skip()) continue;
             if (!f.canAccess(t.o)) f.setAccessible(true);
             try {
-                PBDataT u = new PBDataT(t, f.getType(), null, f);
+                PBDataT u = new PBDataT(t, f.getType(), null, f, null);
                 Object x = readObject(u);
                 f.set(t.o, x);
             } catch (Throwable e) {

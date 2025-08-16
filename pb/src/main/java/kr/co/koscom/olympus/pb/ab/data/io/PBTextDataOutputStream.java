@@ -8,7 +8,6 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
 import java.lang.reflect.ParameterizedType;
 import java.nio.charset.Charset;
 import java.util.Date;
@@ -28,13 +27,13 @@ public class PBTextDataOutputStream extends PBDataOutputStream {
 
     @Override
     public void writeObject(Object o) throws IOException {
-        PBDataT t = new PBDataT(null, o.getClass(), o, null);
+        PBDataT t = new PBDataT(null, o.getClass(), o, null, null);
         writeObject(t);
     }
 
     @Override
     public void writePBData(Class<?> c, Object o) throws IOException {
-        PBDataT t = new PBDataT(null, c, o, null);
+        PBDataT t = new PBDataT(null, c, o, null, null);
         writeFields(t);
     }
 
@@ -62,7 +61,7 @@ public class PBTextDataOutputStream extends PBDataOutputStream {
             return;
         }
 
-        PBA a = t.f == null ? null : t.f.getAnnotation(PBA.class);
+        PBA a = t.a;
         if (a == null) throw new IOException("Field annotation required (@%s)".formatted(PBA.class.getSimpleName()));
 
         if (String.class.isAssignableFrom(t.c)) {
@@ -115,7 +114,7 @@ public class PBTextDataOutputStream extends PBDataOutputStream {
             }
             for (int i = 0; i < z; i++) {
                 Object x = i < n ? l.get(i) : null;
-                PBDataT u = new PBDataT(t, x == null ? s : x.getClass(), null, t.f);
+                PBDataT u = new PBDataT(t, x == null ? s : x.getClass(), null, t.f, null);
                 writeObject(u);
             }
             return;
@@ -131,7 +130,7 @@ public class PBTextDataOutputStream extends PBDataOutputStream {
             }
             for (int i = 0; i < z; i++) {
                 Object x = i < n ? Array.get(t.o, i) : null;
-                PBDataT u = new PBDataT(t, x == null ? s : x.getClass(), null, t.f);
+                PBDataT u = new PBDataT(t, x == null ? s : x.getClass(), null, t.f, null);
                 writeObject(u);
             }
             return;
@@ -148,17 +147,17 @@ public class PBTextDataOutputStream extends PBDataOutputStream {
     public void writeFields(PBDataT t) throws IOException {
         Class<?> s = t.c.getSuperclass();
         if (s != null && !s.isInterface()) {
-            PBDataT u = new PBDataT(t, s, t.o, t.f);
+            PBDataT u = new PBDataT(t, s, t.o, t.f, null);
             writeFields(u);
         }
         for (Field f : t.c.getDeclaredFields()) {
-            int i = f.getModifiers();
-            if (Modifier.isStatic(i) || Modifier.isTransient(i)) continue;
+            PBA a = f.getAnnotation(PBA.class);
+            if (a == null || a.skip()) continue;
             if (t.o != null && !f.canAccess(t.o)) f.setAccessible(true);
             try {
                 Object x = t.o == null ? null : f.get(t.o);
                 Class<?> y = x == null ? f.getType() : x.getClass();
-                PBDataT u = new PBDataT(t, y, x, t.f);
+                PBDataT u = new PBDataT(t, y, x, t.f, null);
                 writeObject(u);
             } catch (Throwable e) {
                 throw new IOException("Failed to write field (%s.%s): %s".formatted(t.c.getCanonicalName(), f.getName(), e.getMessage()), e);
