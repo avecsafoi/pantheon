@@ -10,7 +10,7 @@ import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
 import java.io.Serial;
-import java.sql.Timestamp;
+import java.util.Date;
 
 /**
  * 实体类。
@@ -35,9 +35,9 @@ public class Tenant extends PBEntity {
 
     private String tenantName;
 
-    private Timestamp created;
+    private Date created;
 
-    private Timestamp updated;
+    private Date updated;
 
     @Column(ignore = true) // 테이블에 없는 컬럼
     private String mark;

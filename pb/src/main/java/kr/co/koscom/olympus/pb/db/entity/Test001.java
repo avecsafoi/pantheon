@@ -10,6 +10,7 @@ import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
 import java.sql.Timestamp;
+import java.util.Date;
 
 /**
  * 实体类。
@@ -47,7 +48,7 @@ public class Test001 extends PBEntity {
 
     private String name3;
 
-    private Timestamp created;
+    private Date created;
 
     @Column(ignore = true) // 테이블에 없는 컬럼
     private String mark;
