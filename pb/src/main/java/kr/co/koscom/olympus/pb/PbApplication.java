@@ -1,6 +1,7 @@
 package kr.co.koscom.olympus.pb;
 
 import com.mybatisflex.core.FlexGlobalConfig;
+import com.mybatisflex.core.datasource.DataSourceManager;
 import jakarta.annotation.Resource;
 import kr.co.koscom.olympus.pb.ab.plugin.PBDataSourceShardingStrategy;
 import kr.co.koscom.olympus.pb.ab.plugin.PBPageInterceptor;
@@ -41,24 +42,33 @@ public class PbApplication {
         return new PBPageInterceptor();
     }
 
-    @Bean
-    @Description("읽기/쓰기 DB 자동 구분 설정")
-    public PBDataSourceShardingStrategy pbDataSourceShardingStrategy() {
-        return new PBDataSourceShardingStrategy();
-    }
-
     @EventListener(ApplicationReadyEvent.class)
     @Description("스프링실행(시작완료) 후 이벤트")
     public void initialize(ApplicationReadyEvent event) {
-        // @Column(tenantId = true) 하지 않아도, 컬럼이름으로 자동인식 처리 전역 설정
-        // tenant 설정은 다른 db 선택 설정을 무시하고 최우선 적용됨
-        FlexGlobalConfig.getDefaultConfig().setTenantColumn("tenant_id");
+
+        // 회원사별 구분컬럼 자동입력 처리
+        setMultiTenancy();
+
+        // 읽기/쓰기 DB 자동 구분 설정
+        setDataSourceSharding();
 
         // PBServiceMap 만들기
-        buildPBServiceMap();
+        setPBServiceMap();
     }
 
-    private void buildPBServiceMap() {
+    @Description("멀티 테넌시 설정")
+    private void setMultiTenancy() {
+        // @Column(tenantId = true) 하지 않아도, 컬럼이름으로 자동인식 처리 전역 설정
+        FlexGlobalConfig.getDefaultConfig().setTenantColumn("tenant_id");
+    }
+
+    @Description("읽기/쓰기 DB 자동 구분 설정")
+    private void setDataSourceSharding() {
+        DataSourceManager.setDataSourceShardingStrategy(new PBDataSourceShardingStrategy());
+    }
+
+    @Description("PBServiceMap 만들기")
+    private void setPBServiceMap() {
         Arrays.stream(ctx.getBeanNamesForType(PBService.class)).forEach(n -> PBServiceMap.put(n, ctx.getBean(n)));
     }
 }

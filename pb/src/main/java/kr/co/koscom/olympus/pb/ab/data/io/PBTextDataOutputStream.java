@@ -28,12 +28,14 @@ public class PBTextDataOutputStream extends PBDataOutputStream {
 
     @Override
     public void writeObject(Object o) throws IOException {
-        writeObject(o.getClass(), o, null);
+        PBDataT t = new PBDataT(null, o.getClass(), o, null);
+        writeObject(t);
     }
 
     @Override
     public void writePBData(Class<?> c, Object o) throws IOException {
-        writeFields(c, o);
+        PBDataT t = new PBDataT(null, c, o, null);
+        writeFields(t);
     }
 
     public void writeString(Object o, byte[] b, int z, int s) throws IOException {
@@ -49,62 +51,61 @@ public class PBTextDataOutputStream extends PBDataOutputStream {
         writeString(o, null, z, 1);
     }
 
-    public void writeObject(Class<?> c, Object o, Field f) throws IOException {
-
-        if (PBData.class.isAssignableFrom(c)) {
-            if (o == null) {
-                if (c.isInterface()) return;
-                o = createObject(c);
+    public void writeObject(PBDataT t) throws IOException {
+        if (PBData.class.isAssignableFrom(t.c)) {
+            if (t.o == null) {
+                if (t.c.isInterface()) return;
+                t.o = createObject(t.c);
             }
-            PBData x = (PBData) o;
+            PBData x = (PBData) t.o;
             x.writePBData(this);
             return;
         }
 
-        PBA a = f == null ? null : f.getAnnotation(PBA.class);
+        PBA a = t.f == null ? null : t.f.getAnnotation(PBA.class);
         if (a == null) throw new IOException("Field annotation required (@%s)".formatted(PBA.class.getSimpleName()));
 
-        if (String.class.isAssignableFrom(c)) {
+        if (String.class.isAssignableFrom(t.c)) {
             if (a.fix()) {
-                writeString(o, null, a.scale(), 0);
+                writeString(t.o, null, a.scale(), 0);
             } else {
-                byte[] b = o == null ? null : o.toString().getBytes(charset);
+                byte[] b = t.o == null ? null : t.o.toString().getBytes(charset);
                 int n = b == null ? 0 : b.length;
                 writeNumber(n, a.scale()); // 문자열 앞단에 문자열 길이 입력
-                writeString(o, b, n, 0);
+                writeString(t.o, b, n, 0);
             }
             return;
         }
-        if (c.isPrimitive()) {
-            if (int.class.equals(c)) {
-                writeNumber(String.valueOf(o), a.scale());
+        if (t.c.isPrimitive()) {
+            if (int.class.equals(t.c)) {
+                writeNumber(String.valueOf(t.o), a.scale());
                 return;
             }
-            if (long.class.equals(c)) {
-                writeNumber(String.valueOf(o), a.scale());
+            if (long.class.equals(t.c)) {
+                writeNumber(String.valueOf(t.o), a.scale());
                 return;
             }
-            if (double.class.equals(c)) {
-                writeNumber(String.valueOf(o), a.scale());
+            if (double.class.equals(t.c)) {
+                writeNumber(String.valueOf(t.o), a.scale());
                 return;
             }
-            if (float.class.equals(c)) {
-                writeNumber(String.valueOf(o), a.scale());
+            if (float.class.equals(t.c)) {
+                writeNumber(String.valueOf(t.o), a.scale());
                 return;
             }
-            if (short.class.equals(c)) {
-                writeNumber(String.valueOf(o), a.scale());
+            if (short.class.equals(t.c)) {
+                writeNumber(String.valueOf(t.o), a.scale());
                 return;
             }
-            throw new IOException("Unexpected primitive type (%s, %s)".formatted(c.getCanonicalName(), o));
+            throw new IOException("Unexpected primitive type (%s, %s)".formatted(t.c.getCanonicalName(), t.o));
         }
-        if (Number.class.isAssignableFrom(c)) {
-            writeNumber(o, a.scale());
+        if (Number.class.isAssignableFrom(t.c)) {
+            writeNumber(t.o, a.scale());
             return;
         }
-        if (List.class.isAssignableFrom(c)) {
-            Class<?> s = (Class<?>) ((ParameterizedType) f.getGenericType()).getActualTypeArguments()[0];
-            List<?> l = (List<?>) o;
+        if (List.class.isAssignableFrom(t.c)) {
+            Class<?> s = (Class<?>) ((ParameterizedType) t.f.getGenericType()).getActualTypeArguments()[0];
+            List<?> l = (List<?>) t.o;
             int n = l == null ? 0 : l.size();
             int z = a.fix() ? a.scale() : n;
             if (a.fix()) {
@@ -114,14 +115,14 @@ public class PBTextDataOutputStream extends PBDataOutputStream {
             }
             for (int i = 0; i < z; i++) {
                 Object x = i < n ? l.get(i) : null;
-                if (x == null) writeObject(s, null, f);
-                else writeObject(x.getClass(), x, f);
+                PBDataT u = new PBDataT(t, x == null ? s : x.getClass(), null, t.f);
+                writeObject(u);
             }
             return;
         }
-        if (c.isArray()) {
-            Class<?> s = c.getComponentType();
-            int n = o == null ? 0 : Array.getLength(o);
+        if (t.c.isArray()) {
+            Class<?> s = t.c.getComponentType();
+            int n = t.o == null ? 0 : Array.getLength(t.o);
             int z = a.fix() ? a.scale() : n;
             if (a.fix()) {
                 if (n > z) throw new IOException("ArrayLength(%d) is exceeded FixedLength(%d)".formatted(n, z));
@@ -129,34 +130,38 @@ public class PBTextDataOutputStream extends PBDataOutputStream {
                 writeNumber(n, a.scale());
             }
             for (int i = 0; i < z; i++) {
-                Object x = i < n ? Array.get(o, i) : null;
-                if (x == null) writeObject(s, null, f);
-                else writeObject(x.getClass(), x, f);
+                Object x = i < n ? Array.get(t.o, i) : null;
+                PBDataT u = new PBDataT(t, x == null ? s : x.getClass(), null, t.f);
+                writeObject(u);
             }
             return;
         }
-        if (Date.class.isAssignableFrom(c)) {
+        if (Date.class.isAssignableFrom(t.c)) {
             if (a.format().isEmpty())
                 throw new IOException("Format required of @%s(format = ?)".formatted(PBA.class.getSimpleName()));
-            String s = o == null ? null : DateFormatUtils.format((Date) o, a.format());
+            String s = t.o == null ? null : DateFormatUtils.format((Date) t.o, a.format());
             writeString(s, null, a.scale(), 0);
         }
-        throw new IOException("Unexpected type (%s)".formatted(c.getCanonicalName()));
+        throw new IOException("Unexpected type (%s)".formatted(t.c.getCanonicalName()));
     }
 
-    public void writeFields(Class<?> c, Object o) throws IOException {
-        Class<?> s = c.getSuperclass();
-        if (s != null && !s.isInterface()) writeFields(s, o);
-        for (Field f : c.getDeclaredFields()) {
+    public void writeFields(PBDataT t) throws IOException {
+        Class<?> s = t.c.getSuperclass();
+        if (s != null && !s.isInterface()) {
+            PBDataT u = new PBDataT(t, s, t.o, t.f);
+            writeFields(u);
+        }
+        for (Field f : t.c.getDeclaredFields()) {
             int i = f.getModifiers();
             if (Modifier.isStatic(i) || Modifier.isTransient(i)) continue;
-            if (o != null && !f.canAccess(o)) f.setAccessible(true);
+            if (t.o != null && !f.canAccess(t.o)) f.setAccessible(true);
             try {
-                Object x = o == null ? null : f.get(o);
-                if (x == null) writeObject(f.getType(), null, f);
-                else writeObject(x.getClass(), x, f);
-            } catch (Throwable t) {
-                throw new IOException("Failed to write field (%s.%s): %s".formatted(c.getCanonicalName(), f.getName(), t.getMessage()), t);
+                Object x = t.o == null ? null : f.get(t.o);
+                Class<?> y = x == null ? f.getType() : x.getClass();
+                PBDataT u = new PBDataT(t, y, x, t.f);
+                writeObject(u);
+            } catch (Throwable e) {
+                throw new IOException("Failed to write field (%s.%s): %s".formatted(t.c.getCanonicalName(), f.getName(), e.getMessage()), e);
             }
         }
     }

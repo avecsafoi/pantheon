@@ -44,12 +44,14 @@ public class PBTextDataInputStream extends PBDataInputStream {
     @SuppressWarnings("unchecked")
     @Override
     public <X> X readObject(@Nonnull Class<X> c) throws IOException {
-        return (X) readObject(c, null);
+        PBDataT t = new PBDataT(null, c, null, null);
+        return (X) readObject(t);
     }
 
     @Override
     public void readPBData(@Nonnull Class<?> c, Object o) throws IOException {
-        readFields(c, o);
+        PBDataT t = new PBDataT(null, c, o, null);
+        readFields(t);
     }
 
     public String readString(int n) throws IOException {
@@ -58,90 +60,100 @@ public class PBTextDataInputStream extends PBDataInputStream {
         return new String(b, super.charset).trim();
     }
 
-    public Object readObject(Class<?> c, Field f) throws IOException {
+    public Object readObject(PBDataT t) throws IOException {
 
-        if (PBData.class.isAssignableFrom(c)) {
-            if (c.isInterface()) return null;
-            PBData x = createObject(c);
+        if (PBData.class.isAssignableFrom(t.c)) {
+            if (t.refClass(t.c)) throw new IOException("Found recursive class (%s)".formatted(t.c.getCanonicalName()));
+            if (t.c.isInterface()) return null;
+            PBData x = createObject(t.c);
             x.readPBData(this);
             return x;
         }
 
-        PBA a = f == null ? null : f.getAnnotation(PBA.class);
+        PBA a = t.f == null ? null : t.f.getAnnotation(PBA.class);
         if (a == null) throw new IOException("Field annotation required (@%s)".formatted(PBA.class.getSimpleName()));
 
-        if (String.class.isAssignableFrom(c)) {
+        if (String.class.isAssignableFrom(t.c)) {
             int z = a.fix() ? a.scale() : NumberUtils.toInt(readString(a.scale()));
             return readString(z);
         }
-        if (c.isPrimitive()) {
-            if (int.class.equals(c)) {
+        if (t.c.isPrimitive()) {
+            if (int.class.equals(t.c)) {
                 String s = readString(a.scale());
                 return NumberUtils.toInt(s, 0);
             }
-            if (long.class.equals(c)) {
+            if (long.class.equals(t.c)) {
                 String s = readString(a.scale());
                 return NumberUtils.toLong(s, 0);
             }
-            if (double.class.equals(c)) {
+            if (double.class.equals(t.c)) {
                 String s = readString(a.scale());
                 return NumberUtils.toDouble(s, 0);
             }
-            if (float.class.equals(c)) {
+            if (float.class.equals(t.c)) {
                 String s = readString(a.scale());
                 return NumberUtils.toFloat(s, 0);
             }
-            if (short.class.equals(c)) {
+            if (short.class.equals(t.c)) {
                 String s = readString(a.scale());
                 return NumberUtils.toShort(s, (short) 0);
             }
-            throw new IOException("Unexpected primitive type (%s)".formatted(c.getCanonicalName()));
+            throw new IOException("Unexpected primitive type (%s)".formatted(t.c.getCanonicalName()));
         }
-        if (Number.class.isAssignableFrom(c)) {
-            if (BigDecimal.class.equals(c)) {
+        if (Number.class.isAssignableFrom(t.c)) {
+            if (BigDecimal.class.equals(t.c)) {
                 String s = readString(a.scale());
                 return s.isEmpty() ? null : NumberUtils.createBigDecimal(s);
             }
-            if (BigInteger.class.equals(c)) {
+            if (BigInteger.class.equals(t.c)) {
                 String s = readString(a.scale());
                 return s.isEmpty() ? null : NumberUtils.createBigDecimal(s).toBigInteger();
             }
-            if (Integer.class.equals(c)) {
+            if (Integer.class.equals(t.c)) {
                 String s = readString(a.scale());
                 return s.isEmpty() ? null : NumberUtils.toInt(s);
             }
-            if (Long.class.equals(c)) {
+            if (Long.class.equals(t.c)) {
                 String s = readString(a.scale());
                 return s.isEmpty() ? null : NumberUtils.toLong(s);
             }
-            if (Double.class.equals(c)) {
+            if (Double.class.equals(t.c)) {
                 String s = readString(a.scale());
                 return s.isEmpty() ? null : NumberUtils.toDouble(s);
             }
-            if (Float.class.equals(c)) {
+            if (Float.class.equals(t.c)) {
                 String s = readString(a.scale());
                 return s.isEmpty() ? null : NumberUtils.toFloat(s);
             }
-            if (Short.class.equals(c)) {
+            if (Short.class.equals(t.c)) {
                 String s = readString(a.scale());
                 return s.isEmpty() ? null : NumberUtils.toShort(s);
             }
-            throw new IOException("Unexpected Number type (%s)".formatted(c.getCanonicalName()));
+            throw new IOException("Unexpected Number type (%s)".formatted(t.c.getCanonicalName()));
         }
-        if (List.class.isAssignableFrom(c)) {
-            Class<?> s = (Class<?>) ((ParameterizedType) f.getGenericType()).getActualTypeArguments()[0];
+        if (List.class.isAssignableFrom(t.c)) {
+            Class<?> s = (Class<?>) ((ParameterizedType) t.f.getGenericType()).getActualTypeArguments()[0];
             int z = a.fix() ? a.scale() : NumberUtils.toInt(readString(a.scale()));
             List<Object> l = new ArrayList<>(z);
-            for (int i = 0; i < z; i++) l.add(readObject(s, f));
+            for (int i = 0; i < z; i++) {
+                PBDataT u = new PBDataT(t, s, null, t.f);
+                Object x = readObject(u);
+                l.add(x);
+            }
             return l;
         }
-        if (c.isArray()) {
+        if (t.c.isArray()) {
+            Class<?> s = t.c.getComponentType();
             int z = a.fix() ? a.scale() : NumberUtils.toInt(readString(a.scale()));
-            Object o = Array.newInstance(c.getComponentType(), z);
-            for (int i = 0; i < z; i++) Array.set(o, i, readObject(c.getComponentType(), f));
+            Object o = Array.newInstance(t.c.getComponentType(), z);
+            for (int i = 0; i < z; i++) {
+                PBDataT u = new PBDataT(t, s, null, t.f);
+                Object x = readObject(u);
+                Array.set(o, i, x);
+            }
             return o;
         }
-        if (Date.class.isAssignableFrom(c)) {
+        if (Date.class.isAssignableFrom(t.c)) {
             if (a.format().isEmpty())
                 throw new IOException("Format required of @%s(format = ?)".formatted(PBA.class.getSimpleName()));
             String s = readString(a.scale());
@@ -151,21 +163,26 @@ public class PBTextDataInputStream extends PBDataInputStream {
                 throw new RuntimeException(e);
             }
         }
-        throw new IOException("Unexpected type (%s)".formatted(c.getCanonicalName()));
+        throw new IOException("Unexpected type (%s)".formatted(t.c.getCanonicalName()));
     }
 
-    public void readFields(Class<?> c, Object o) throws IOException {
-        if (o == null) o = createObject(c);
-        Class<?> s = c.getSuperclass();
-        if (s != null && !s.isInterface()) readFields(s, o);
-        for (Field f : c.getDeclaredFields()) {
+    public void readFields(PBDataT t) throws IOException {
+        if (t.o == null) t.o = createObject(t.c);
+        Class<?> s = t.c.getSuperclass();
+        if (s != null && !s.isInterface()) {
+            PBDataT u = new PBDataT(t, s, t.o, null);
+            readFields(u);
+        }
+        for (Field f : t.c.getDeclaredFields()) {
             int i = f.getModifiers();
             if (Modifier.isStatic(i) || Modifier.isTransient(i)) continue;
-            if (!f.canAccess(o)) f.setAccessible(true);
+            if (!f.canAccess(t.o)) f.setAccessible(true);
             try {
-                f.set(o, readObject(f.getType(), f));
+                PBDataT u = new PBDataT(t, f.getType(), null, f);
+                Object x = readObject(u);
+                f.set(t.o, x);
             } catch (Throwable e) {
-                throw new IOException("Failed to read field (%s.%s): %s".formatted(c.getCanonicalName(), f.getName(), e.getMessage()), e);
+                throw new IOException("Failed to read field (%s.%s): %s".formatted(t.c.getCanonicalName(), f.getName(), e.getMessage()), e);
             }
         }
     }
