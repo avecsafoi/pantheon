@@ -7,21 +7,21 @@ import jakarta.annotation.Resource;
 import kr.co.koscom.olympus.pb.db.entity.Test001;
 import kr.co.koscom.olympus.pb.db.mapper.Test001Mapper;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.Random;
 
-@RestController
-@RequestMapping("/pb/flex")
+@Controller("/pb/flex")
 class FlexController {
 
     @Resource
     private Test001Mapper mapper;
 
     @PostMapping("insertOrupdate")
-    public Test001 insert1(Test001 o) {
+    public @ResponseBody Test001 insert1(@RequestBody Test001 o) {
 
         Random random = new Random();
         RandomStringUtils rs = RandomStringUtils.insecure();
@@ -30,47 +30,73 @@ class FlexController {
         if (o.getNo2() == null) o.setNo2(random.nextLong());
         if (StringUtils.isBlank(o.getId1())) o.setId1(rs.nextAlphabetic(10));
 
-        o.setId3(null);
+        o.setNo3(null);
+        o.setName1("First");
+        o.setName2("IgnoreNull=false");
         mapper.insertOrUpdate(o);
 
         // PK 값 초기화
         o.setNo3(null);
-        mapper.insertOrUpdate(o, true); // null 값인 필드도 인서트 (DB 컬럼, default 값 무시)
+        o.setName1("Second");
+        o.setName2("IgnoreNull=true");
+        mapper.insertOrUpdate(o, true); // null 필드 제외
 
+        o.setName1("Third");
+        o.setName2("IgnoreNull=false");
         o.setName3(rs.nextAlphanumeric(10));
-        mapper.insertOrUpdate(o, true); // null 값인 필드도 업데이트
+        mapper.insertOrUpdate(o); // null 필드 포함
 
         return o;
     }
 
-    @PostMapping("ds")
-    public Test001 ds(Test001 o) {
+    @PostMapping("pbx1")
+    public @ResponseBody Test001 pbx1(@RequestBody Test001 o) {
         Long n = o.getNo1();
-        int i = Math.floorMod(n, 2) + 1;
-        String nm = "ds" + i;
+        int i = Math.floorMod(n + 1, 2) + 1;
+        String nm = "pb" + i;
         try {
             DataSourceKey.use(nm);
             o.setName2(nm);
-            mapper.insertOrUpdate(o);
+            int r = mapper.insertOrUpdate(o);
+            System.out.println(r);
         } finally {
             DataSourceKey.clear();
         }
         return o;
     }
 
-    @UseDataSource("ds4")
-    @PostMapping("ds4")
-    public Test001 ds4(Test001 o) {
-        o.setName2(DataSourceKey.get());
-        mapper.insertOrUpdate(o);
+    @UseDataSource("pb4")
+    @PostMapping("pbx2")
+    public @ResponseBody Test001 pbx2(@RequestBody Test001 o) {
+        Long n = o.getNo1();
+        int i = Math.floorMod(n + 1, 2) + 1;
+        String nm = "pb" + i;
+        try {
+            DataSourceKey.use(nm);
+            o.setName2(nm);
+            int r = mapper.insertOrUpdate(o);
+            System.out.println(r);
+        } finally {
+            DataSourceKey.clear();
+        }
         return o;
     }
 
-    @UseDataSource("ds5")
-    @PostMapping("ds5")
-    public Test001 ds5(Test001 o) {
+    @UseDataSource("pb4")
+    @PostMapping("pb4")
+    public @ResponseBody Test001 pb4(@RequestBody Test001 o) {
         o.setName2(DataSourceKey.get());
-        mapper.insertOrUpdate(o);
+        int r = mapper.insertOrUpdate(o);
+        System.out.println(r);
+        return o;
+    }
+
+    @UseDataSource("pb5")
+    @PostMapping("pb5")
+    public @ResponseBody Test001 pb5(@RequestBody Test001 o) {
+        o.setName2(DataSourceKey.get());
+        int r = mapper.insertOrUpdate(o);
+        System.out.println(r);
         return o;
     }
 }

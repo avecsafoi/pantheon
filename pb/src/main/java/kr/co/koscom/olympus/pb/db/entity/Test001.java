@@ -9,8 +9,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
-import java.sql.Timestamp;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * 实体类。
@@ -48,7 +47,9 @@ public class Test001 extends PBEntity {
 
     private String name3;
 
-    private Date created;
+    // @Schema(description = "생성일자", type = "LocalDateTime", example = "2025-01-01 00:00:00")
+    // @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime created;
 
     @Column(ignore = true) // 테이블에 없는 컬럼
     private String mark;
