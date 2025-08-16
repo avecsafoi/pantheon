@@ -82,18 +82,18 @@ class FlexController {
         return o;
     }
 
-    @UseDataSource("pb4")
-    @PostMapping("pb4")
-    public @ResponseBody Test001 pb4(@RequestBody Test001 o) {
+    @UseDataSource("pb3")
+    @PostMapping("pb3")
+    public @ResponseBody Test001 pb3(@RequestBody Test001 o) {
         o.setName2(DataSourceKey.get());
         int r = mapper.insertOrUpdate(o);
         System.out.println(r);
         return o;
     }
 
-    @UseDataSource("pb5")
-    @PostMapping("pb5")
-    public @ResponseBody Test001 pb5(@RequestBody Test001 o) {
+    @UseDataSource("pb4")
+    @PostMapping("pb4")
+    public @ResponseBody Test001 pb4(@RequestBody Test001 o) {
         o.setName2(DataSourceKey.get());
         int r = mapper.insertOrUpdate(o);
         System.out.println(r);

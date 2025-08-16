@@ -1,4 +1,4 @@
-package kr.co.koscom.olympus.pb.ab.plugin;
+package kr.co.koscom.olympus.pb.ab.conf.plugin;
 
 import io.micrometer.common.util.StringUtils;
 import jakarta.annotation.Nonnull;
@@ -32,7 +32,7 @@ public class PBTenantInterceptor implements HandlerInterceptor {
 
         // 테넌트 ID를 요청 속성으로 설정합니다.
         request.setAttribute("tenantId", tenantId);
-
+        request.setAttribute("tenant_id", tenantId);
         return true;
     }
 

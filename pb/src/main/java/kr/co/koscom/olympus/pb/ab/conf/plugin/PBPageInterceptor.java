@@ -1,4 +1,4 @@
-package kr.co.koscom.olympus.pb.ab.plugin;
+package kr.co.koscom.olympus.pb.ab.conf.plugin;
 
 import kr.co.koscom.olympus.pb.ab.data.PBData;
 import kr.co.koscom.olympus.pb.ab.db.page.PBCPage;

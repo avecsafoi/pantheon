@@ -1,6 +1,6 @@
 package kr.co.koscom.olympus.pb.ab.util;
 
-import kr.co.koscom.olympus.pb.PbApplication;
+import kr.co.koscom.olympus.pb.ab.conf.PBAppConfig;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -9,7 +9,7 @@ public class PBDataUtil {
 
     @SuppressWarnings("unchecked")
     public static <X> X findPBService(String id) {
-        return (X) PbApplication.PBServiceMap.get("PB_SID " + id);
+        return (X) PBAppConfig.PBServiceMap.get("PB_SID " + id);
     }
 
     public static ParameterizedType findInterfaceParameterizedType(Type t, Class<?> f) {
