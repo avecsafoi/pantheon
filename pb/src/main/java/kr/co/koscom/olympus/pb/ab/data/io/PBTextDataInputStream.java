@@ -2,6 +2,7 @@ package kr.co.koscom.olympus.pb.ab.data.io;
 
 import jakarta.annotation.Nonnull;
 import kr.co.koscom.olympus.pb.ab.data.PBData;
+import kr.co.koscom.olympus.pb.ab.data.PBObject;
 import kr.co.koscom.olympus.pb.ab.data.annotation.PBA;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.commons.lang3.time.DateUtils;
@@ -135,7 +136,7 @@ public class PBTextDataInputStream extends PBDataInputStream {
             int z = a.fix() ? a.scale() : NumberUtils.toInt(readString(a.scale()));
             List<Object> l = new ArrayList<>(z);
             for (int i = 0; i < z; i++) {
-                PBDataT u = new PBDataT(t, s, null, t.f, null);
+                PBDataT u = new PBDataT(t, s, null, null, null);
                 Object x = readObject(u);
                 l.add(x);
             }
@@ -146,7 +147,7 @@ public class PBTextDataInputStream extends PBDataInputStream {
             int z = a.fix() ? a.scale() : NumberUtils.toInt(readString(a.scale()));
             Object o = Array.newInstance(t.c.getComponentType(), z);
             for (int i = 0; i < z; i++) {
-                PBDataT u = new PBDataT(t, s, null, t.f, null);
+                PBDataT u = new PBDataT(t, s, null, null, null);
                 Object x = readObject(u);
                 Array.set(o, i, x);
             }
@@ -169,7 +170,7 @@ public class PBTextDataInputStream extends PBDataInputStream {
         if (t.o == null) t.o = createObject(t.c);
         // List<Field> l = FieldUtils.getAllFieldsList(t.c).stream().filter(f -> f.getAnnotation(PBA.class) != null).toList();
         Class<?> s = t.c.getSuperclass();
-        if (s != null && !s.isInterface()) {
+        if (s != null && !s.isInterface() && PBData.class.isAssignableFrom(s) && s != PBObject.class && s != Object.class) {
             PBDataT u = new PBDataT(t, s, t.o, null, null);
             readFields(u);
         }

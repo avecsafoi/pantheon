@@ -6,17 +6,19 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
+import static kr.co.koscom.olympus.pb.include.PBCommon.*;
+
 @EqualsAndHashCode(callSuper = true)
 @Accessors(chain = true)
 @Data
 public class TestSubVo extends PBObject {
 
-    @PBA(name = "종목", scale = 12)
+    @PBA(name = "종목", scale = Z_ISU_NO)
     private String isu;
 
-    @PBA(name = "수량", scale = 5)
+    @PBA(name = "수량", scale = Z_SHORT)
     private short qty;
 
-    @PBA(name = "기타", scale = 20)
+    @PBA(name = "기타", scale = Z_REMARK)
     private String mark;
 }

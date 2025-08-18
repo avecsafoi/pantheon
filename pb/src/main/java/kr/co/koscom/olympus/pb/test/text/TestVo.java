@@ -10,35 +10,37 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.List;
 
+import static kr.co.koscom.olympus.pb.include.PBCommon.*;
+
 @EqualsAndHashCode(callSuper = true)
 @Accessors(chain = true)
 @Data
 public class TestVo extends PBObject {
 
-    @PBA(name = "서비스ID", scale = 12)
+    @PBA(name = "서비스ID", scale = Z_SVC_ID)
     private String svcId;
 
-    @PBA(name = "비밀번호", scale = 12, mask = PBA.Mask.PASSWORD)
+    @PBA(name = "비밀번호", scale = Z_PWD, mask = PBA.Mask.PASSWORD)
     private String pwd;
 
-    @PBA(name = "현금", scale = 10)
+    @PBA(name = "현금", scale = Z_LONG)
     private long cash;
 
-    @PBA(name = "증거금", scale = 10)
+    @PBA(name = "증거금", scale = Z_DOUBLE)
     private double price;
 
-    @PBA(name = "예수금", scale = 20)
+    @PBA(name = "예수금", scale = Z_LONG)
     private BigInteger margin;
 
-    @PBA(name = "예수금", scale = 20)
+    @PBA(name = "예수금", scale = Z_DOUBLE)
     private BigDecimal deposit;
 
-    @PBA(name = "배열", scale = 2, fix = false)
+    @PBA(name = "배열", scale = 2)
     private TestSubVo[] subArray;
 
-    @PBA(name = "목록", scale = 3)
+    @PBA(name = "목록", scale = 2, fix = false)
     private List<TestSubVo> subList;
 
-    @PBA(name = "기타", scale = 20)
+    @PBA(name = "기타", scale = Z_REMARK)
     private String mark;
 }

@@ -1,6 +1,7 @@
 package kr.co.koscom.olympus.pb.ab.data.io;
 
 import kr.co.koscom.olympus.pb.ab.data.PBData;
+import kr.co.koscom.olympus.pb.ab.data.PBObject;
 import kr.co.koscom.olympus.pb.ab.data.annotation.PBA;
 import org.apache.commons.lang3.time.DateFormatUtils;
 
@@ -114,7 +115,8 @@ public class PBTextDataOutputStream extends PBDataOutputStream {
             }
             for (int i = 0; i < z; i++) {
                 Object x = i < n ? l.get(i) : null;
-                PBDataT u = new PBDataT(t, x == null ? s : x.getClass(), null, t.f, null);
+                Class<?> y = x == null ? s : x.getClass();
+                PBDataT u = new PBDataT(t, y, x, null, null);
                 writeObject(u);
             }
             return;
@@ -130,7 +132,8 @@ public class PBTextDataOutputStream extends PBDataOutputStream {
             }
             for (int i = 0; i < z; i++) {
                 Object x = i < n ? Array.get(t.o, i) : null;
-                PBDataT u = new PBDataT(t, x == null ? s : x.getClass(), null, t.f, null);
+                Class<?> y = x == null ? s : x.getClass();
+                PBDataT u = new PBDataT(t, y, x, null, null);
                 writeObject(u);
             }
             return;
@@ -146,7 +149,7 @@ public class PBTextDataOutputStream extends PBDataOutputStream {
 
     public void writeFields(PBDataT t) throws IOException {
         Class<?> s = t.c.getSuperclass();
-        if (s != null && !s.isInterface()) {
+        if (s != null && !s.isInterface() && PBData.class.isAssignableFrom(s) && s != PBObject.class && s != Object.class) {
             PBDataT u = new PBDataT(t, s, t.o, t.f, t.a);
             writeFields(u);
         }
