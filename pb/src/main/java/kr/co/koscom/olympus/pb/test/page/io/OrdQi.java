@@ -39,7 +39,7 @@ public class OrdQi extends PBObject {
     @PBA(name = "리미트")
     private int limit = 10;
 
-    @PBA(name = "리미트")
+    @PBA(name = "오프셋")
     private int offset;
 
 }

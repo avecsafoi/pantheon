@@ -29,8 +29,11 @@ public interface OnTblSpotOrdMapper extends PBMapper<OnTblSpotOrd> {
     @Select("select * from on_tbl_spot_ord where ord_dt >= #{qi.ordDt} LIMIT #{qi.offset}, #{qi.limit}")
     List<OnTblSpotOrd> page02(@Param("qi") OrdQi qi);
 
-    @Select("select * from on_tbl_spot_ord where ord_dt >= #{q1.ordDt} LIMIT #{qx2.offset}, #{qx2.limit}")
-    List<OnTblSpotOrd> page03(@Param("q1") OrdQi qx1, OrdQi qx2);
+    @Select("select * from on_tbl_spot_ord where ord_dt >= #{q1.ordDt} LIMIT #{q2.offset}, #{q2.limit}")
+    List<OnTblSpotOrd> page03(OrdQi q1, OrdQi q2);
+
+    @Select("select * from on_tbl_spot_ord where ord_dt >= #{qx1.ordDt} LIMIT #{qx2.offset}, #{qx2.limit}")
+    List<OnTblSpotOrd> page04(OrdQi qx1, @Param("qx2") OrdQi q2);
 
     @Select("select * from on_tbl_spot_ord where ord_dt >= #{qi.ordDt}")
     List<OnTblSpotOrd> page40(OrdQi qi, PBNPage pg);
