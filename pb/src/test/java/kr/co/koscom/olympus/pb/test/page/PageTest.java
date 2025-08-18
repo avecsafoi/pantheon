@@ -6,7 +6,8 @@ import kr.co.koscom.olympus.pb.ab.db.page.PBNPage;
 import kr.co.koscom.olympus.pb.ab.db.page.PBOrder;
 import kr.co.koscom.olympus.pb.db.entity.OnTblSpotOrd;
 import kr.co.koscom.olympus.pb.db.mapper.OnTblSpotOrdMapper;
-import kr.co.koscom.olympus.pb.test.pb.io;
+import kr.co.koscom.olympus.pb.test.pb.io.OrdQi;
+import kr.co.koscom.olympus.pb.test.pb.io.OrdQiWithCPage;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -21,7 +22,7 @@ public class PageTest {
     @Test
     void test() {
 
-        io.OrdQi qi1 = new io.OrdQi(), qi2 = new io.OrdQi();
+        OrdQi qi1 = new OrdQi(), qi2 = new OrdQi();
 
         qi1.setOrdDt("20250101").setLimit(10).setOffset(2);
         qi2.setOrdDt("20250707").setLimit(5).setOffset(4);
@@ -40,6 +41,9 @@ public class PageTest {
         cpg.setFirst(false);
         cpg.setOrders(orders);
 
+        OrdQiWithCPage qip = new OrdQiWithCPage();
+        qip.setOrdDt("19001231").setPage(cpg);
+
         List<OnTblSpotOrd> l01 = mapper.page01(qi1);
 
         List<OnTblSpotOrd> l02 = mapper.page02(qi2);
@@ -55,6 +59,14 @@ public class PageTest {
         System.out.println(cpg);
 
         List<OnTblSpotOrd> l51 = mapper.page51(cpg, qi1);
+        System.out.println(cpg);
+
+        cpg.setFirst(false);
+        List<OnTblSpotOrd> l52 = mapper.page52(qip);
+        System.out.println(cpg);
+
+        cpg.setFirst(false);
+        List<OnTblSpotOrd> l53 = mapper.page53(qip);
         System.out.println(cpg);
     }
 }

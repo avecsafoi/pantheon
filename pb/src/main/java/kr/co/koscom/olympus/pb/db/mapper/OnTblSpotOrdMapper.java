@@ -5,7 +5,8 @@ import kr.co.koscom.olympus.pb.ab.db.page.PBCPage;
 import kr.co.koscom.olympus.pb.ab.db.page.PBNPage;
 import kr.co.koscom.olympus.pb.db.entity.OnTblSpotOrd;
 import kr.co.koscom.olympus.pb.on.bms.SPOT_ORD_TRX_SP_ST;
-import kr.co.koscom.olympus.pb.test.pb.io;
+import kr.co.koscom.olympus.pb.test.pb.io.OrdQi;
+import kr.co.koscom.olympus.pb.test.pb.io.OrdQiWithCPage;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
@@ -24,23 +25,29 @@ public interface OnTblSpotOrdMapper extends PBMapper<OnTblSpotOrd> {
     void ON_FN_SPOT_ORD_MAIN(@Param("st") SPOT_ORD_TRX_SP_ST st);
 
     @Select("select * from on_tbl_spot_ord where ord_dt >= #{ordDt} LIMIT #{offset}, #{limit}")
-    List<OnTblSpotOrd> page01(io.OrdQi qi);
+    List<OnTblSpotOrd> page01(OrdQi qi);
 
     @Select("select * from on_tbl_spot_ord where ord_dt >= #{qi.ordDt} LIMIT #{qi.offset}, #{qi.limit}")
-    List<OnTblSpotOrd> page02(@Param("qi") io.OrdQi qi);
+    List<OnTblSpotOrd> page02(@Param("qi") OrdQi qi);
 
     @Select("select * from on_tbl_spot_ord where ord_dt >= #{q1.ordDt} LIMIT #{q2.offset}, #{q2.limit}")
-    List<OnTblSpotOrd> page03(io.OrdQi q1, io.OrdQi q2);
+    List<OnTblSpotOrd> page03(OrdQi q1, OrdQi q2);
 
     @Select("select * from on_tbl_spot_ord where ord_dt >= #{qx1.ordDt} LIMIT #{qx2.offset}, #{qx2.limit}")
-    List<OnTblSpotOrd> page04(io.OrdQi qx1, @Param("qx2") io.OrdQi q2);
+    List<OnTblSpotOrd> page04(OrdQi qx1, @Param("qx2") OrdQi q2);
 
     @Select("select * from on_tbl_spot_ord where ord_dt >= #{qi.ordDt}")
-    List<OnTblSpotOrd> page40(io.OrdQi qi, PBNPage pg);
+    List<OnTblSpotOrd> page40(OrdQi qi, PBNPage pg);
 
     @Select("select * from on_tbl_spot_ord where ord_dt >= #{qi.ordDt}")
-    List<OnTblSpotOrd> page50(io.OrdQi qi, PBCPage pg);
+    List<OnTblSpotOrd> page50(OrdQi qi, PBCPage pg);
 
     @Select("select * from on_tbl_spot_ord where ord_dt >= #{qi.ordDt}")
-    List<OnTblSpotOrd> page51(PBCPage pg, io.OrdQi qi);
+    List<OnTblSpotOrd> page51(PBCPage pg, OrdQi qi);
+
+    @Select("select * from on_tbl_spot_ord where ord_dt >= #{ordDt}")
+    List<OnTblSpotOrd> page52(OrdQiWithCPage qi);
+
+    @Select("select * from on_tbl_spot_ord where ord_dt >= #{qi.ordDt}")
+    List<OnTblSpotOrd> page53(@Param("qi") OrdQiWithCPage qi);
 }

@@ -160,7 +160,7 @@ public class PBPageInterceptor implements Interceptor {
             Map.Entry<String, PBLock> le = findTypeEntry(pr, PBLock.class);
 
             BoundSql bs = ms.getBoundSql(pr);
-            StringBuilder sb = new StringBuilder("%n/* MyBatis_SQLID %s */%n".formatted(ms.getId()));
+            StringBuilder sb = new StringBuilder("%n/* SQLID %s */%n".formatted(ms.getId()));
 
             if (pe != null) setPageSql(ms, bs, sb, pe);
             else sb.append(bs.getSql());
