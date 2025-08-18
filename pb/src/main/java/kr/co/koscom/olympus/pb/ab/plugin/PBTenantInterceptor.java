@@ -1,5 +1,6 @@
 package kr.co.koscom.olympus.pb.ab.plugin;
 
+import com.mybatisflex.core.datasource.DataSourceKey;
 import io.micrometer.common.util.StringUtils;
 import jakarta.annotation.Nonnull;
 import jakarta.servlet.http.HttpServletRequest;
@@ -9,6 +10,7 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.List;
+import java.util.Random;
 
 public class PBTenantInterceptor implements HandlerInterceptor {
 
@@ -30,9 +32,14 @@ public class PBTenantInterceptor implements HandlerInterceptor {
         // 요청을 통해 테넌트 ID를 가져옵니다.
         String tenantId = getTenantIdByReuqest(request);
 
+        Random random = new Random();
+        tenantId = random.nextInt() % 2 == 0 ? "코스콤" : "신정원";
+
         // 테넌트 ID를 요청 속성으로 설정합니다.
         request.setAttribute("tenantId", tenantId);
-        request.setAttribute("tenant_id", tenantId);
+
+        DataSourceKey.use("코스콤".equals(tenantId) ? "pb1" : "pb2");
+
         return true;
     }
 

@@ -20,7 +20,9 @@ public @interface PBA {
 
     boolean skip() default false;
 
-    public static enum Mask {
+    String charset() default "";
+
+    enum Mask {
         NONE, PASSWORD, JUMIN, NAME
     }
 }

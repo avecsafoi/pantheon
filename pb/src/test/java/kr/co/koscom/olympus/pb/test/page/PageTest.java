@@ -11,6 +11,8 @@ import kr.co.koscom.olympus.pb.test.pb.io.OrdQiWithCPage;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @SpringBootTest
@@ -64,6 +66,8 @@ public class PageTest {
         cpg.setFirst(false);
         List<OnTblSpotOrd> l52 = mapper.page52(qip);
         System.out.println(cpg);
+
+        Collections.shuffle(new ArrayList<>(orders)); // 순서섞기
 
         cpg.setFirst(false);
         List<OnTblSpotOrd> l53 = mapper.page53(qip);

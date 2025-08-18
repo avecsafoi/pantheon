@@ -55,9 +55,14 @@ public class PBTextDataInputStream extends PBDataInputStream {
     }
 
     public String readString(int n) throws IOException {
+        return readString(n, null);
+    }
+
+    public String readString(int n, PBA a) throws IOException {
         byte[] b = new byte[n];
         super.readFully(b, 0, b.length);
-        return new String(b, super.charset).trim();
+        Charset c = a == null || a.charset().isEmpty() ? super.charset : Charset.forName(a.charset());
+        return new String(b, c).trim();
     }
 
     public Object readObject(PBDataT t) throws IOException {
@@ -75,7 +80,7 @@ public class PBTextDataInputStream extends PBDataInputStream {
 
         if (String.class.isAssignableFrom(t.c)) {
             int z = a.fix() ? a.scale() : NumberUtils.toInt(readString(a.scale()));
-            return readString(z);
+            return readString(z, a);
         }
         if (t.c.isPrimitive()) {
             if (int.class.equals(t.c)) {

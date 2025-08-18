@@ -39,7 +39,12 @@ public class PBTextDataOutputStream extends PBDataOutputStream {
     }
 
     public void writeString(Object o, byte[] b, int z, int s) throws IOException {
-        if (b == null && o != null) b = String.valueOf(o).getBytes(charset);
+        writeString(o, b, z, s, null);
+    }
+
+    public void writeString(Object o, byte[] b, int z, int s, PBA a) throws IOException {
+        Charset c = a == null || a.charset().isEmpty() ? super.charset : Charset.forName(a.charset());
+        if (b == null && o != null) b = String.valueOf(o).getBytes(c);
         int n = b == null ? 0 : b.length;
         if (n > z) throw new IndexOutOfBoundsException("Scale = %d, Data = %d (%s)".formatted(z, n, o));
         if (s != 0) for (int i = 0, j = z - n; i < j; i++) write(' ');
@@ -72,7 +77,7 @@ public class PBTextDataOutputStream extends PBDataOutputStream {
                 byte[] b = t.o == null ? null : t.o.toString().getBytes(charset);
                 int n = b == null ? 0 : b.length;
                 writeNumber(n, a.scale()); // 문자열 앞단에 문자열 길이 입력
-                writeString(t.o, b, n, 0);
+                writeString(t.o, b, n, 0, a);
             }
             return;
         }
