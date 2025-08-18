@@ -1,4 +1,4 @@
-package kr.co.koscom.olympus.pb.ab.conf.plugin;
+package kr.co.koscom.olympus.pb.ab.plugin;
 
 import com.mybatisflex.core.datasource.DataSourceShardingStrategy;
 

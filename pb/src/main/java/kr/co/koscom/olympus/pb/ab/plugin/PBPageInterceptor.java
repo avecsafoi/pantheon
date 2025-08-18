@@ -1,4 +1,4 @@
-package kr.co.koscom.olympus.pb.ab.conf.plugin;
+package kr.co.koscom.olympus.pb.ab.plugin;
 
 import kr.co.koscom.olympus.pb.ab.data.PBData;
 import kr.co.koscom.olympus.pb.ab.db.page.*;
@@ -64,6 +64,7 @@ public class PBPageInterceptor implements Interceptor {
             String on = pn.isEmpty() ? "" : pn + ".";
             pm.add(new ParameterMapping.Builder(ms.getConfiguration(), on + "offset", Object.class).build());
             pm.add(new ParameterMapping.Builder(ms.getConfiguration(), on + "limit", Object.class).build());
+            sb.append(bs.getSql());
             sb.append(" LIMIT ?, ?");
         }
     }
