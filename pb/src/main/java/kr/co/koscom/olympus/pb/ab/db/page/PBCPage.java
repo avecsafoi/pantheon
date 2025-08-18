@@ -19,7 +19,7 @@ public class PBCPage extends PBPage {
     private boolean last = false;
 
     @PBA(name = "목록건수 제한", scale = 6)
-    private int limit = 100;
+    private int limit = 50;
 
     @PBA(name = "연속키 조건", scale = 6)
     private List<PBOrder> orders;

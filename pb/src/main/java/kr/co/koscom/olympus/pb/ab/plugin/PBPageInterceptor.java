@@ -25,6 +25,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import static com.mybatisflex.core.util.StringUtil.camelToUnderline;
+
+
 @Intercepts(@Signature(type = Executor.class, method = "query", args = {MappedStatement.class, Object.class, RowBounds.class, ResultHandler.class}))
 @Slf4j
 public class PBPageInterceptor implements Interceptor {
@@ -45,16 +48,17 @@ public class PBPageInterceptor implements Interceptor {
             StringBuilder bo = new StringBuilder();
             int i = 0, z = os.size(), x = z - 1;
             for (PBOrder o : os) {
+                String cn = camelToUnderline(o.getColumn());
                 if (!cpg.isFirst()) {
-                    bw.append("%n%s (%s %s ?".formatted(i == 0 ? " WHERE" : "   AND", o.getColumn(), o.isAsc() ? ">" : "<"));
+                    bw.append("%n%s (%s %s ?".formatted(i == 0 ? " WHERE" : "   AND", cn, o.isAsc() ? ">" : "<"));
                     String s1 = "%s[%d].value".formatted(on, i);
                     pm.add(new ParameterMapping.Builder(ms.getConfiguration(), s1, Object.class).build());
                     if (i < x) {
-                        bw.append(" OR (%s = ?".formatted(o.getColumn()));
+                        bw.append(" OR (%s = ?".formatted(cn));
                         pm.add(new ParameterMapping.Builder(ms.getConfiguration(), s1, Object.class).build());
                     }
                 }
-                bo.append("%s %s %s".formatted(i == 0 ? " ORDER BY" : ",", o.getColumn(), o.isAsc() ? "asc" : "desc"));
+                bo.append("%s %s %s".formatted(i == 0 ? " ORDER BY" : ",", camelToUnderline(cn), o.isAsc() ? "asc" : "desc"));
                 i++;
             }
             if (!cpg.isFirst()) bw.append(")".repeat(Math.max(0, i * 2 - 1)));

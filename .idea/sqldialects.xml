@@ -4,6 +4,7 @@
     <file url="file://$PROJECT_DIR$/athena/src/main/java/kr/co/koscom/olympus/athena/demo/mapper/DemoMapper.java" dialect="GenericSQL" />
     <file url="file://$PROJECT_DIR$/athena/src/main/resources/db/data-h2.sql" dialect="GenericSQL" />
     <file url="file://$PROJECT_DIR$/athena/src/main/resources/db/schema-h2.sql" dialect="GenericSQL" />
+    <file url="file://$PROJECT_DIR$/data/test/pb.sql" dialect="MariaDB" />
     <file url="PROJECT" dialect="H2" />
   </component>
 </project>

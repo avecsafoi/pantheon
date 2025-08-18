@@ -23,18 +23,18 @@ public interface OnTblSpotOrdMapper extends PBMapper<OnTblSpotOrd> {
 
     void ON_FN_SPOT_ORD_MAIN(@Param("st") SPOT_ORD_TRX_SP_ST st);
 
-    @Select("select * from on_tbl_spot_ord where ord_dt = #{ordDt} LIMIT #{offset}, #{limit}")
+    @Select("select * from on_tbl_spot_ord where ord_dt >= #{ordDt} LIMIT #{offset}, #{limit}")
     List<OnTblSpotOrd> page01(OrdQi qi);
 
-    @Select("select * from on_tbl_spot_ord where ord_dt = #{qi.ordDt} LIMIT #{qi.offset}, #{qi.limit}")
+    @Select("select * from on_tbl_spot_ord where ord_dt >= #{qi.ordDt} LIMIT #{qi.offset}, #{qi.limit}")
     List<OnTblSpotOrd> page02(@Param("qi") OrdQi qi);
 
-    @Select("select * from on_tbl_spot_ord where ord_dt = #{qi1.ordDt} LIMIT #{qi2.offset}, #{qi2.limit}")
-    List<OnTblSpotOrd> page03(@Param("qi1") OrdQi qi1, @Param("qi2") OrdQi qi);
+    @Select("select * from on_tbl_spot_ord where ord_dt >= #{q1.ordDt} LIMIT #{qx2.offset}, #{qx2.limit}")
+    List<OnTblSpotOrd> page03(@Param("q1") OrdQi qx1, OrdQi qx2);
 
-    @Select("select * from on_tbl_spot_ord where ord_dt = #{qi.ordDt}")
-    List<OnTblSpotOrd> page40(@Param("qi") OrdQi qi, @Param("pg") PBNPage pg);
+    @Select("select * from on_tbl_spot_ord where ord_dt >= #{qi.ordDt}")
+    List<OnTblSpotOrd> page40(OrdQi qi, PBNPage pg);
 
-    @Select("select * from on_tbl_spot_ord where ord_dt = #{qi.ordDt}")
-    List<OnTblSpotOrd> page50(@Param("qi") OrdQi qi, @Param("pg") PBCPage pg);
+    @Select("select * from on_tbl_spot_ord where ord_dt >= #{qi.ordDt}")
+    List<OnTblSpotOrd> page50(OrdQi qi, PBCPage pg);
 }

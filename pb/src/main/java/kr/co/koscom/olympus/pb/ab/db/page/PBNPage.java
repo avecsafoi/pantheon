@@ -11,7 +11,7 @@ import lombok.experimental.Accessors;
 public class PBNPage extends PBPage {
 
     @PBA(name = "목록건수 제한", scale = 6)
-    private int limit;
+    private int limit = 50;
 
     @PBA(name = "오프셋 할 건수", scale = 6)
     private int offset;
