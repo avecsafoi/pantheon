@@ -16,11 +16,5 @@ public class PBOrder extends PBObject {
     private String column;
     private boolean asc;
     private Object value;
-    private boolean nullsFirst;
-
-    public PBOrder(String column, boolean asc, Object value) {
-        this.column = column;
-        this.asc = asc;
-        this.value = value;
-    }
+    // private boolean nullsFirst;
 }

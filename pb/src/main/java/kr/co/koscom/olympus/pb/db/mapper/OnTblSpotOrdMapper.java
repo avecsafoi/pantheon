@@ -40,4 +40,7 @@ public interface OnTblSpotOrdMapper extends PBMapper<OnTblSpotOrd> {
 
     @Select("select * from on_tbl_spot_ord where ord_dt >= #{qi.ordDt}")
     List<OnTblSpotOrd> page50(OrdQi qi, PBCPage pg);
+
+    @Select("select * from on_tbl_spot_ord where ord_dt >= #{qi.ordDt}")
+    List<OnTblSpotOrd> page51(PBCPage pg, OrdQi qi);
 }

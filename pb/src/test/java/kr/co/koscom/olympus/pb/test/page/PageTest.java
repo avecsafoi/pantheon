@@ -49,9 +49,12 @@ public class PageTest {
         List<OnTblSpotOrd> l04 = mapper.page03(qi1, qi2);
 
         List<OnTblSpotOrd> l40 = mapper.page40(qi1, npg);
+        System.out.println(npg);
 
         List<OnTblSpotOrd> l50 = mapper.page50(qi1, cpg);
+        System.out.println(cpg);
 
-        System.out.println("OK");
+        List<OnTblSpotOrd> l51 = mapper.page51(cpg, qi1);
+        System.out.println(cpg);
     }
 }
