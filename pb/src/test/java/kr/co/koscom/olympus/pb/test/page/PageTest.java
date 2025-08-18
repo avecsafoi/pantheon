@@ -6,7 +6,7 @@ import kr.co.koscom.olympus.pb.ab.db.page.PBNPage;
 import kr.co.koscom.olympus.pb.ab.db.page.PBOrder;
 import kr.co.koscom.olympus.pb.db.entity.OnTblSpotOrd;
 import kr.co.koscom.olympus.pb.db.mapper.OnTblSpotOrdMapper;
-import kr.co.koscom.olympus.pb.test.page.io.OrdQi;
+import kr.co.koscom.olympus.pb.test.pb.io;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -21,7 +21,7 @@ public class PageTest {
     @Test
     void test() {
 
-        OrdQi qi1 = new OrdQi(), qi2 = new OrdQi();
+        io.OrdQi qi1 = new io.OrdQi(), qi2 = new io.OrdQi();
 
         qi1.setOrdDt("20250101").setLimit(10).setOffset(2);
         qi2.setOrdDt("20250707").setLimit(5).setOffset(4);

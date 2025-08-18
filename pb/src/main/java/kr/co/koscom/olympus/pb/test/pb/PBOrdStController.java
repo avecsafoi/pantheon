@@ -9,7 +9,7 @@ import static kr.co.koscom.olympus.pb.include.PBCommon.SUCCESS;
 
 @RestController
 @RequestMapping("/pb/st")
-public class PBOrderController {
+public class PBOrdStController {
 
     @Resource
     private OnbSpotOrdSP_BSMM ordSPBsmm;
