@@ -3,10 +3,7 @@ package kr.co.koscom.olympus.pb.test.pb.io.st10001002;
 import jakarta.annotation.Resource;
 import kr.co.koscom.olympus.pb.db.entity.OnTblSpotOrd;
 import kr.co.koscom.olympus.pb.db.mapper.OnTblSpotOrdMapper;
-import kr.co.koscom.olympus.pb.db.service.impl.OnTblSpotOrdServiceImpl;
 import kr.co.koscom.olympus.pb.include.PBService;
-import kr.co.koscom.olympus.pb.test.pb.io.st10001001.ST10001001In;
-import kr.co.koscom.olympus.pb.test.pb.io.st10001001.ST10001001Out;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

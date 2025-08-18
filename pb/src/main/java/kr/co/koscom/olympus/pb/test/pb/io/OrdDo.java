@@ -18,7 +18,7 @@ public class OrdDo extends PBObject {
     @PBA(name = "주문일자", scale = Z_DT)
     private String ordDt;
 
-    @PBA(name = "주문번호")
+    @PBA(name = "주문번호", scale = Z_LONG)
     private Long ordNo;
 
     @PBA(name = "주문시장코드", scale = Z_ORD_MKT_CODE)
@@ -30,10 +30,10 @@ public class OrdDo extends PBObject {
     @PBA(name = "종목번호", scale = Z_ISU_NO)
     private String isuNo;
 
-    @PBA(name = "주문수량")
+    @PBA(name = "주문수량", scale = Z_LONG)
     private Long ordQty;
 
-    @PBA(name = "주문가")
+    @PBA(name = "주문가", scale = Z_LONG)
     private BigDecimal ordPrc;
 
     @PBA(name = "주문시간", scale = Z_TIME)
@@ -42,12 +42,12 @@ public class OrdDo extends PBObject {
     @PBA(name = "매매구분", scale = Z_BNS_TP)
     private String bnsTp;
 
-    @PBA(name = "체결수량")
+    @PBA(name = "체결수량", scale = Z_LONG)
     private Long execQty;
 
-    @PBA(name = "체결금액")
+    @PBA(name = "체결금액", scale = Z_LONG)
     private Long execAmt;
 
-    @PBA(name = "비고")
+    @PBA(name = "비고", scale = Z_REMARK)
     private String mark;
 }

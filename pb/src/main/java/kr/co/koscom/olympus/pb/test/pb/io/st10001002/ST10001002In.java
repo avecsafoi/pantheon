@@ -9,9 +9,6 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
-import static kr.co.koscom.olympus.pb.include.PBCommon.Z_ACNT_NO;
-import static kr.co.koscom.olympus.pb.include.PBCommon.Z_ISU_NO;
-
 @EqualsAndHashCode(callSuper = true)
 @Accessors(chain = true)
 @Data

@@ -27,19 +27,18 @@ public class OrdQi extends PBObject {
     @PBA(name = "종목번호", scale = Z_ISU_NO)
     private String isuNo;
 
-    @PBA(name = "주문수량")
+    @PBA(name = "주문수량", scale = Z_LONG)
     private Long ordQty;
 
-    @PBA(name = "주문가")
+    @PBA(name = "주문가", scale = Z_LONG)
     private BigDecimal ordPrc;
 
-    @PBA(name = "비고")
+    @PBA(name = "비고", scale = Z_REMARK)
     private String mark;
 
-    @PBA(name = "리미트")
+    @PBA(name = "리미트", scale = Z_INT)
     private int limit = 10;
 
-    @PBA(name = "오프셋")
+    @PBA(name = "오프셋", scale = Z_INT)
     private int offset;
-
 }

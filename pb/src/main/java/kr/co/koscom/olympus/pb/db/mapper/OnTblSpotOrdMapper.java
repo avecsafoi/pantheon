@@ -7,7 +7,6 @@ import kr.co.koscom.olympus.pb.db.entity.OnTblSpotOrd;
 import kr.co.koscom.olympus.pb.on.bms.SPOT_ORD_TRX_SP_ST;
 import kr.co.koscom.olympus.pb.test.pb.io.OrdQi;
 import kr.co.koscom.olympus.pb.test.pb.io.OrdQiWithCPage;
-import kr.co.koscom.olympus.pb.test.pb.io.st10001001.ST10001001In;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
@@ -41,12 +40,12 @@ public interface OnTblSpotOrdMapper extends PBMapper<OnTblSpotOrd> {
     List<OnTblSpotOrd> page40(OrdQi qi, PBNPage pg);
 
     @Select("""
-<script>
-    select * from on_tbl_spot_ord where 1 = 1
-    <if test='qi.ordDt != null'>AND ord_dt >= #{qi.ordDt}</if>
-    <if test='qi.ordNo != null and qi.ordNo > 0'>AND ord_no >= #{qi.ordno}</if>
-</script>
-    """)
+            <script>
+                select * from on_tbl_spot_ord where 1 = 1
+                <if test='qi.ordDt != null'>AND ord_dt >= #{qi.ordDt}</if>
+                <if test='qi.ordNo != null and qi.ordNo > 0'>AND ord_no >= #{qi.ordno}</if>
+            </script>
+            """)
     List<OnTblSpotOrd> page50(OrdQi qi, PBCPage pg);
 
     @Select("select * from on_tbl_spot_ord where ord_dt >= #{qi.ordDt}")
