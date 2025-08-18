@@ -147,7 +147,7 @@ public class PBTextDataOutputStream extends PBDataOutputStream {
     public void writeFields(PBDataT t) throws IOException {
         Class<?> s = t.c.getSuperclass();
         if (s != null && !s.isInterface()) {
-            PBDataT u = new PBDataT(t, s, t.o, t.f, null);
+            PBDataT u = new PBDataT(t, s, t.o, t.f, t.a);
             writeFields(u);
         }
         for (Field f : t.c.getDeclaredFields()) {
@@ -157,7 +157,7 @@ public class PBTextDataOutputStream extends PBDataOutputStream {
             try {
                 Object x = t.o == null ? null : f.get(t.o);
                 Class<?> y = x == null ? f.getType() : x.getClass();
-                PBDataT u = new PBDataT(t, y, x, t.f, null);
+                PBDataT u = new PBDataT(t, y, x, f, a);
                 writeObject(u);
             } catch (Throwable e) {
                 throw new IOException("Failed to write field (%s.%s): %s".formatted(t.c.getCanonicalName(), f.getName(), e.getMessage()), e);

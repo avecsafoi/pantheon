@@ -178,7 +178,7 @@ public class PBTextDataInputStream extends PBDataInputStream {
             if (a == null || a.skip()) continue;
             if (!f.canAccess(t.o)) f.setAccessible(true);
             try {
-                PBDataT u = new PBDataT(t, f.getType(), null, f, null);
+                PBDataT u = new PBDataT(t, f.getType(), null, f, a);
                 Object x = readObject(u);
                 f.set(t.o, x);
             } catch (Throwable e) {
