@@ -1,0 +1,29 @@
+package kr.co.koscom.olympus.pb.test.pb.io.st10001002;
+
+import jakarta.annotation.Resource;
+import kr.co.koscom.olympus.pb.db.entity.OnTblSpotOrd;
+import kr.co.koscom.olympus.pb.db.mapper.OnTblSpotOrdMapper;
+import kr.co.koscom.olympus.pb.db.service.impl.OnTblSpotOrdServiceImpl;
+import kr.co.koscom.olympus.pb.include.PBService;
+import kr.co.koscom.olympus.pb.test.pb.io.st10001001.ST10001001In;
+import kr.co.koscom.olympus.pb.test.pb.io.st10001001.ST10001001Out;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+@Service("PB_SID 10001002")
+public class ST10001002SVC implements PBService<ST10001002> {
+
+    @Resource
+    OnTblSpotOrdMapper mapper;
+
+    @Override
+    public int process(ST10001002 st) {
+        ST10001002In in = st.getIn();
+        ST10001002Out out = st.getOut();
+        List<OnTblSpotOrd> ls = mapper.page50(in.getOrdQi(), in.getPage());
+        out.setList(ls);
+        out.setPage(in.getPage());
+        return 0;
+    }
+}
