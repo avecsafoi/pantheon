@@ -21,4 +21,13 @@
               )}
     </update>
 
+
+    <select id="page50">
+        SELECT * FROM ON_TBL_SPOT_ORD
+        <where>
+            <if test='qi.ordDt != null'>AND ord_dt >= #{qi.ordDt}</if>
+            <if test='qi.ordNo != null and qi.ordNo > 0'>AND ord_no >= #{qi.ordNo}</if>
+        </where>
+    </select>
+
 </mapper>

@@ -39,14 +39,7 @@ public interface OnTblSpotOrdMapper extends PBMapper<OnTblSpotOrd> {
     @Select("select * from on_tbl_spot_ord where ord_dt >= #{qi.ordDt}")
     List<OnTblSpotOrd> page40(OrdQi qi, PBNPage pg);
 
-    @Select("""
-            <script>
-                select * from on_tbl_spot_ord where 1 = 1
-                <if test='qi.ordDt != null'>AND ord_dt >= #{qi.ordDt}</if>
-                <if test='qi.ordNo != null and qi.ordNo > 0'>AND ord_no >= #{qi.ordno}</if>
-            </script>
-            """)
-    List<OnTblSpotOrd> page50(OrdQi qi, PBCPage pg);
+    List<OnTblSpotOrd> page50(@Param("qi") OrdQi qi, @Param("pg") PBCPage pg);
 
     @Select("select * from on_tbl_spot_ord where ord_dt >= #{qi.ordDt}")
     List<OnTblSpotOrd> page51(PBCPage pg, OrdQi qi);

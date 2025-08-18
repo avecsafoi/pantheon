@@ -46,21 +46,22 @@ public class PBPageInterceptor implements Interceptor {
             List<PBOrder> os = cpg.getOrders();
             StringBuilder bw = new StringBuilder();
             StringBuilder bo = new StringBuilder();
-            int i = 0, z = os.size(), x = z - 1;
-            for (PBOrder o : os) {
-                String cn = camelToUnderline(o.getColumn());
-                if (!cpg.isFirst()) {
-                    bw.append("%n%s (%s %s ?".formatted(i == 0 ? " WHERE" : "   AND", cn, o.isAsc() ? ">" : "<"));
-                    String s1 = "%s[%d].value".formatted(on, i);
-                    pm.add(new ParameterMapping.Builder(ms.getConfiguration(), s1, Object.class).build());
-                    if (i < x) {
-                        bw.append(" OR (%s = ?".formatted(cn));
+            int i = 0, z = os == null ? 0 : os.size(), x = z - 1;
+            if (os != null)
+                for (PBOrder o : os) {
+                    String cn = camelToUnderline(o.getColumn());
+                    if (!cpg.isFirst()) {
+                        bw.append("%n%s (%s %s ?".formatted(i == 0 ? " WHERE" : "   AND", cn, o.isAsc() ? ">" : "<"));
+                        String s1 = "%s[%d].value".formatted(on, i);
                         pm.add(new ParameterMapping.Builder(ms.getConfiguration(), s1, Object.class).build());
+                        if (i < x) {
+                            bw.append(" OR (%s = ?".formatted(cn));
+                            pm.add(new ParameterMapping.Builder(ms.getConfiguration(), s1, Object.class).build());
+                        }
                     }
+                    bo.append("%s %s %s".formatted(i == 0 ? " ORDER BY" : ",", camelToUnderline(cn), o.isAsc() ? "asc" : "desc"));
+                    i++;
                 }
-                bo.append("%s %s %s".formatted(i == 0 ? " ORDER BY" : ",", camelToUnderline(cn), o.isAsc() ? "asc" : "desc"));
-                i++;
-            }
             if (!cpg.isFirst()) bw.append(")".repeat(Math.max(0, i * 2 - 1)));
             pm.add(new ParameterMapping.Builder(ms.getConfiguration(), ln, int.class).build());
             sb.append("SELECT A.* FROM (%n%s%n) A%s%n%s%nLIMIT ?".formatted(bs.getSql(), bw, bo));

@@ -52,7 +52,7 @@ public class PageTest {
 
         List<OnTblSpotOrd> l03 = mapper.page03(qi1, qi2);
 
-        List<OnTblSpotOrd> l04 = mapper.page03(qi1, qi2);
+        List<OnTblSpotOrd> l04 = mapper.page04(qi1, qi2);
 
         List<OnTblSpotOrd> l40 = mapper.page40(qi1, npg);
         System.out.println(npg);

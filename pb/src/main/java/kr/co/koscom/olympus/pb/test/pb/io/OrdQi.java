@@ -18,8 +18,8 @@ public class OrdQi extends PBObject {
     @PBA(name = "주문일자", scale = Z_DT)
     private String ordDt;
 
-    @PBA(name = "주문번호")
-    private Long ordNo;
+    @PBA(name = "주문번호", scale = Z_LONG)
+    public long ordNo;
 
     @PBA(name = "계좌번호", scale = Z_ACNT_NO)
     private String acntNo;
@@ -28,7 +28,7 @@ public class OrdQi extends PBObject {
     private String isuNo;
 
     @PBA(name = "주문수량", scale = Z_LONG)
-    private Long ordQty;
+    private long ordQty;
 
     @PBA(name = "주문가", scale = Z_LONG)
     private BigDecimal ordPrc;
