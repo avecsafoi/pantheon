@@ -23,8 +23,8 @@ import static kr.co.koscom.olympus.pb.ab.util.PBDataUtil.*;
 @EqualsAndHashCode(callSuper = true)
 @Accessors(chain = true)
 @Data
-@Description("JSON 송수신 객체")
-public class PBJson extends PBObject {
+@Description("PB Data 송수신 객체")
+public class PBDataWrapper extends PBObject {
 
     @PBA(name = "공통 헤더")
     private PBHdrCommon hdrCommon;
