@@ -15,12 +15,10 @@ import static kr.co.koscom.olympus.pb.include.PBCommon.*;
 @Data
 public class OrdQi extends PBObject {
 
-    @PBA(name = "주문일자", scale = Z_DT)
-    private String ordDt;
-
     @PBA(name = "주문번호", scale = Z_LONG)
     public long ordNo;
-
+    @PBA(name = "주문일자", scale = Z_DT)
+    private String ordDt;
     @PBA(name = "계좌번호", scale = Z_ACNT_NO)
     private String acntNo;
 

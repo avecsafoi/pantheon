@@ -15,7 +15,7 @@ public class PBOrdStController {
     private OnbSpotOrdSP_BSMM ordSPBsmm;
 
     @PostMapping("ord")
-    public @ResponseBody SPOT_ORD_TRX_SP_ST list(@RequestBody SPOT_ORD_TRX_SP_ST st) throws Throwable {
+    public @ResponseBody SPOT_ORD_TRX_SP_ST ord(@RequestBody SPOT_ORD_TRX_SP_ST st) throws Throwable {
         int n = ordSPBsmm.process(st);
         if (n != SUCCESS) {
             throw new RuntimeException(st.getHdrAccount().getAOutMsgTp());
