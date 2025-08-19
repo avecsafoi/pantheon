@@ -6,6 +6,7 @@ import org.springframework.web.context.request.RequestContextHolder;
 
 public class PBTenantFactory implements TenantFactory {
 
+    @Override
     public Object[] getTenantIds() {
         RequestAttributes attributes = RequestContextHolder.getRequestAttributes();
         assert attributes != null;
