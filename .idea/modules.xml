@@ -4,7 +4,6 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/pantheon.iml" filepath="$PROJECT_DIR$/.idea/pantheon.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/pb.main.iml" filepath="$PROJECT_DIR$/.idea/modules/pb.main.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/pb.test.iml" filepath="$PROJECT_DIR$/.idea/modules/pb.test.iml" />
       <module fileurl="file://$PROJECT_DIR$/vue/vue.iml" filepath="$PROJECT_DIR$/vue/vue.iml" />
     </modules>
   </component>
