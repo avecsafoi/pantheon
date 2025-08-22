@@ -74,26 +74,27 @@ public class PBPageInterceptor implements Interceptor {
                 if (!cpg.isFirst()) bw.append(")".repeat(Math.max(0, i * 2 - 1)));
             }
             sb.append("SELECT A.* FROM (%n%s%n) A%s%n%s%nLIMIT ?".formatted(bs.getSql(), bw, bo));
-            pm.add(new ParameterMapping.Builder(ms.getConfiguration(), ln, Object.class).build());
+            pm.add(new ParameterMapping.Builder(ms.getConfiguration(), ln, int.class).build());
         } else if (pg instanceof PBNPage) {
             String on = pn.isEmpty() ? "" : pn + ".";
             sb.append(bs.getSql());
             sb.append(" LIMIT ?, ?");
-            pm.add(new ParameterMapping.Builder(ms.getConfiguration(), on + "offset", Number.class).build());
-            pm.add(new ParameterMapping.Builder(ms.getConfiguration(), on + "limit", Number.class).build());
+            pm.add(new ParameterMapping.Builder(ms.getConfiguration(), on + "offset", int.class).build());
+            pm.add(new ParameterMapping.Builder(ms.getConfiguration(), on + "limit", int.class).build());
         }
         return bs;
     }
 
     public static void setLockSql(MappedStatement ms, BoundSql bs, StringBuilder sb, Map.Entry<String, PBLock> le) {
-        int wt = le.getValue().waitTime();
+        if (le == null) return;
+        int wt = le.getValue().getWaitTime();
         if (wt == Integer.MAX_VALUE) sb.append(" FOR UPDATE");
         else if (wt == 0) sb.append(" FOR UPDATE NOWAIT");
         else if (wt > 0) {
             sb.append(" FOR UPDATE WAIT ?");
             List<ParameterMapping> pm = bs.getParameterMappings();
             String nm = le.getKey().isEmpty() ? "waitTime" : le.getKey() + ".waitTime";
-            pm.add(new ParameterMapping.Builder(ms.getConfiguration(), nm, Object.class).build());
+            pm.add(new ParameterMapping.Builder(ms.getConfiguration(), nm, int.class).build());
         }
     }
 
