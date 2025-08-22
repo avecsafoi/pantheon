@@ -19,7 +19,7 @@ public class TestVo extends PBObject {
 
     @PBA(name = "서비스ID", scale = Z_SVC_ID)
     private String svcId;
-    
+
     @PBA(name = "비밀번호", scale = Z_PWD)
     private String pwd;
 
