@@ -3,13 +3,13 @@ package kr.co.koscom.olympus.pb;
 import com.mybatisflex.core.paginate.Page;
 import com.mybatisflex.core.query.QueryWrapper;
 import jakarta.annotation.Resource;
+import kr.co.koscom.olympus.pb.aps.on.bms.SPOT_ORD_TRX_SP_ST;
+import kr.co.koscom.olympus.pb.aps.on.bms.SPOT_ORD_TRX_SP_ST_IN;
+import kr.co.koscom.olympus.pb.aps.on.bms.SPOT_ORD_TRX_SP_ST_OUT;
 import kr.co.koscom.olympus.pb.db.entity.OnTblSpotOrd;
 import kr.co.koscom.olympus.pb.db.entity.Test001;
 import kr.co.koscom.olympus.pb.db.mapper.OnTblSpotOrdMapper;
 import kr.co.koscom.olympus.pb.db.mapper.Test001Mapper;
-import kr.co.koscom.olympus.pb.on.bms.SPOT_ORD_TRX_SP_ST;
-import kr.co.koscom.olympus.pb.on.bms.SPOT_ORD_TRX_SP_ST_IN;
-import kr.co.koscom.olympus.pb.on.bms.SPOT_ORD_TRX_SP_ST_OUT;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 

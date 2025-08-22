@@ -1,4 +1,4 @@
-package kr.co.koscom.olympus.pb.on.bms;
+package kr.co.koscom.olympus.pb.aps.on.bms;
 
 import kr.co.koscom.olympus.pb.include.PBST;
 import lombok.Data;

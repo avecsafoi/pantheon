@@ -1,8 +1,8 @@
 package kr.co.koscom.olympus.pb.test.pb;
 
 import jakarta.annotation.Resource;
-import kr.co.koscom.olympus.pb.on.bms.OnbSpotOrdSP_BSMM;
-import kr.co.koscom.olympus.pb.on.bms.SPOT_ORD_TRX_SP_ST;
+import kr.co.koscom.olympus.pb.aps.on.bms.OnbSpotOrdSP_BSMM;
+import kr.co.koscom.olympus.pb.aps.on.bms.SPOT_ORD_TRX_SP_ST;
 import org.springframework.web.bind.annotation.*;
 
 import static kr.co.koscom.olympus.pb.include.PBCommon.SUCCESS;

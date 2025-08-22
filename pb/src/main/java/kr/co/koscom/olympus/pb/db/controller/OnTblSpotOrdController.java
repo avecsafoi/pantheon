@@ -3,12 +3,12 @@ package kr.co.koscom.olympus.pb.db.controller;
 import com.mybatisflex.core.paginate.Page;
 import jakarta.annotation.Resource;
 import kr.co.koscom.olympus.pb.ab.db.page.PBCPage;
+import kr.co.koscom.olympus.pb.aps.on.bms.SPOT_ORD_TRX_SP_ST;
+import kr.co.koscom.olympus.pb.aps.on.bms.SPOT_ORD_TRX_SP_ST_IN;
+import kr.co.koscom.olympus.pb.aps.on.bms.SPOT_ORD_TRX_SP_ST_OUT;
 import kr.co.koscom.olympus.pb.db.entity.OnTblSpotOrd;
 import kr.co.koscom.olympus.pb.db.mapper.OnTblSpotOrdMapper;
 import kr.co.koscom.olympus.pb.db.service.impl.OnTblSpotOrdServiceImpl;
-import kr.co.koscom.olympus.pb.on.bms.SPOT_ORD_TRX_SP_ST;
-import kr.co.koscom.olympus.pb.on.bms.SPOT_ORD_TRX_SP_ST_IN;
-import kr.co.koscom.olympus.pb.on.bms.SPOT_ORD_TRX_SP_ST_OUT;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
