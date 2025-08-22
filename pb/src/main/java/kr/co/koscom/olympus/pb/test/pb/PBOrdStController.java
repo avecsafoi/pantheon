@@ -5,8 +5,6 @@ import kr.co.koscom.olympus.pb.aps.on.bms.OnbSpotOrdSP_BSMM;
 import kr.co.koscom.olympus.pb.aps.on.bms.SPOT_ORD_TRX_SP_ST;
 import org.springframework.web.bind.annotation.*;
 
-import static kr.co.koscom.olympus.pb.apa.PBCommon.SUCCESS;
-
 @RestController
 @RequestMapping("/pb/st")
 public class PBOrdStController {
@@ -16,10 +14,7 @@ public class PBOrdStController {
 
     @PostMapping("ord")
     public @ResponseBody SPOT_ORD_TRX_SP_ST ord(@RequestBody SPOT_ORD_TRX_SP_ST st) throws Throwable {
-        int n = ordSPBsmm.process(st);
-        if (n != SUCCESS) {
-            throw new RuntimeException(st.getHdrAccount().getAOutMsgTp());
-        }
+        ordSPBsmm.process(st);
         return st;
     }
 }
