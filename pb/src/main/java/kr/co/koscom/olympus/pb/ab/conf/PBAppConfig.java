@@ -7,7 +7,7 @@ import kr.co.koscom.olympus.pb.ab.plugin.PBDataSourceShardingStrategy;
 import kr.co.koscom.olympus.pb.ab.plugin.PBPageInterceptor;
 import kr.co.koscom.olympus.pb.ab.plugin.PBTenantFactory;
 import kr.co.koscom.olympus.pb.ab.plugin.PBTextDataHttpMessageConverter;
-import kr.co.koscom.olympus.pb.include.PBService;
+import kr.co.koscom.olympus.pb.apa.PBService;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;

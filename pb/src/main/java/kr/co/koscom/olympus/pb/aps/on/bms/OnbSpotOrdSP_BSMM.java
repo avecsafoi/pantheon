@@ -2,11 +2,11 @@ package kr.co.koscom.olympus.pb.aps.on.bms;
 
 
 import jakarta.annotation.Resource;
-import kr.co.koscom.olympus.pb.db.mapper.OnTblSpotOrdMapper;
-import kr.co.koscom.olympus.pb.include.PBService;
+import kr.co.koscom.olympus.pb.ap.mapper.OnTblSpotOrdMapper;
+import kr.co.koscom.olympus.pb.apa.PBService;
 import org.springframework.stereotype.Service;
 
-import static kr.co.koscom.olympus.pb.include.PBCommon.SUCCESS;
+import static kr.co.koscom.olympus.pb.apa.PBCommon.SUCCESS;
 
 @Service("10001000")
 public class OnbSpotOrdSP_BSMM implements PBService<SPOT_ORD_TRX_SP_ST> {

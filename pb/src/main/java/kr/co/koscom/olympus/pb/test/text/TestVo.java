@@ -10,7 +10,7 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.List;
 
-import static kr.co.koscom.olympus.pb.include.PBCommon.*;
+import static kr.co.koscom.olympus.pb.apa.PBCommon.*;
 
 @EqualsAndHashCode(callSuper = true)
 @Accessors(chain = true)

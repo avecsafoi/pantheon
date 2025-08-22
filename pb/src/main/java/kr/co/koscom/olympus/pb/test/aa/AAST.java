@@ -1,6 +1,6 @@
 package kr.co.koscom.olympus.pb.test.aa;
 
-import kr.co.koscom.olympus.pb.include.PBST;
+import kr.co.koscom.olympus.pb.apa.PBST;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;

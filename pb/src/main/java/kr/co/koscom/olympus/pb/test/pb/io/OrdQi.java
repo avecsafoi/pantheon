@@ -8,7 +8,7 @@ import lombok.experimental.Accessors;
 
 import java.math.BigDecimal;
 
-import static kr.co.koscom.olympus.pb.include.PBCommon.*;
+import static kr.co.koscom.olympus.pb.apa.PBCommon.*;
 
 @EqualsAndHashCode(callSuper = true)
 @Accessors(chain = true)

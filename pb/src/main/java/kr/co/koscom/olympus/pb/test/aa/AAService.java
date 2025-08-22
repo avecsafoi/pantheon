@@ -1,7 +1,7 @@
 package kr.co.koscom.olympus.pb.test.aa;
 
 import jakarta.annotation.Resource;
-import kr.co.koscom.olympus.pb.include.PBService;
+import kr.co.koscom.olympus.pb.apa.PBService;
 import org.springframework.stereotype.Service;
 
 @Service("11110000")

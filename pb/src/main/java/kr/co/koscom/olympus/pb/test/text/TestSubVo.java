@@ -6,7 +6,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
-import static kr.co.koscom.olympus.pb.include.PBCommon.*;
+import static kr.co.koscom.olympus.pb.apa.PBCommon.*;
 
 @EqualsAndHashCode(callSuper = true)
 @Accessors(chain = true)

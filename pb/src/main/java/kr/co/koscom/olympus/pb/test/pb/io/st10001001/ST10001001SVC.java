@@ -2,15 +2,15 @@ package kr.co.koscom.olympus.pb.test.pb.io.st10001001;
 
 import com.mybatisflex.core.query.QueryWrapper;
 import jakarta.annotation.Resource;
-import kr.co.koscom.olympus.pb.db.entity.OnTblSpotOrd;
-import kr.co.koscom.olympus.pb.db.service.impl.OnTblSpotOrdServiceImpl;
-import kr.co.koscom.olympus.pb.include.PBService;
+import kr.co.koscom.olympus.pb.ap.entity.OnTblSpotOrd;
+import kr.co.koscom.olympus.pb.ap.service.impl.OnTblSpotOrdServiceImpl;
+import kr.co.koscom.olympus.pb.apa.PBService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-import static kr.co.koscom.olympus.pb.db.entity.table.OnTblSpotOrdTableDef.ON_TBL_SPOT_ORD;
+import static kr.co.koscom.olympus.pb.ap.entity.table.OnTblSpotOrdTableDef.ON_TBL_SPOT_ORD;
 
 @Service("10001001")
 public class ST10001001SVC implements PBService<ST10001001> {

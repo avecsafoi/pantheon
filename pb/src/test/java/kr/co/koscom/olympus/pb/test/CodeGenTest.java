@@ -22,7 +22,7 @@ public class CodeGenTest {
 
         // 루트 패키지 설정
         globalConfig.setSourceDir("../auto");
-        globalConfig.setBasePackage("kr.co.koscom.olympus.pb.db");
+        globalConfig.setBasePackage("kr.co.koscom.olympus.pb.ap");
 
         // 테이블 접두사 및 생성대상 테이블 (대상 테이블을 설정하지 않으면 모든 테이블)
         // globalConfig.setTablePrefix("tb_");

@@ -1,9 +1,9 @@
 package kr.co.koscom.olympus.pb.test.pb.io.st10001002;
 
 import jakarta.annotation.Resource;
-import kr.co.koscom.olympus.pb.db.entity.OnTblSpotOrd;
-import kr.co.koscom.olympus.pb.db.mapper.OnTblSpotOrdMapper;
-import kr.co.koscom.olympus.pb.include.PBService;
+import kr.co.koscom.olympus.pb.ap.entity.OnTblSpotOrd;
+import kr.co.koscom.olympus.pb.ap.mapper.OnTblSpotOrdMapper;
+import kr.co.koscom.olympus.pb.apa.PBService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

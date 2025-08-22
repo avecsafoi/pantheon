@@ -1,8 +1,8 @@
 package kr.co.koscom.olympus.pb.test.pb;
 
 import jakarta.annotation.Resource;
-import kr.co.koscom.olympus.pb.db.entity.OnTblSpotOrd;
-import kr.co.koscom.olympus.pb.db.mapper.OnTblSpotOrdMapper;
+import kr.co.koscom.olympus.pb.ap.entity.OnTblSpotOrd;
+import kr.co.koscom.olympus.pb.ap.mapper.OnTblSpotOrdMapper;
 import kr.co.koscom.olympus.pb.test.pb.io.OrdQi;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
