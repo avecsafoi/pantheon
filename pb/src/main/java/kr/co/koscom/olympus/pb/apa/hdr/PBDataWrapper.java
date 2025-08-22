@@ -56,7 +56,7 @@ public class PBDataWrapper extends PBObject {
 
     public PBService<PBST<?, ?>> initService() throws IOException {
 
-        String svcId = hdrAccount.getASvcId();
+        String svcId = hdrAccount.getSvcId();
         service = findPBService(svcId);
         if (service == null) throw new IOException("Not found PBService for svcId(%s)".formatted(svcId));
 

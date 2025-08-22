@@ -14,18 +14,18 @@ import org.springframework.context.annotation.Description;
 public class PBHdrCommon extends PBObject {
 
     @PBA(name = "전문길이", scale = 6)
-    public int aTgLen;
+    public int tgLen;
 
     @PBA(name = "전문구분", scale = 1)
-    public String aTgTp;
+    public String tgTp;
 
     @PBA(name = "압축구분", scale = 1)
-    public String aCmprstype;
+    public String cmprstype;
 
     @PBA(name = "암호화구분", scale = 1)
-    public String aEncrpType;
+    public String encrpType;
 
     @PBA(name = "계정계 Header Length", scale = 3)
-    public int aDataOfst;
+    public int dataOfst;
 
 }

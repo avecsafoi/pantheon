@@ -14,18 +14,18 @@ import org.springframework.context.annotation.Description;
 public class PBHdrAccVarHtsUser extends PBObject {
 
     @PBA(name = "처리제한", scale = 1)
-    public String aTrxRestrcTp;
+    public String trxRestrcTp;
 
     @PBA(name = "영업점IP 여부", scale = 1)
-    public String aBrnIpYn;
+    public String brnIpYn;
 
     @PBA(name = "서비스인덱스번호", scale = 4)
-    public int aSvcIdxNo;
+    public int svcIdxNo;
 
     @PBA(name = "보고서 출력구분", scale = 1)
-    public String aRptOtpTp;
+    public String rptOtpTp;
 
     @PBA(name = "미사용", scale = 9)
-    public String aFiller;
+    public String filler;
 
 }
