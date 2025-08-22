@@ -12,7 +12,7 @@ import java.util.List;
 
 import static kr.co.koscom.olympus.pb.db.entity.table.OnTblSpotOrdTableDef.ON_TBL_SPOT_ORD;
 
-@Service("PB_SID 10001001")
+@Service("10001001")
 public class ST10001001SVC implements PBService<ST10001001> {
 
     @Resource

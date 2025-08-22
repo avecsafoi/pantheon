@@ -16,13 +16,8 @@ public @interface PBA {
 
     String format() default "";
 
-    Mask mask() default Mask.NONE;
-
     boolean skip() default false;
 
     String charset() default "";
 
-    enum Mask {
-        NONE, PASSWORD, JUMIN, NAME
-    }
 }

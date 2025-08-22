@@ -4,7 +4,7 @@ import jakarta.annotation.Resource;
 import kr.co.koscom.olympus.pb.include.PBService;
 import org.springframework.stereotype.Service;
 
-@Service("PB_SID 11110000")
+@Service("11110000")
 public class AAService implements PBService<AAST> {
 
     @Resource

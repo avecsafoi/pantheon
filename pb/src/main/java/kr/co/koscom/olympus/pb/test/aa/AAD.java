@@ -12,5 +12,5 @@ public class AAD extends PBObject {
 
     private String id;
 
-    private String name;;
+    private String name;
 }

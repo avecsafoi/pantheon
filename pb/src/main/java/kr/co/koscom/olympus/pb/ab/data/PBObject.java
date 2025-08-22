@@ -10,7 +10,7 @@ public class PBObject implements PBData {
     }
 
     public StringBuilder toString(StringBuilder sb) {
-        sb.append(toString());
+        sb.append(this);
         return sb;
     }
 }

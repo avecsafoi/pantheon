@@ -1,5 +1,6 @@
 package kr.co.koscom.olympus.pb.ab.conf;
 
+import com.mybatisflex.core.FlexGlobalConfig;
 import com.mybatisflex.core.datasource.DataSourceManager;
 import jakarta.annotation.Resource;
 import kr.co.koscom.olympus.pb.ab.plugin.PBDataSourceShardingStrategy;
@@ -58,8 +59,10 @@ public class PBAppConfig {
 
     @Description("멀티 테넌시 설정")
     private void setMultiTenancy() {
-        // @Column(tenantId = true) 하지 않아도, 컬럼이름으로 자동인식 처리 전역 설정
-        // FlexGlobalConfig.getDefaultConfig().setTenantColumn("tenant_id");
+        if (false) {
+            // @Column(tenantId = true) 하지 않아도, 컬럼이름으로 자동인식 처리 전역 설정
+            FlexGlobalConfig.getDefaultConfig().setTenantColumn("tenantId");
+        }
     }
 
     @Description("읽기/쓰기 DB 자동 구분 설정")

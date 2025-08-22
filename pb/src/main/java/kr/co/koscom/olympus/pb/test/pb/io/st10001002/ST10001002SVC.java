@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service("PB_SID 10001002")
+@Service("10001002")
 public class ST10001002SVC implements PBService<ST10001002> {
 
     @Resource

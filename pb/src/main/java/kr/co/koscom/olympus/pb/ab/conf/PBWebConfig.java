@@ -10,6 +10,8 @@ public class PBWebConfig implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        if (1 > 2) registry.addInterceptor(new PBTenantInterceptor()).addPathPatterns("/**");
+        if (false) {
+            registry.addInterceptor(new PBTenantInterceptor()).addPathPatterns("/**");
+        }
     }
 }

@@ -1,7 +1,7 @@
 package kr.co.koscom.olympus.pb.ab.util;
 
 import kr.co.koscom.olympus.pb.ab.data.PBData;
-import kr.co.koscom.olympus.pb.ab.data.annotation.PBA;
+import kr.co.koscom.olympus.pb.ab.data.annotation.PBAMask;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.reflect.FieldUtils;
 
@@ -33,9 +33,9 @@ public class PBToStringBuilder {
             else sb.append(o);
         } else if (o instanceof String s) {
             if (f != null) {
-                PBA a = f.getAnnotation(PBA.class);
+                PBAMask a = f.getAnnotation(PBAMask.class);
                 if (a != null) {
-                    sb.append(PBStringUtil.mask(o.toString(), a.mask()));
+                    sb.append(PBStringUtil.mask(o.toString(), a));
                     return;
                 }
             }

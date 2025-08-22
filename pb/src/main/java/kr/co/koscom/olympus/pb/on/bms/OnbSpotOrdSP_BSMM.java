@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 import static kr.co.koscom.olympus.pb.include.PBCommon.SUCCESS;
 
-@Service("PB_SID 10001000")
+@Service("10001000")
 public class OnbSpotOrdSP_BSMM implements PBService<SPOT_ORD_TRX_SP_ST> {
 
     @Resource

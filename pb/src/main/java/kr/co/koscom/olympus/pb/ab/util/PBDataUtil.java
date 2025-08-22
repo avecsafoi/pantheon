@@ -9,7 +9,7 @@ public class PBDataUtil {
 
     @SuppressWarnings("unchecked")
     public static <X> X findPBService(String id) {
-        return (X) PBAppConfig.PBServiceMap.get("PB_SID " + id);
+        return (X) PBAppConfig.PBServiceMap.get(id);
     }
 
     public static ParameterizedType findInterfaceParameterizedType(Type t, Class<?> f) {

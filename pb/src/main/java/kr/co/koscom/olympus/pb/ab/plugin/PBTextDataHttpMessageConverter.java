@@ -22,16 +22,10 @@ import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.List;
 
-public class PBTextDataHttpMessageConverter implements HttpMessageConverter<Object> {
-
-    public final Charset defaultCharset;
+public record PBTextDataHttpMessageConverter(Charset defaultCharset) implements HttpMessageConverter<Object> {
 
     public PBTextDataHttpMessageConverter() {
         this(StandardCharsets.UTF_8);
-    }
-
-    public PBTextDataHttpMessageConverter(Charset defaultCharset) {
-        this.defaultCharset = defaultCharset;
     }
 
     @Override
