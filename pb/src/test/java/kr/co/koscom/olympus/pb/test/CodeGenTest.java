@@ -16,7 +16,7 @@ public class CodeGenTest {
     @Resource
     DataSource dataSource;
 
-    public static GlobalConfig createGlobalConfigUseStyle1() {
+    public GlobalConfig createGlobalConfigUseStyle1() {
         // 구성 콘텐츠 생성
         GlobalConfig globalConfig = new GlobalConfig();
 

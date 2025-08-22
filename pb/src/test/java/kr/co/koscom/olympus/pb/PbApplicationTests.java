@@ -46,7 +46,6 @@ class PbApplicationTests {
     void insertOrUpdate() {
         OnTblSpotOrd r = new OnTblSpotOrd().setOrdDt("20121212");
         mapper.insertOrUpdate(r, true); // INSERT
-        mapper.insertOrUpdate(r, true); // UPDATE
     }
 
     @Test

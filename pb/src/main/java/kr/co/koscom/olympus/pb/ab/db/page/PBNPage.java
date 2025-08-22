@@ -18,4 +18,10 @@ public class PBNPage extends PBPage {
 
     @PBA(name = "마지막 여부", scale = 1)
     private boolean last = false;
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public <T extends PBPage> T copy() {
+        return (T) new PBNPage().setLimit(limit).setOffset(offset).setLast(last);
+    }
 }

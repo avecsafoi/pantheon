@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @EqualsAndHashCode(callSuper = true)
@@ -23,4 +24,15 @@ public class PBCPage extends PBPage {
 
     @PBA(name = "연속키 조건", scale = 6)
     private List<PBOrder> orders;
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public <T extends PBPage> T copy() {
+        PBCPage p = new PBCPage().setFirst(first).setLast(last).setLimit(limit);
+        if (orders != null) {
+            p.orders = new ArrayList<>(orders.size());
+            for (PBOrder o : orders) p.orders.add(new PBOrder(o.getColumn(), o.isAsc(), o.getValue()));
+        }
+        return (T) p;
+    }
 }
