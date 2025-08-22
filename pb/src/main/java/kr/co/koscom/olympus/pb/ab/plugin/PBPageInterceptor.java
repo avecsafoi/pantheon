@@ -177,15 +177,21 @@ public class PBPageInterceptor implements Interceptor {
                 PBPage pg = pe.getValue();
                 if (pg instanceof PBCPage cpg) {
                     if (rs instanceof List<?> l) {
-                        if (l.size() < cpg.getLimit()) cpg.setLast(true);
-                        else if (!l.isEmpty()) {
-                            Object r = l.getLast();
-                            if (r instanceof Map<?, ?> m)
-                                for (PBOrder o : cpg.getOrders())
-                                    o.setValue(m.get(o.getColumn()));
-                            else
-                                for (PBOrder o : cpg.getOrders())
-                                    o.setValue(FieldUtils.readField(r, o.getColumn(), true));
+                        if (l.isEmpty() || l.size() < cpg.getLimit()) {
+                            cpg.setLast(true);
+                        } else {
+                            List<PBOrder> os = cpg.getOrders();
+                            if (os != null && !os.isEmpty()) {
+                                Object r = l.getLast();
+                                if (r != null) {
+                                    if (r instanceof Map<?, ?> m)
+                                        for (PBOrder o : cpg.getOrders())
+                                            o.setValue(m.get(o.getColumn()));
+                                    else
+                                        for (PBOrder o : cpg.getOrders())
+                                            o.setValue(FieldUtils.readField(r, o.getColumn(), true));
+                                }
+                            }
                         }
                     }
                 } else if (pg instanceof PBNPage npg) {
