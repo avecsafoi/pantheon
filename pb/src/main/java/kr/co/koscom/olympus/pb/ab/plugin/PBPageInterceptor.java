@@ -37,7 +37,12 @@ public class PBPageInterceptor implements Interceptor {
     private static BoundSql setPageSql(MappedStatement ms, BoundSql bs, StringBuilder sb, Map.Entry<String, PBPage> pe) {
 
         List<ParameterMapping> pm = bs.getParameterMappings();
-        Map<String, Object> am = bs.getAdditionalParameters();
+        if (pm.isEmpty()) {
+            String sql = bs.getSql();
+            pm = new ArrayList<>();
+            Object pr = bs.getParameterObject();
+            bs = new BoundSql(ms.getConfiguration(), sql, pm, pr);
+        }
         String pn = pe.getKey();
         PBPage pg = pe.getValue();
 
@@ -70,7 +75,7 @@ public class PBPageInterceptor implements Interceptor {
             }
             sb.append("SELECT A.* FROM (%n%s%n) A%s%n%s%nLIMIT ?".formatted(bs.getSql(), bw, bo));
             pm.add(new ParameterMapping.Builder(ms.getConfiguration(), ln, Object.class).build());
-        } else if (pg instanceof PBNPage npg) {
+        } else if (pg instanceof PBNPage) {
             String on = pn.isEmpty() ? "" : pn + ".";
             sb.append(bs.getSql());
             sb.append(" LIMIT ?, ?");

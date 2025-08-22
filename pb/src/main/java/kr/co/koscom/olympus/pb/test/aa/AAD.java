@@ -12,9 +12,9 @@ import java.math.BigDecimal;
 @Data
 public class AAD extends PBObject {
     private int no1;
-    private double no2;
-    private BigDecimal no3;
-    private String nm1;
-    private String nm2;
+//    private double no2;
+//    private BigDecimal no3;
+//    private String nm1;
+//    private String nm2;
     private String nm3;
 }
