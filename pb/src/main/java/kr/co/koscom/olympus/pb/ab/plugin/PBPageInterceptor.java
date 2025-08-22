@@ -34,9 +34,10 @@ public class PBPageInterceptor implements Interceptor {
 
     public static final DefaultReflectorFactory DEFAULT_REFLECTOR_FACTORY = new DefaultReflectorFactory();
 
-    private static void setPageSql(MappedStatement ms, BoundSql bs, StringBuilder sb, Map.Entry<String, PBPage> pe) {
+    private static BoundSql setPageSql(MappedStatement ms, BoundSql bs, StringBuilder sb, Map.Entry<String, PBPage> pe) {
 
         List<ParameterMapping> pm = bs.getParameterMappings();
+        Map<String, Object> am = bs.getAdditionalParameters();
         String pn = pe.getKey();
         PBPage pg = pe.getValue();
 
@@ -47,31 +48,36 @@ public class PBPageInterceptor implements Interceptor {
             StringBuilder bw = new StringBuilder();
             StringBuilder bo = new StringBuilder();
             int i = 0, z = os == null ? 0 : os.size(), x = z - 1;
-            if (os != null)
+            if (z > 0) {
                 for (PBOrder o : os) {
                     String cn = camelToUnderline(o.getColumn());
+                    // WHERE 조건절 추가
                     if (!cpg.isFirst()) {
-                        bw.append("%n%s (%s %s ?".formatted(i == 0 ? " WHERE" : "   AND", cn, o.isAsc() ? ">" : "<"));
                         String s1 = "%s[%d].value".formatted(on, i);
+                        bw.append("%n%s (%s %s ?".formatted(i == 0 ? " WHERE" : "   AND", cn, o.isAsc() ? ">" : "<"));
                         pm.add(new ParameterMapping.Builder(ms.getConfiguration(), s1, Object.class).build());
                         if (i < x) {
                             bw.append(" OR (%s = ?".formatted(cn));
                             pm.add(new ParameterMapping.Builder(ms.getConfiguration(), s1, Object.class).build());
                         }
                     }
+                    // ORDER BY 추가
                     bo.append("%s %s %s".formatted(i == 0 ? " ORDER BY" : ",", camelToUnderline(cn), o.isAsc() ? "asc" : "desc"));
                     i++;
                 }
-            if (!cpg.isFirst()) bw.append(")".repeat(Math.max(0, i * 2 - 1)));
-            pm.add(new ParameterMapping.Builder(ms.getConfiguration(), ln, int.class).build());
+                // WHERE 조건절 닫기
+                if (!cpg.isFirst()) bw.append(")".repeat(Math.max(0, i * 2 - 1)));
+            }
             sb.append("SELECT A.* FROM (%n%s%n) A%s%n%s%nLIMIT ?".formatted(bs.getSql(), bw, bo));
-        } else if (pg instanceof PBNPage) {
+            pm.add(new ParameterMapping.Builder(ms.getConfiguration(), ln, Object.class).build());
+        } else if (pg instanceof PBNPage npg) {
             String on = pn.isEmpty() ? "" : pn + ".";
-            pm.add(new ParameterMapping.Builder(ms.getConfiguration(), on + "offset", Object.class).build());
-            pm.add(new ParameterMapping.Builder(ms.getConfiguration(), on + "limit", Object.class).build());
             sb.append(bs.getSql());
             sb.append(" LIMIT ?, ?");
+            pm.add(new ParameterMapping.Builder(ms.getConfiguration(), on + "offset", Number.class).build());
+            pm.add(new ParameterMapping.Builder(ms.getConfiguration(), on + "limit", Number.class).build());
         }
+        return bs;
     }
 
     public static void setLockSql(MappedStatement ms, BoundSql bs, StringBuilder sb, Map.Entry<String, PBLock> le) {
@@ -163,14 +169,13 @@ public class PBPageInterceptor implements Interceptor {
             BoundSql bs = ms.getBoundSql(pr);
             StringBuilder sb = new StringBuilder("%n/* SQLID %s */%n".formatted(ms.getId()));
 
-            if (pe != null) setPageSql(ms, bs, sb, pe);
+            if (pe != null) bs = setPageSql(ms, bs, sb, pe);
             else sb.append(bs.getSql());
 
             if (le != null) setLockSql(ms, bs, sb, le);
 
             MetaObject meta = MetaObject.forObject(bs, SystemMetaObject.DEFAULT_OBJECT_FACTORY, SystemMetaObject.DEFAULT_OBJECT_WRAPPER_FACTORY, DEFAULT_REFLECTOR_FACTORY);
             meta.setValue("sql", sb.toString());
-
             CacheKey ck = executor.createCacheKey(ms, pr, rb, bs);
             Object rs = executor.query(ms, pr, rb, (ResultHandler<?>) args[3], ck, bs);
             if (pe != null) {
