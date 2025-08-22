@@ -3,5 +3,6 @@
   <component name="DataSourcePerFileMappings">
     <file url="file://$PROJECT_DIR$/data/test/pb.sql" value="d25b6cbf-7836-4b05-b9e1-b13a49f0656c" />
     <file url="file://$PROJECT_DIR$/pb/src/main/java/kr/co/koscom/olympus/pb/db/mapper/OnTblSpotOrdMapper.java" value="d25b6cbf-7836-4b05-b9e1-b13a49f0656c" />
+    <file url="file://$PROJECT_DIR$/pb/src/main/java/kr/co/koscom/olympus/pb/test/aa/AAMapper.java" value="d25b6cbf-7836-4b05-b9e1-b13a49f0656c" />
   </component>
 </project>

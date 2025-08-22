@@ -46,8 +46,9 @@ public record PBTextDataHttpMessageConverter(Charset defaultCharset) implements 
     }
 
     @Override
-    public @Nonnull List<MediaType> getSupportedMediaTypes(@Nonnull Class<?> clazz) {
-        return canRead(clazz, null) ? getSupportedMediaTypes() : Collections.emptyList();
+    public @Nonnull List<MediaType> getSupportedMediaTypes(@Nonnull Class<?> c) {
+        boolean b = PBData.class.isAssignableFrom(c);
+        return b ? getSupportedMediaTypes() : Collections.emptyList();
     }
 
     @Override
