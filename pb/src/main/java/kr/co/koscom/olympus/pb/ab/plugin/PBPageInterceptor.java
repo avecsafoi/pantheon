@@ -206,7 +206,7 @@ public class PBPageInterceptor implements Interceptor {
                     }
                 } else if (pg instanceof PBNPage npg) {
                     if (rs instanceof List<?> l) {
-                        if (l.size() < npg.getLimit()) npg.setLast(true);
+                        if (l.isEmpty() || l.size() < npg.getLimit()) npg.setLast(true);
                     }
                 }
             }
