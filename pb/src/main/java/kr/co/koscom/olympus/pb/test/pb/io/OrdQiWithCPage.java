@@ -16,7 +16,7 @@ import static kr.co.koscom.olympus.pb.include.PBCommon.*;
 @Data
 public class OrdQiWithCPage extends PBObject {
 
-    @PBA(name = "주문일자", scale = Z_DT)
+    @PBA(name = "주문일자", scale = Z_DATE)
     private String ordDt;
 
     @PBA(name = "주문번호")

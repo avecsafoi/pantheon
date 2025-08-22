@@ -14,7 +14,7 @@ public class PBCommon {
     public static final int Z_ISU_NO = 12;
     public static final int Z_BNS_TP = 2;
     public static final int Z_ORD_MKT_CODE = 2;
-    public static final int Z_DT = 8;
+    public static final int Z_DATE = 8;
     public static final int Z_TIME = 9;
 
     public static final int Z_LONG = 20;

@@ -17,7 +17,7 @@ public class OrdQi extends PBObject {
 
     @PBA(name = "주문번호", scale = Z_LONG)
     public long ordNo;
-    @PBA(name = "주문일자", scale = Z_DT)
+    @PBA(name = "주문일자", scale = Z_DATE)
     private String ordDt;
     @PBA(name = "계좌번호", scale = Z_ACNT_NO)
     private String acntNo;

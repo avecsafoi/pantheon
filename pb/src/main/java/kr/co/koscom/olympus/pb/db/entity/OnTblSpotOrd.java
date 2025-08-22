@@ -31,7 +31,7 @@ public class OnTblSpotOrd extends PBEntity {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @PBA(name = "주문일자", scale = Z_DT)
+    @PBA(name = "주문일자", scale = Z_DATE)
     private String ordDt;
 
     @Id(keyType = KeyType.Sequence, value = "SELECT NEXT VALUE FOR SEQ_ON_TBL_SPOT_ORD")
