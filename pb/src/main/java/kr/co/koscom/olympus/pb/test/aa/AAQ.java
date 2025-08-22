@@ -12,8 +12,8 @@ import lombok.experimental.Accessors;
 @Data
 public class AAQ extends PBObject {
 
-    @PBA(name = "아이디", scale = 20)
-    private String id;
+    @PBA(name = "아이디1", scale = 20)
+    private String nm1;
 
     @PBA(name = "페이지")
     private PBCPage page;

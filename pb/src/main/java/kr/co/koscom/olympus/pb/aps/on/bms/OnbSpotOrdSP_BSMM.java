@@ -6,8 +6,6 @@ import kr.co.koscom.olympus.pb.ap.mapper.OnTblSpotOrdMapper;
 import kr.co.koscom.olympus.pb.apa.PBService;
 import org.springframework.stereotype.Service;
 
-import static kr.co.koscom.olympus.pb.apa.PBCommon.SUCCESS;
-
 @Service("10001000")
 public class OnbSpotOrdSP_BSMM implements PBService<SPOT_ORD_TRX_SP_ST> {
 
@@ -15,8 +13,7 @@ public class OnbSpotOrdSP_BSMM implements PBService<SPOT_ORD_TRX_SP_ST> {
     private OnTblSpotOrdMapper mapper;
 
     @Override
-    public int process(SPOT_ORD_TRX_SP_ST st) {
+    public void process(SPOT_ORD_TRX_SP_ST st) {
         mapper.ON_FN_SPOT_ORD_MAIN(st);
-        return SUCCESS;
     }
 }

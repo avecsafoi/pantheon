@@ -8,6 +8,6 @@ import java.util.List;
 @Mapper
 public interface AAMapper {
 
-    @Select("select ord_dt as id, ord_mkt_code as name from on_tbl_spot_ord where ord_dt > #{id}")
+    @Select("select no1, no2, no3, nm1, nm2, nm3 from sw_mm_q001 where nm1 > #{nm1}")
     List<AAD> list(AAQ q);
 }

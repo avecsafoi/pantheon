@@ -11,8 +11,7 @@ public class AAService implements PBService<AAST> {
     AAMapper mapper;
 
     @Override
-    public int process(AAST st) {
+    public void process(AAST st) {
         st.getOut().setList(mapper.list(st.getIn()));
-        return 0;
     }
 }

@@ -19,7 +19,7 @@ public class ST10001001SVC implements PBService<ST10001001> {
     OnTblSpotOrdServiceImpl service;
 
     @Override
-    public int process(ST10001001 st) {
+    public void process(ST10001001 st) {
         QueryWrapper qw = new QueryWrapper();
         ST10001001In in = st.getIn();
         ST10001001Out out = st.getOut();
@@ -28,6 +28,5 @@ public class ST10001001SVC implements PBService<ST10001001> {
         List<OnTblSpotOrd> ls = service.cpage(in.getPage());
         out.setList(ls);
         out.setPage(in.getPage());
-        return 0;
     }
 }

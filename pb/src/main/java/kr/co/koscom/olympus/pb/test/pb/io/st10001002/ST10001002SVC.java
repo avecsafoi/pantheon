@@ -15,12 +15,11 @@ public class ST10001002SVC implements PBService<ST10001002> {
     OnTblSpotOrdMapper mapper;
 
     @Override
-    public int process(ST10001002 st) {
+    public void process(ST10001002 st) {
         ST10001002In in = st.getIn();
         ST10001002Out out = st.getOut();
         List<OnTblSpotOrd> ls = mapper.page50(in.getOrdQi(), in.getPage());
         out.setList(ls);
         out.setPage(in.getPage());
-        return 0;
     }
 }

@@ -5,12 +5,16 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
+import java.math.BigDecimal;
+
 @EqualsAndHashCode(callSuper = true)
 @Accessors(chain = true)
 @Data
 public class AAD extends PBObject {
-
-    private String id;
-
-    private String name;
+    private int no1;
+    private double no2;
+    private BigDecimal no3;
+    private String nm1;
+    private String nm2;
+    private String nm3;
 }
