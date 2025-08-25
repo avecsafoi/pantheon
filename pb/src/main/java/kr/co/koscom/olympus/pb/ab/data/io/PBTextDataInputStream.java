@@ -1,5 +1,7 @@
 package kr.co.koscom.olympus.pb.ab.data.io;
 
+import com.mybatisflex.annotation.EnumValue;
+import com.mybatisflex.core.util.EnumWrapper;
 import jakarta.annotation.Nonnull;
 import kr.co.koscom.olympus.pb.ab.data.PBData;
 import kr.co.koscom.olympus.pb.ab.data.PBObject;
@@ -194,6 +196,14 @@ public class PBTextDataInputStream extends PBDataInputStream {
             }
             throw new IOException("Unexpected Temporal type (%s)".formatted(t.c.getCanonicalName()));
         }
+        if (Enum.class.isAssignableFrom(t.c)) {
+            EnumWrapper<?> ew = EnumWrapper.of(t.c);
+            String s = readString(a.scale());
+            Class<?> x = ew.getPropertyType();
+            if (x.isAssignableFrom(String.class)) return ew.getEnum(s);
+            if (x.isAssignableFrom(int.class)) return ew.getEnum(NumberUtils.toInt(s));
+            throw new IOException(("Unexpected Enum type (%s): @%s should be in types(String, int)").formatted(t.c.getCanonicalName(), EnumValue.class.getSimpleName()));
+        }
         throw new IOException("Unexpected type (%s)".formatted(t.c.getCanonicalName()));
     }
 
@@ -216,6 +226,31 @@ public class PBTextDataInputStream extends PBDataInputStream {
             } catch (Throwable e) {
                 throw new IOException("Failed to read field (%s.%s): %s".formatted(t.c.getCanonicalName(), f.getName(), e.getMessage()), e);
             }
+        }
+    }
+
+    public static enum X1 {
+        A, B, C;
+
+        @EnumValue
+        int code;
+    }
+
+
+    public static enum X2 {
+
+        A("A"), B("B"), C("C");
+
+        @EnumValue
+        final String code;
+
+        X2(String a) {
+            this.code = a;
+        }
+
+        @EnumValue
+        String code() {
+            return code;
         }
     }
 }

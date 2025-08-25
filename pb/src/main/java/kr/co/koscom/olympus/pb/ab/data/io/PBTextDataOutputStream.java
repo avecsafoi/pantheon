@@ -1,5 +1,6 @@
 package kr.co.koscom.olympus.pb.ab.data.io;
 
+import com.mybatisflex.core.util.EnumWrapper;
 import kr.co.koscom.olympus.pb.ab.data.PBData;
 import kr.co.koscom.olympus.pb.ab.data.PBObject;
 import kr.co.koscom.olympus.pb.ab.data.annotation.PBA;
@@ -171,6 +172,12 @@ public class PBTextDataOutputStream extends PBDataOutputStream {
             if (LocalTime.class.isAssignableFrom(t.c)) {
                 LocalTime x = (LocalTime) t.o;
                 String s = x == null ? "" : DateTimeFormatter.ofPattern(a.format().isEmpty() ? ZF_TIME : a.format()).format(x);
+                writeString(s, null, a.scale(), 0);
+                return;
+            }
+            if (Enum.class.isAssignableFrom(t.c)) {
+                EnumWrapper<?> ew = EnumWrapper.of(t.c);
+                String s = t.o == null ? null : ew.getEnumValue(t.o).toString();
                 writeString(s, null, a.scale(), 0);
                 return;
             }
