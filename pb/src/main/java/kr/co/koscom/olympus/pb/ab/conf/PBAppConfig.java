@@ -15,7 +15,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Description;
 import org.springframework.context.event.EventListener;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -23,6 +22,7 @@ import java.util.Map;
 public class PBAppConfig {
 
     public static final Map<String, Object> PBServiceMap = new HashMap<>();
+
     @Resource
     private ApplicationContext ctx;
 
@@ -77,6 +77,15 @@ public class PBAppConfig {
 
     @Description("PBServiceMap 만들기")
     private void setPBServiceMap() {
-        Arrays.stream(ctx.getBeanNamesForType(PBService.class)).forEach(n -> PBServiceMap.put(n, ctx.getBean(n)));
+        int cnt = ctx.getBeanDefinitionCount(), i = 0;
+        System.out.printf("---- >> BEANS (%d) --------------------- %n", cnt);
+        for (String n : ctx.getBeanDefinitionNames()) {
+            Object o = ctx.getBean(n);
+            System.out.printf("[%4d] [%-60s] [%s] %n", ++i, n, o.getClass());
+            if (o instanceof PBService) {
+                PBServiceMap.put(n, o);
+            }
+        }
+        System.out.printf("---- << BEANS (%d) --------------------- %n", cnt);
     }
 }
