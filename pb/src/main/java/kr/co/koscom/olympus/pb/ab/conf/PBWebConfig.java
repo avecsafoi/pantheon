@@ -11,11 +11,11 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class PBWebConfig implements WebMvcConfigurer {
 
     @Resource
-    PBConfig pbConfig;
+    PBProperties pbProperties;
 
     @Override
     public void addInterceptors(@Nonnull InterceptorRegistry registry) {
-        if (pbConfig.isMultitenantWebEnable()) {
+        if (pbProperties.isMultitenantWebEnable()) {
             registry.addInterceptor(new PBTenantInterceptor()).addPathPatterns("/**");
         }
     }

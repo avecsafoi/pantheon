@@ -209,7 +209,6 @@ public class PBTextDataInputStream extends PBDataInputStream {
 
     public void readFields(PBDataT t) throws IOException {
         if (t.o == null) t.o = createObject(t.c);
-        // List<Field> l = FieldUtils.getAllFieldsList(t.c).stream().filter(f -> f.getAnnotation(PBA.class) != null).toList();
         Class<?> s = t.c.getSuperclass();
         if (s != null && !s.isInterface() && PBData.class.isAssignableFrom(s) && s != PBObject.class && s != Object.class) {
             PBDataT u = new PBDataT(t, s, t.o, null, null);
@@ -226,31 +225,6 @@ public class PBTextDataInputStream extends PBDataInputStream {
             } catch (Throwable e) {
                 throw new IOException("Failed to read field (%s.%s): %s".formatted(t.c.getCanonicalName(), f.getName(), e.getMessage()), e);
             }
-        }
-    }
-
-    public static enum X1 {
-        A, B, C;
-
-        @EnumValue
-        int code;
-    }
-
-
-    public static enum X2 {
-
-        A("A"), B("B"), C("C");
-
-        @EnumValue
-        final String code;
-
-        X2(String a) {
-            this.code = a;
-        }
-
-        @EnumValue
-        String code() {
-            return code;
         }
     }
 }

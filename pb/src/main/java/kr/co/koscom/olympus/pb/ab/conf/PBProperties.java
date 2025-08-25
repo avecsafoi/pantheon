@@ -5,7 +5,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 
 @ConfigurationProperties("pb")
 @Data
-public class PBConfig {
+public class PBProperties {
 
     private boolean multitenantWebEnable;
 
