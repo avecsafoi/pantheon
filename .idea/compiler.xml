@@ -6,17 +6,14 @@
       <profile name="Gradle Imported" enabled="true">
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="false">
-          <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.projectlombok/lombok/1.18.38/57f8f5e02e92a30fd21b80cbd426a4172b5f8e29/lombok-1.18.38.jar" />
           <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework.boot/spring-boot-configuration-processor/3.5.4/5bca23f43154ba43fbe171feae198f21d0ed7670/spring-boot-configuration-processor-3.5.4.jar" />
-        </processorPath>
-        <module name="athena.main" />
-      </profile>
-      <profile name="Gradle Imported" enabled="true">
-        <outputRelativeToContentRoot value="true" />
-        <processorPath useClasspath="false">
           <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.projectlombok/lombok/1.18.38/57f8f5e02e92a30fd21b80cbd426a4172b5f8e29/lombok-1.18.38.jar" />
+          <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.mybatis-flex/mybatis-flex-processor/1.11.1/ddb1032e90d888c924b12271a55cf8fd30c18c9e/mybatis-flex-processor-1.11.1.jar" />
+          <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.mapstruct/mapstruct-processor/1.6.3/52e345c907fbf173b376586c7f8b131d53fa5867/mapstruct-processor-1.6.3.jar" />
+          <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.mybatis-flex/mybatis-flex-annotation/1.11.1/947b2ec6f12b10710789fb6fcd30c4edc9ca603f/mybatis-flex-annotation-1.11.1.jar" />
+          <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.mybatis/mybatis/3.5.19/79b20d963e38e66f41431ea49bc22f7cce718142/mybatis-3.5.19.jar" />
         </processorPath>
-        <module name="athena.test" />
+        <module name="pb.main" />
       </profile>
     </annotationProcessing>
   </component>

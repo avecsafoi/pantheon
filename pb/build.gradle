@@ -43,25 +43,26 @@ dependencies {
     implementation 'com.mybatis-flex:mybatis-flex-codegen:1.11.1'
     implementation 'org.apache.commons:commons-lang3:3.18.0'
     implementation 'com.alibaba.fastjson2:fastjson2:2.0.58'
-
-    testImplementation 'org.testcontainers:junit-jupiter'
-    testImplementation 'io.projectreactor:reactor-test'
-    testImplementation 'org.springframework.boot:spring-boot-testcontainers'
-    testImplementation 'org.testcontainers:mariadb'
+    implementation 'org.mapstruct:mapstruct:1.6.3'
 
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
     annotationProcessor 'org.projectlombok:lombok'
     annotationProcessor 'com.mybatis-flex:mybatis-flex-processor:1.11.1'
+    annotationProcessor 'org.mapstruct:mapstruct-processor:1.6.3'
 
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
-    implementation 'org.mariadb.jdbc:mariadb-java-client'
-    implementation 'org.projectlombok:lombok'
+    runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
+    compileOnly 'org.projectlombok:lombok'
 
     // Test ///////////////////////////////////////////////////////////////////////////////////////
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'
-    testImplementation 'org.mapstruct:mapstruct-processor:1.6.3'
+
+    testImplementation 'org.testcontainers:junit-jupiter'
+    testImplementation 'io.projectreactor:reactor-test'
+    testImplementation 'org.springframework.boot:spring-boot-testcontainers'
+    testImplementation 'org.testcontainers:mariadb'
     testImplementation 'com.zaxxer:HikariCP:7.0.1'
 
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
