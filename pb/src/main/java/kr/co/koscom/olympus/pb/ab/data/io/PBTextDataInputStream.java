@@ -16,6 +16,11 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.nio.charset.Charset;
 import java.text.ParseException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.Temporal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -167,6 +172,27 @@ public class PBTextDataInputStream extends PBDataInputStream {
             } catch (ParseException e) {
                 throw new RuntimeException(e);
             }
+        }
+        if (Temporal.class.isAssignableFrom(t.c)) {
+            int z = a.fix() ? a.scale() : NumberUtils.toInt(readString(a.scale()));
+            String s = readString(z);
+            if (s.isEmpty()) return null;
+            String fs = a.format();
+            if (LocalDate.class.isAssignableFrom(t.c)) {
+                DateTimeFormatter tt = fs.isEmpty() ? DateTimeFormatter.BASIC_ISO_DATE /* yyyyMMdd */ : DateTimeFormatter.ofPattern(fs);
+                return LocalDate.parse(s, tt);
+            }
+            if (LocalDateTime.class.isAssignableFrom(t.c)) {
+                if (fs.isEmpty()) fs = "yyyyMMddHHmmss";
+                DateTimeFormatter tt = DateTimeFormatter.ofPattern(fs);
+                return LocalDateTime.parse(s, tt);
+            }
+            if (LocalTime.class.isAssignableFrom(t.c)) {
+                if (fs.isEmpty()) fs = "HHmmss";
+                DateTimeFormatter tt = DateTimeFormatter.ofPattern(fs);
+                return LocalTime.parse(s, tt);
+            }
+            throw new IOException("Unexpected Temporal type (%s)".formatted(t.c.getCanonicalName()));
         }
         throw new IOException("Unexpected type (%s)".formatted(t.c.getCanonicalName()));
     }

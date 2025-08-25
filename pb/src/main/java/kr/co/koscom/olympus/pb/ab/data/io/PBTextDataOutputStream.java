@@ -11,6 +11,11 @@ import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.nio.charset.Charset;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.Temporal;
 import java.util.Date;
 import java.util.List;
 
@@ -148,6 +153,33 @@ public class PBTextDataOutputStream extends PBDataOutputStream {
                 throw new IOException("Format required of @%s(format = ?)".formatted(PBA.class.getSimpleName()));
             String s = t.o == null ? null : DateFormatUtils.format((Date) t.o, a.format());
             writeString(s, null, a.scale(), 0);
+        }
+        if (Temporal.class.isAssignableFrom(t.c)) {
+            if (LocalDate.class.isAssignableFrom(t.c)) {
+                LocalDate x = (LocalDate) t.o;
+                String fs = a.format();
+                DateTimeFormatter tt = fs.isEmpty() ? DateTimeFormatter.BASIC_ISO_DATE /* yyyyMMdd */ : DateTimeFormatter.ofPattern(fs);
+                String s = x == null ? "" : tt.format(x);
+                writeString(s, null, a.scale(), 0);
+                return;
+            }
+            if (LocalDateTime.class.isAssignableFrom(t.c)) {
+                LocalDateTime x = (LocalDateTime) t.o;
+                String fs = a.format();
+                DateTimeFormatter tt = DateTimeFormatter.ofPattern(fs.isEmpty() ? "yyyyMMddHHmmss" : fs);
+                String s = x == null ? "" : tt.format(x);
+                writeString(s, null, a.scale(), 0);
+                return;
+            }
+            if (LocalTime.class.isAssignableFrom(t.c)) {
+                LocalTime x = (LocalTime) t.o;
+                String fs = a.format();
+                DateTimeFormatter tt = DateTimeFormatter.ofPattern(fs.isEmpty() ? "HHmmss" : fs);
+                String s = x == null ? "" : tt.format(x);
+                writeString(s, null, a.scale(), 0);
+                return;
+            }
+            throw new IOException("Unexpected Temporal type (%s)".formatted(t.c.getCanonicalName()));
         }
         throw new IOException("Unexpected type (%s)".formatted(t.c.getCanonicalName()));
     }
