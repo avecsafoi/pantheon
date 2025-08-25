@@ -26,6 +26,7 @@ import java.util.Date;
 import java.util.List;
 
 import static kr.co.koscom.olympus.pb.ab.util.PBDataUtil.createObject;
+import static kr.co.koscom.olympus.pb.apa.PBCommon.*;
 
 public class PBTextDataInputStream extends PBDataInputStream {
 
@@ -176,20 +177,19 @@ public class PBTextDataInputStream extends PBDataInputStream {
         if (Temporal.class.isAssignableFrom(t.c)) {
             int z = a.fix() ? a.scale() : NumberUtils.toInt(readString(a.scale()));
             String s = readString(z);
-            if (s.isEmpty()) return null;
-            String fs = a.format();
             if (LocalDate.class.isAssignableFrom(t.c)) {
-                DateTimeFormatter tt = fs.isEmpty() ? DateTimeFormatter.BASIC_ISO_DATE /* yyyyMMdd */ : DateTimeFormatter.ofPattern(fs);
+                if (s.isEmpty()) return null;
+                DateTimeFormatter tt = DateTimeFormatter.ofPattern(a.format().isEmpty() ? ZF_DATE : a.format());
                 return LocalDate.parse(s, tt);
             }
             if (LocalDateTime.class.isAssignableFrom(t.c)) {
-                if (fs.isEmpty()) fs = "yyyyMMddHHmmss";
-                DateTimeFormatter tt = DateTimeFormatter.ofPattern(fs);
+                if (s.isEmpty()) return null;
+                DateTimeFormatter tt = DateTimeFormatter.ofPattern(a.format().isEmpty() ? ZF_DATE_TIME : a.format());
                 return LocalDateTime.parse(s, tt);
             }
             if (LocalTime.class.isAssignableFrom(t.c)) {
-                if (fs.isEmpty()) fs = "HHmmss";
-                DateTimeFormatter tt = DateTimeFormatter.ofPattern(fs);
+                if (s.isEmpty()) return null;
+                DateTimeFormatter tt = DateTimeFormatter.ofPattern(a.format().isEmpty() ? ZF_TIME : a.format());
                 return LocalTime.parse(s, tt);
             }
             throw new IOException("Unexpected Temporal type (%s)".formatted(t.c.getCanonicalName()));

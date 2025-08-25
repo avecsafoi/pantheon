@@ -31,4 +31,8 @@ public class PBCommon {
     public static final String ZS_CHARSET_VIETNAM = "VSCII";
 
     public static final Charset ZO_CHARSET_DEFAULT = StandardCharsets.UTF_8;
+
+    public static final String ZF_DATE = "yyyyMMdd";
+    public static final String ZF_DATE_TIME = "yyyyMMddHHmmss";
+    public static final String ZF_TIME = "HHmmss";
 }

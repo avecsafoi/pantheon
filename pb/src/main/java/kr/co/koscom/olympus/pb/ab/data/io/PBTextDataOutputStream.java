@@ -20,6 +20,7 @@ import java.util.Date;
 import java.util.List;
 
 import static kr.co.koscom.olympus.pb.ab.util.PBDataUtil.createObject;
+import static kr.co.koscom.olympus.pb.apa.PBCommon.*;
 
 public class PBTextDataOutputStream extends PBDataOutputStream {
 
@@ -157,25 +158,19 @@ public class PBTextDataOutputStream extends PBDataOutputStream {
         if (Temporal.class.isAssignableFrom(t.c)) {
             if (LocalDate.class.isAssignableFrom(t.c)) {
                 LocalDate x = (LocalDate) t.o;
-                String fs = a.format();
-                DateTimeFormatter tt = fs.isEmpty() ? DateTimeFormatter.BASIC_ISO_DATE /* yyyyMMdd */ : DateTimeFormatter.ofPattern(fs);
-                String s = x == null ? "" : tt.format(x);
+                String s = x == null ? "" : DateTimeFormatter.ofPattern(a.format().isEmpty() ? ZF_DATE : a.format()).format(x);
                 writeString(s, null, a.scale(), 0);
                 return;
             }
             if (LocalDateTime.class.isAssignableFrom(t.c)) {
                 LocalDateTime x = (LocalDateTime) t.o;
-                String fs = a.format();
-                DateTimeFormatter tt = DateTimeFormatter.ofPattern(fs.isEmpty() ? "yyyyMMddHHmmss" : fs);
-                String s = x == null ? "" : tt.format(x);
+                String s = x == null ? "" : DateTimeFormatter.ofPattern(a.format().isEmpty() ? ZF_DATE_TIME : a.format()).format(x);
                 writeString(s, null, a.scale(), 0);
                 return;
             }
             if (LocalTime.class.isAssignableFrom(t.c)) {
                 LocalTime x = (LocalTime) t.o;
-                String fs = a.format();
-                DateTimeFormatter tt = DateTimeFormatter.ofPattern(fs.isEmpty() ? "HHmmss" : fs);
-                String s = x == null ? "" : tt.format(x);
+                String s = x == null ? "" : DateTimeFormatter.ofPattern(a.format().isEmpty() ? ZF_TIME : a.format()).format(x);
                 writeString(s, null, a.scale(), 0);
                 return;
             }
