@@ -1,6 +1,5 @@
 package kr.co.koscom.olympus.athena.base.io.data;
 
-import com.alibaba.fastjson2.util.DateUtils;
 import kr.co.koscom.olympus.athena.base.io.data.annotations.XAText;
 
 import java.io.IOException;
@@ -14,6 +13,7 @@ import java.util.List;
 
 import static kr.co.koscom.olympus.athena.base.io.data.XDataUtils.en;
 import static kr.co.koscom.olympus.athena.base.io.data.XDataUtils.getParameterizedType;
+import static org.apache.commons.lang3.time.DateFormatUtils.format;
 
 public class TextXDataOutputStream extends XDataOutputStream {
 
@@ -64,7 +64,7 @@ public class TextXDataOutputStream extends XDataOutputStream {
             String df = aa.format();
             if (df == null)
                 throw new IOException("Needed @%s(format={value}) for Date: %s".formatted(XAText.class.getSimpleName(), en(c, f)));
-            String s = DateUtils.format((Date) o, df);
+            String s = format((Date) o, df);
             writeString(c, f, aa, s, 0);
             return;
         }
