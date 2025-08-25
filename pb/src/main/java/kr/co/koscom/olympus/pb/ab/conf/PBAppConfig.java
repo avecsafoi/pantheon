@@ -39,6 +39,11 @@ public class PBAppConfig {
     }
 
     @Bean
+    PBConfig pbConfig() {
+        return new PBConfig();
+    }
+
+    @Bean
     public PBTenantFactory pbTenantFactory() {
         return new PBTenantFactory();
     }
@@ -59,7 +64,7 @@ public class PBAppConfig {
 
     @Description("멀티 테넌시 설정")
     private void setMultiTenancy() {
-        if (false) {
+        if (pbConfig().isMultitenantSysEnable()) { // TODO 연결해제 설정
             // @Column(tenantId = true) 하지 않아도, 컬럼이름으로 자동인식 처리 전역 설정
             FlexGlobalConfig.getDefaultConfig().setTenantColumn("tenantId");
         }

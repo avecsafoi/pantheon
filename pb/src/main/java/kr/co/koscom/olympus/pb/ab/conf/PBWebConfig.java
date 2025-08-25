@@ -1,5 +1,7 @@
 package kr.co.koscom.olympus.pb.ab.conf;
 
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Resource;
 import kr.co.koscom.olympus.pb.ab.plugin.PBTenantInterceptor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -8,9 +10,12 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class PBWebConfig implements WebMvcConfigurer {
 
+    @Resource
+    PBConfig pbConfig;
+
     @Override
-    public void addInterceptors(InterceptorRegistry registry) {
-        if (false) {
+    public void addInterceptors(@Nonnull InterceptorRegistry registry) {
+        if (pbConfig.isMultitenantWebEnable()) {
             registry.addInterceptor(new PBTenantInterceptor()).addPathPatterns("/**");
         }
     }
