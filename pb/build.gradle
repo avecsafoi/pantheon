@@ -23,7 +23,6 @@ repositories {
     mavenCentral()
 }
 
-
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter'
     implementation 'org.springframework.boot:spring-boot-starter-web'
@@ -36,17 +35,14 @@ dependencies {
 
     implementation 'com.mybatis-flex:mybatis-flex-spring-boot3-starter:1.11.1'
     implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.12.0'
-    implementation 'org.jasypt:jasypt:1.9.3'
-    // implementation 'org.jasypt:jasypt-spring31:1.9.3'
-    // implementation 'com.github.ulisesbocchio:jasypt-spring-boot-starter:3.0.5'
-    // implementation 'io.github.luversof:bluesky-boot-crypto:3.4.0'
 
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.9'
 
     implementation 'com.mybatis-flex:mybatis-flex-codegen:1.11.1'
-    implementation 'org.apache.commons:commons-lang3:3.18.0'
     implementation 'com.alibaba.fastjson2:fastjson2:2.0.58'
+    implementation 'org.apache.commons:commons-lang3:3.18.0'
     implementation 'org.mapstruct:mapstruct:1.6.3'
+    implementation 'org.jasypt:jasypt:1.9.3'
 
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
     annotationProcessor 'org.projectlombok:lombok'
