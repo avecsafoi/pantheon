@@ -6,7 +6,7 @@ import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
 @EqualsAndHashCode(callSuper = true)
-@Accessors
+@Accessors(chain = true)
 @Data
 public class PBLock extends PBObject {
 

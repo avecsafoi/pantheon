@@ -1,0 +1,1 @@
+org.springframework.boot.env.EnvironmentPostProcessor=kr.co.koscom.olympus.pb.ab.plugin.PBEnvironmentPostProcessor

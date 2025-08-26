@@ -15,6 +15,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Description;
 import org.springframework.context.event.EventListener;
 
+import java.lang.reflect.Proxy;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -39,11 +40,14 @@ public class PBAppConfig {
     }
 
     @Bean
+    @Description("BP 커스텀 설정 -> application.properties 의 pb.* 참조")
     PBProperties pbProperties() {
         return new PBProperties();
     }
 
+
     @Bean
+    @Description("테넌트 설정*")
     public PBTenantFactory pbTenantFactory() {
         return new PBTenantFactory();
     }
@@ -80,11 +84,20 @@ public class PBAppConfig {
         int cnt = ctx.getBeanDefinitionCount(), i = 0;
         System.out.printf("---- >> BEANS (%d) --------------------- %n", cnt);
         for (String n : ctx.getBeanDefinitionNames()) {
+
             Object o = ctx.getBean(n);
-            System.out.printf("[%4d] [%-60s] [%s] %n", ++i, n, o.getClass());
+
             if (o instanceof PBService) {
                 PBServiceMap.put(n, o);
             }
+
+            System.out.printf("[%5d] [ %s ]%n", ++i, n);
+            for (Class<?> c = o.getClass(); c != null && c != Object.class; c = c.getSuperclass()) {
+                if (Proxy.isProxyClass(c)) c = Proxy.getInvocationHandler(o).getClass();
+                System.out.printf("        [ %s ]%n", c);
+            }
+            System.out.printf("%n");
+
         }
         System.out.printf("---- << BEANS (%d) --------------------- %n", cnt);
     }

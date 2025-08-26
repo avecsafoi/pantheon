@@ -10,4 +10,5 @@ public class PBProperties {
     private boolean multitenantWebEnable;
 
     private boolean multitenantSysEnable;
+
 }
