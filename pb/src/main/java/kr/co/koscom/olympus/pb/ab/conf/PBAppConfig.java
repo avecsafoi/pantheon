@@ -29,13 +29,13 @@ public class PBAppConfig {
 
     @Bean
     @Description("송수신 전문을 파싱하는 기능")
-    public PBTextDataHttpMessageConverter pbTextDataHttpMessageConverter() {
+    PBTextDataHttpMessageConverter pbTextDataHttpMessageConverter() {
         return new PBTextDataHttpMessageConverter();
     }
 
     @Bean
     @Description("CPage 객체를 사용하는 쿼리구문에 연속조회 구문을 추가하는 기능")
-    public PBPageInterceptor pbPageInterceptor() {
+    PBPageInterceptor pbPageInterceptor() {
         return new PBPageInterceptor();
     }
 
@@ -48,7 +48,7 @@ public class PBAppConfig {
 
     @Bean
     @Description("테넌트 설정*")
-    public PBTenantFactory pbTenantFactory() {
+    PBTenantFactory pbTenantFactory() {
         return new PBTenantFactory();
     }
 
