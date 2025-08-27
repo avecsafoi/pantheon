@@ -1,0 +1,16 @@
+{"properties": [
+  {
+    "name": "pb.multi-tenant-web-enable",
+    "type": "java.lang.Boolean",
+    "defaultValue": false,
+    "sourceType": "kr.co.koscom.olympus.pb.ab.conf.PBProperties",
+    "description": "tenantId 값을 http request 에 설정"
+  },
+  {
+    "name": "pb.multi-tenant-sys-enable",
+    "type": "java.lang.Boolean",
+	"defaultValue": false,
+	"sourceType": "kr.co.koscom.olympus.pb.ab.conf.PBProperties",
+    "description": "tenantId 를 global 로 인식하다록 설정"
+  }
+]}

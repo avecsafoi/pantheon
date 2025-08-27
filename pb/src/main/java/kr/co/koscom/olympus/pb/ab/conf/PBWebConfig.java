@@ -15,7 +15,7 @@ public class PBWebConfig implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(@Nonnull InterceptorRegistry registry) {
-        if (pbProperties.isMultitenantWebEnable()) {
+        if (pbProperties.isMultiTenantWebEnable()) {
             registry.addInterceptor(new PBTenantInterceptor()).addPathPatterns("/**");
         }
     }
