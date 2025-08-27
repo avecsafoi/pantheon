@@ -1,8 +1,13 @@
 package kr.co.koscom.olympus.pb.ab.plugin;
 
-import kr.co.koscom.olympus.pb.ab.data.PBData;
-import kr.co.koscom.olympus.pb.ab.db.page.*;
-import lombok.extern.slf4j.Slf4j;
+import static com.mybatisflex.core.util.StringUtil.camelToUnderline;
+
+import java.lang.reflect.Array;
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.apache.ibatis.cache.CacheKey;
 import org.apache.ibatis.executor.Executor;
@@ -19,161 +24,187 @@ import org.apache.ibatis.reflection.SystemMetaObject;
 import org.apache.ibatis.session.ResultHandler;
 import org.apache.ibatis.session.RowBounds;
 
-import java.lang.reflect.Array;
-import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import com.mybatisflex.core.dialect.DbType;
+import com.mybatisflex.core.dialect.DialectFactory;
 
-import static com.mybatisflex.core.util.StringUtil.camelToUnderline;
-
+import kr.co.koscom.olympus.pb.ab.data.PBData;
+import kr.co.koscom.olympus.pb.ab.db.page.PBCPage;
+import kr.co.koscom.olympus.pb.ab.db.page.PBLock;
+import kr.co.koscom.olympus.pb.ab.db.page.PBNPage;
+import kr.co.koscom.olympus.pb.ab.db.page.PBOrder;
+import kr.co.koscom.olympus.pb.ab.db.page.PBPage;
+import lombok.extern.slf4j.Slf4j;
 
 @Intercepts(@Signature(type = Executor.class, method = "query", args = {MappedStatement.class, Object.class, RowBounds.class, ResultHandler.class}))
 @Slf4j
 public class PBPageInterceptor implements Interceptor {
 
-    public static final DefaultReflectorFactory DEFAULT_REFLECTOR_FACTORY = new DefaultReflectorFactory();
+	public static final DefaultReflectorFactory DEFAULT_REFLECTOR_FACTORY = new DefaultReflectorFactory();
 
     private static BoundSql setPageSql(MappedStatement ms, BoundSql bs, StringBuilder sb, Map.Entry<String, PBPage> pe) {
 
-        List<ParameterMapping> pm = bs.getParameterMappings();
-        if (pm.isEmpty()) {
-            String sql = bs.getSql();
-            pm = new ArrayList<>();
-            Object pr = bs.getParameterObject();
-            bs = new BoundSql(ms.getConfiguration(), sql, pm, pr);
-        }
-        String pn = pe.getKey();
-        PBPage pg = pe.getValue();
+		List<ParameterMapping> pm = bs.getParameterMappings();
+		if (pm.isEmpty()) {
+			String sql = bs.getSql();
+			pm = new ArrayList<>();
+			Object pr = bs.getParameterObject();
+			bs = new BoundSql(ms.getConfiguration(), sql, pm, pr);
+		}
+		String pn = pe.getKey();
+		PBPage pg = pe.getValue();
 
-        if (pg instanceof PBCPage cpg) {
-            String on = pn.isEmpty() ? "orders" : pn + ".orders";
-            String ln = pn.isEmpty() ? "limit" : pn + ".limit";
-            List<PBOrder> os = cpg.getOrders();
-            StringBuilder bw = new StringBuilder();
-            StringBuilder bo = new StringBuilder();
-            int i = 0, z = os == null ? 0 : os.size(), x = z - 1;
-            if (z > 0) {
-                for (PBOrder o : os) {
-                    String cn = camelToUnderline(o.getColumn());
-                    // WHERE 조건절 추가
-                    if (!cpg.isFirst()) {
-                        String s1 = "%s[%d].value".formatted(on, i);
-                        bw.append("%n%s (%s %s ?".formatted(i == 0 ? " WHERE" : "   AND", cn, o.isAsc() ? ">" : "<"));
-                        pm.add(new ParameterMapping.Builder(ms.getConfiguration(), s1, Object.class).build());
-                        if (i < x) {
-                            bw.append(" OR (%s = ?".formatted(cn));
-                            pm.add(new ParameterMapping.Builder(ms.getConfiguration(), s1, Object.class).build());
-                        }
-                    }
-                    // ORDER BY 추가
+		if (pg instanceof PBCPage cpg) {
+			String on = pn.isEmpty() ? "orders" : pn + ".orders";
+			List<PBOrder> os = cpg.getOrders();
+			StringBuilder bw = new StringBuilder();
+			StringBuilder bo = new StringBuilder();
+			int i = 0, z = os == null ? 0 : os.size(), x = z - 1;
+			if (z > 0) {
+				for (PBOrder o : os) {
+					String cn = camelToUnderline(o.getColumn());
+					// WHERE 조건절 추가
+					if (!cpg.isFirst()) {
+						String s1 = "%s[%d].value".formatted(on, i);
+						bw.append("%n%s (%s %s ?".formatted(i == 0 ? " WHERE" : "   AND", cn, o.isAsc() ? ">" : "<"));
+						pm.add(new ParameterMapping.Builder(ms.getConfiguration(), s1, Object.class).build());
+						if (i < x) {
+							bw.append(" OR (%s = ?".formatted(cn));
+							pm.add(new ParameterMapping.Builder(ms.getConfiguration(), s1, Object.class).build());
+						}
+					}
+					// ORDER BY 추가
                     bo.append("%s %s %s".formatted(i == 0 ? " ORDER BY" : ",", camelToUnderline(cn), o.isAsc() ? "asc" : "desc"));
-                    i++;
-                }
-                // WHERE 조건절 닫기
+					i++;
+				}
+				// WHERE 조건절 닫기
                 if (!cpg.isFirst()) bw.append(")".repeat(Math.max(0, i * 2 - 1)));
-            }
-            sb.append("SELECT A.* FROM (%n%s%n) A%s%n%s%nLIMIT ?".formatted(bs.getSql(), bw, bo));
-            pm.add(new ParameterMapping.Builder(ms.getConfiguration(), ln, int.class).build());
-        } else if (pg instanceof PBNPage) {
-            String on = pn.isEmpty() ? "" : pn + ".";
-            sb.append(bs.getSql());
-            sb.append(" LIMIT ?, ?");
-            pm.add(new ParameterMapping.Builder(ms.getConfiguration(), on + "offset", int.class).build());
-            pm.add(new ParameterMapping.Builder(ms.getConfiguration(), on + "limit", int.class).build());
-        }
-        return bs;
-    }
+			}
+			sb.append("SELECT A.* FROM (%n%s%n) A%s%n%s%n".formatted(bs.getSql(), bw, bo));
+		} else if (pg instanceof PBNPage) {
+			sb.append(bs.getSql());
+			sb.append(System.lineSeparator());
+		} else {
+			throw new IllegalArgumentException("Not yet supported PageType (%s)".formatted(pg.getClass().getSimpleName()));
+		}
+		
+		// 공통처리
+		{
+			String on = pn.isEmpty() ? "" : pn + ".";
+			DbType dt = DialectFactory.getHintDbType();
+			switch (dt) {
+				case ORACLE, ORACLE_12C, DB2 -> {
+					sb.append(" OFFSET ? ROWS FETCH NEXT ? ROWS ONLY");
+					pm.add(new ParameterMapping.Builder(ms.getConfiguration(), on + "offset", int.class).build());
+					pm.add(new ParameterMapping.Builder(ms.getConfiguration(), on + "limit", int.class).build());
+				}
+				case MYSQL, MARIADB, H2, CUBRID, HIVE -> {
+					sb.append(" LIMIT ?, ?");
+					pm.add(new ParameterMapping.Builder(ms.getConfiguration(), on + "offset", int.class).build());
+					pm.add(new ParameterMapping.Builder(ms.getConfiguration(), on + "limit", int.class).build());
+				}
+				case POSTGRE_SQL, SQLITE, HSQL, SAP_HANA -> {
+					sb.append(" LIMIT ? OFFSET ?");
+					pm.add(new ParameterMapping.Builder(ms.getConfiguration(), on + "limit", int.class).build());
+					pm.add(new ParameterMapping.Builder(ms.getConfiguration(), on + "offset", int.class).build());
+				}
+				default -> throw new IllegalArgumentException("Not yet supported DbType (%s)".formatted(dt));
+			}			
+		}
+		return bs;
+	}
 
-    public static void setLockSql(MappedStatement ms, BoundSql bs, StringBuilder sb, Map.Entry<String, PBLock> le) {
-        if (le == null) return;
-        int wt = le.getValue().getWaitTime();
-        if (wt == Integer.MAX_VALUE) sb.append(" FOR UPDATE");
-        else if (wt == 0) sb.append(" FOR UPDATE NOWAIT");
-        else if (wt > 0) {
-            sb.append(" FOR UPDATE WAIT ?");
-            List<ParameterMapping> pm = bs.getParameterMappings();
-            String nm = le.getKey().isEmpty() ? "waitTime" : le.getKey() + ".waitTime";
-            pm.add(new ParameterMapping.Builder(ms.getConfiguration(), nm, int.class).build());
-        }
-    }
+	public static void setLockSql(MappedStatement ms, BoundSql bs, StringBuilder sb, Map.Entry<String, PBLock> le) {
+		if (le == null)
+			return;
+		int wt = le.getValue().getWaitTime();
+		if (wt == Integer.MAX_VALUE)
+			sb.append(" FOR UPDATE");
+		else if (wt == 0)
+			sb.append(" FOR UPDATE NOWAIT");
+		else if (wt > 0) {
+			sb.append(" FOR UPDATE WAIT ?");
+			List<ParameterMapping> pm = bs.getParameterMappings();
+			String nm = le.getKey().isEmpty() ? "waitTime" : le.getKey() + ".waitTime";
+			pm.add(new ParameterMapping.Builder(ms.getConfiguration(), nm, int.class).build());
+		}
+	}
 
-    public static <T> Map.Entry<String, T> findTypeEntry(Object o, Class<T> t) {
-        return findTypeEntry(o, t, "");
-    }
+	public static <T> Map.Entry<String, T> findTypeEntry(Object o, Class<T> t) {
+		return findTypeEntry(o, t, "");
+	}
 
-    @SuppressWarnings("unchecked")
-    public static <T> Map.Entry<String, T> findTypeEntry(Object o, Class<T> t, String p) {
+	@SuppressWarnings("unchecked")
+	public static <T> Map.Entry<String, T> findTypeEntry(Object o, Class<T> t, String p) {
         if (o == null) return null;
-        Class<?> c = o.getClass();
-        List<Map.Entry<String, Object>> ls = null;
-        if (t.isAssignableFrom(c)) {
-            return Map.entry(p, (T) o);
-        } else if (o instanceof PBData) {
-            List<Field> l = FieldUtils.getAllFieldsList(c);
-            try {
-                ls = new ArrayList<>(l.size());
-                for (Field f : l) {
-                    Object x = FieldUtils.readField(f, o, true);
+		Class<?> c = o.getClass();
+		List<Map.Entry<String, Object>> ls = null;
+		if (t.isAssignableFrom(c)) {
+			return Map.entry(p, (T) o);
+		} else if (o instanceof PBData) {
+			List<Field> l = FieldUtils.getAllFieldsList(c);
+			try {
+				ls = new ArrayList<>(l.size());
+				for (Field f : l) {
+					Object x = FieldUtils.readField(f, o, true);
                     if (x == null) continue;
-                    String y = p.isEmpty() ? f.getName() : p + "." + f.getName();
+					String y = p.isEmpty() ? f.getName() : p + "." + f.getName();
                     if (t.isAssignableFrom(x.getClass())) return Map.entry(y, (T) x);
-                    ls.add(Map.entry(y, x));
-                }
-            } catch (IllegalAccessException e) {
-                throw new RuntimeException(e);
-            }
-        } else if (o instanceof Map<?, ?> m) {
-            ls = new ArrayList<>(m.size());
-            for (Map.Entry<?, ?> e : m.entrySet()) {
-                Object x = e.getValue();
+					ls.add(Map.entry(y, x));
+				}
+			} catch (IllegalAccessException e) {
+				throw new RuntimeException(e);
+			}
+		} else if (o instanceof Map<?, ?> m) {
+			ls = new ArrayList<>(m.size());
+			for (Map.Entry<?, ?> e : m.entrySet()) {
+				Object x = e.getValue();
                 if (x == null) continue;
-                String k = e.getKey().toString();
-                String y = p.isEmpty() ? k : p + "." + k;
+				String k = e.getKey().toString();
+				String y = p.isEmpty() ? k : p + "." + k;
                 if (t.isAssignableFrom(x.getClass())) return Map.entry(y, (T) x);
-                ls.add(Map.entry(y, x));
-            }
-        } else if (o instanceof List<?> l) {
-            int n = l.size();
-            ls = new ArrayList<>(n);
-            for (int i = 0; i < n; i++) {
-                Object x = l.get(i);
-                String y = n + "[" + i + "]";
+				ls.add(Map.entry(y, x));
+			}
+		} else if (o instanceof List<?> l) {
+			int n = l.size();
+			ls = new ArrayList<>(n);
+			for (int i = 0; i < n; i++) {
+				Object x = l.get(i);
+				String y = n + "[" + i + "]";
                 if (t.isAssignableFrom(x.getClass())) return Map.entry(y, (T) x);
-                ls.add(Map.entry(y, x));
-            }
-        } else if (c.isArray()) {
-            int n = Array.getLength(o);
-            ls = new ArrayList<>(n);
-            for (int i = 0; i < n; i++) {
-                Object x = Array.get(o, i);
-                String y = n + "[" + i + "]";
+				ls.add(Map.entry(y, x));
+			}
+		} else if (c.isArray()) {
+			int n = Array.getLength(o);
+			ls = new ArrayList<>(n);
+			for (int i = 0; i < n; i++) {
+				Object x = Array.get(o, i);
+				String y = n + "[" + i + "]";
                 if (t.isAssignableFrom(x.getClass())) return Map.entry(y, (T) x);
-                ls.add(Map.entry(y, x));
-            }
-        }
-        if (ls != null) {
-            for (Map.Entry<String, Object> e : ls) {
-                Map.Entry<String, T> r = findTypeEntry(e.getValue(), t, e.getKey());
+				ls.add(Map.entry(y, x));
+			}
+		}
+		if (ls != null) {
+			for (Map.Entry<String, Object> e : ls) {
+				Map.Entry<String, T> r = findTypeEntry(e.getValue(), t, e.getKey());
                 if (r != null) return r;
-            }
-        }
-        return null;
-    }
+			}
+		}
+		return null;
+	}
 
-    @Override
-    public Object intercept(Invocation invocation) throws Throwable {
+	@Override
+	public Object intercept(Invocation invocation) throws Throwable {
 
-        if (invocation.getTarget() instanceof Executor executor) {
-            Object[] args = invocation.getArgs();
-            MappedStatement ms = (MappedStatement) args[0];
-            Object pr = args[1];
-            RowBounds rb = (RowBounds) args[2];
-            Map.Entry<String, PBPage> pe = findTypeEntry(pr, PBPage.class);
-            Map.Entry<String, PBLock> le = findTypeEntry(pr, PBLock.class);
+		if (invocation.getTarget() instanceof Executor executor) {
+			Object[] args = invocation.getArgs();
+			MappedStatement ms = (MappedStatement) args[0];
+			Object pr = args[1];
+			RowBounds rb = (RowBounds) args[2];
+			Map.Entry<String, PBPage> pe = findTypeEntry(pr, PBPage.class);
+			Map.Entry<String, PBLock> le = findTypeEntry(pr, PBLock.class);
 
-            BoundSql bs = ms.getBoundSql(pr);
-            StringBuilder sb = new StringBuilder("%n/* SQLID %s */%n".formatted(ms.getId()));
+			BoundSql bs = ms.getBoundSql(pr);
+			StringBuilder sb = new StringBuilder("%n/* SQLID %s */%n".formatted(ms.getId()));
 
             if (pe != null) bs = setPageSql(ms, bs, sb, pe);
             else sb.append(bs.getSql());
@@ -181,38 +212,38 @@ public class PBPageInterceptor implements Interceptor {
             if (le != null) setLockSql(ms, bs, sb, le);
 
             MetaObject meta = MetaObject.forObject(bs, SystemMetaObject.DEFAULT_OBJECT_FACTORY, SystemMetaObject.DEFAULT_OBJECT_WRAPPER_FACTORY, DEFAULT_REFLECTOR_FACTORY);
-            meta.setValue("sql", sb.toString());
-            CacheKey ck = executor.createCacheKey(ms, pr, rb, bs);
-            Object rs = executor.query(ms, pr, rb, (ResultHandler<?>) args[3], ck, bs);
-            if (pe != null) {
-                PBPage pg = pe.getValue();
-                if (pg instanceof PBCPage cpg) {
-                    if (rs instanceof List<?> l) {
-                        if (l.isEmpty() || l.size() < cpg.getLimit()) {
-                            cpg.setLast(true);
-                        } else {
-                            List<PBOrder> os = cpg.getOrders();
-                            if (os != null && !os.isEmpty()) {
-                                Object r = l.getLast();
-                                if (r != null) {
-                                    if (r instanceof Map<?, ?> m)
-                                        for (PBOrder o : cpg.getOrders())
-                                            o.setValue(m.get(o.getColumn()));
-                                    else
-                                        for (PBOrder o : cpg.getOrders())
-                                            o.setValue(FieldUtils.readField(r, o.getColumn(), true));
-                                }
-                            }
-                        }
-                    }
-                } else if (pg instanceof PBNPage npg) {
-                    if (rs instanceof List<?> l) {
+			meta.setValue("sql", sb.toString());
+			CacheKey ck = executor.createCacheKey(ms, pr, rb, bs);
+			Object rs = executor.query(ms, pr, rb, (ResultHandler<?>) args[3], ck, bs);
+			if (pe != null) {
+				PBPage pg = pe.getValue();
+				if (pg instanceof PBCPage cpg) {
+					if (rs instanceof List<?> l) {
+						if (l.isEmpty() || l.size() < cpg.getLimit()) {
+							cpg.setLast(true);
+						} else {
+							List<PBOrder> os = cpg.getOrders();
+							if (os != null && !os.isEmpty()) {
+								Object r = l.getLast();
+								if (r != null) {
+									if (r instanceof Map<?, ?> m)
+										for (PBOrder o : cpg.getOrders())
+											o.setValue(m.get(o.getColumn()));
+									else
+										for (PBOrder o : cpg.getOrders())
+											o.setValue(FieldUtils.readField(r, o.getColumn(), true));
+								}
+							}
+						}
+					}
+				} else if (pg instanceof PBNPage npg) {
+					if (rs instanceof List<?> l) {
                         if (l.isEmpty() || l.size() < npg.getLimit()) npg.setLast(true);
-                    }
-                }
-            }
-            return rs;
-        }
-        return invocation.proceed();
-    }
+					}
+				}
+			}
+			return rs;
+		}
+		return invocation.proceed();
+	}
 }
