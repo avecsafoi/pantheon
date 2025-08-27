@@ -24,6 +24,7 @@ import org.apache.ibatis.reflection.SystemMetaObject;
 import org.apache.ibatis.session.ResultHandler;
 import org.apache.ibatis.session.RowBounds;
 
+import com.mybatisflex.core.FlexGlobalConfig;
 import com.mybatisflex.core.dialect.DbType;
 import com.mybatisflex.core.dialect.DialectFactory;
 
@@ -91,6 +92,7 @@ public class PBPageInterceptor implements Interceptor {
 		{
 			String on = pn.isEmpty() ? "" : pn + ".";
 			DbType dt = DialectFactory.getHintDbType();
+			if (dt == null) FlexGlobalConfig.getDefaultConfig().getDbType();
 			switch (dt) {
 				case ORACLE, ORACLE_12C, DB2 -> {
 					sb.append(" OFFSET ? ROWS FETCH NEXT ? ROWS ONLY");
