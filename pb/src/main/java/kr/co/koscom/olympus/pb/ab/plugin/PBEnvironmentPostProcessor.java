@@ -1,6 +1,5 @@
 package kr.co.koscom.olympus.pb.ab.plugin;
 
-import jakarta.annotation.Nonnull;
 import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;
 import org.jasypt.salt.RandomSaltGenerator;
 import org.springframework.boot.SpringApplication;
@@ -8,6 +7,7 @@ import org.springframework.boot.env.EnvironmentPostProcessor;
 import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.env.MutablePropertySources;
 import org.springframework.core.env.PropertySource;
+import org.springframework.lang.NonNull;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -45,7 +45,7 @@ public class PBEnvironmentPostProcessor implements EnvironmentPostProcessor {
                     String n = p.getName();
                     PropertySource x = new PropertySource<Map<Object, Object>>(n, map) {
                         @Override
-                        public Object getProperty(@Nonnull String name) {
+                        public Object getProperty(@NonNull String name) {
                             return source.get(name);
                         }
                     };

@@ -33,6 +33,7 @@ public class TestController {
 //        System.out.printf("b1 = %s, b2 = %s %n", b1, b2);
 //        request.getHeaders().setContentType(MediaType.APPLICATION_JSON);
         ResponseEntity<TestVo> response = ResponseEntity.noContent().cacheControl(CacheControl.noCache()).build();
+        System.out.println(response.getBody());
         // return ResponseEntity.ok().header("Content-Type", MediaType.APPLICATION_XML_VALUE).body(o);
         return ResponseEntity.ok().body(o);
     }

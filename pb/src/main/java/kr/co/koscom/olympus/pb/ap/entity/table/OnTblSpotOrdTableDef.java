@@ -71,7 +71,7 @@ public class OnTblSpotOrdTableDef extends TableDef {
 
     public OnTblSpotOrdTableDef as(String alias) {
         String key = getNameWithSchema() + "." + alias;
-        return getCache(key, k -> new OnTblSpotOrdTableDef("", "on_tbl_spot_ord", alias));
+        return getCache(key, _ -> new OnTblSpotOrdTableDef("", "on_tbl_spot_ord", alias));
     }
 
 }

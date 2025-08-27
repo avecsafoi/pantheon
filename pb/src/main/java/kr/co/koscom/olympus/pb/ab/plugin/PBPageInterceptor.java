@@ -60,7 +60,7 @@ public class PBPageInterceptor implements Interceptor {
 			StringBuilder bw = new StringBuilder();
 			StringBuilder bo = new StringBuilder();
 			int i = 0, z = os == null ? 0 : os.size(), x = z - 1;
-			if (z > 0) {
+			if (z > 0 && os != null) {
 				for (PBOrder o : os) {
 					String cn = camelToUnderline(o.getColumn());
 					// WHERE 조건절 추가
@@ -90,7 +90,7 @@ public class PBPageInterceptor implements Interceptor {
 		// 공통처리
 		String on = pn.isEmpty() ? "" : pn + ".";
 		DbType dt = DialectFactory.getHintDbType();
-		if (dt == null) FlexGlobalConfig.getDefaultConfig().getDbType();
+		if (dt == null) dt = FlexGlobalConfig.getDefaultConfig().getDbType();
 		switch (dt) {
 			case ORACLE, ORACLE_12C, DB2 -> {
 				sb.append(" OFFSET ? ROWS FETCH NEXT ? ROWS ONLY");

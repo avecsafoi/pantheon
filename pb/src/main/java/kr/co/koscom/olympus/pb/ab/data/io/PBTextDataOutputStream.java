@@ -126,7 +126,7 @@ public class PBTextDataOutputStream extends PBDataOutputStream {
                 writeNumber(n, a.scale());
             }
             for (int i = 0; i < z; i++) {
-                Object x = i < n ? l.get(i) : null;
+                Object x = i < n && l != null ? l.get(i) : null;
                 Class<?> y = x == null ? s : x.getClass();
                 PBDataT u = new PBDataT(t, y, x, null, null);
                 writeObject(u);

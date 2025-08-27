@@ -53,7 +53,7 @@ public class TenantTableDef extends TableDef {
 
     public TenantTableDef as(String alias) {
         String key = getNameWithSchema() + "." + alias;
-        return getCache(key, k -> new TenantTableDef("", "tenant", alias));
+        return getCache(key, _ -> new TenantTableDef("", "tenant", alias));
     }
 
 }

@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration>
 <configuration>
     <!--
     <appender name="RSOCKET" class="com.example.demo.LogbackAppender"/>
@@ -12,5 +13,4 @@
     <root level="DEBUG">
         <appender-ref ref="CONSOLE"/>
     </root>
-
 </configuration>

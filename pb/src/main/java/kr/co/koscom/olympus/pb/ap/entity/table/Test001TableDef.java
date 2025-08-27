@@ -68,7 +68,7 @@ public class Test001TableDef extends TableDef {
 
     public Test001TableDef as(String alias) {
         String key = getNameWithSchema() + "." + alias;
-        return getCache(key, k -> new Test001TableDef("", "test_001", alias));
+        return getCache(key, _ -> new Test001TableDef("", "test_001", alias));
     }
 
 }

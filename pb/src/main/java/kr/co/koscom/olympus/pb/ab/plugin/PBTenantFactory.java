@@ -9,8 +9,9 @@ public class PBTenantFactory implements TenantFactory {
     @Override
     public Object[] getTenantIds() {
         RequestAttributes attributes = RequestContextHolder.getRequestAttributes();
-        assert attributes != null;
+        if (attributes == null) return new Object[0];
         String tenantId = (String) attributes.getAttribute("tenantId", RequestAttributes.SCOPE_REQUEST);
+        if (tenantId == null) return new Object[0];
         return new Object[]{tenantId};
     }
 }

@@ -1,6 +1,5 @@
 package kr.co.koscom.olympus.pb.ab.plugin;
 
-import jakarta.annotation.Nonnull;
 import kr.co.koscom.olympus.pb.ab.data.PBData;
 import kr.co.koscom.olympus.pb.ab.data.io.PBTextDataInputStream;
 import kr.co.koscom.olympus.pb.ab.data.io.PBTextDataOutputStream;
@@ -11,6 +10,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.http.converter.HttpMessageNotWritableException;
+import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
 import org.springframework.util.StreamUtils;
 
@@ -22,37 +22,43 @@ import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.List;
 
-public record PBTextDataHttpMessageConverter(Charset defaultCharset) implements HttpMessageConverter<Object> {
+public class PBTextDataHttpMessageConverter implements HttpMessageConverter<Object> {
 
+	private final Charset defaultCharset;
+	
     public PBTextDataHttpMessageConverter() {
         this(StandardCharsets.UTF_8);
     }
 
-    @Override
-    public boolean canRead(@Nonnull Class<?> c, @Nullable MediaType t) {
+    public PBTextDataHttpMessageConverter(Charset charset) {
+		this.defaultCharset = charset;
+	}
+
+	@Override
+    public boolean canRead(@NonNull Class<?> c, @Nullable MediaType t) {
         if (t != null && PBData.class.isAssignableFrom(c)) for (MediaType a : getSupportedMediaTypes())
             if (t.isCompatibleWith(a)) return true;
         return false;
     }
 
     @Override
-    public boolean canWrite(@Nonnull Class<?> c, @Nullable MediaType m) {
+    public boolean canWrite(@NonNull Class<?> c, @Nullable MediaType m) {
         return canRead(c, m);
     }
 
     @Override
-    public @Nonnull List<MediaType> getSupportedMediaTypes() {
+    public @NonNull List<MediaType> getSupportedMediaTypes() {
         return List.of(MediaType.TEXT_PLAIN);
     }
 
     @Override
-    public @Nonnull List<MediaType> getSupportedMediaTypes(@Nonnull Class<?> c) {
+    public @NonNull List<MediaType> getSupportedMediaTypes(@NonNull Class<?> c) {
         boolean b = PBData.class.isAssignableFrom(c);
         return b ? getSupportedMediaTypes() : Collections.emptyList();
     }
 
     @Override
-    public @Nonnull Object read(@Nonnull Class<?> c, HttpInputMessage m) throws IOException, HttpMessageNotReadableException {
+    public @NonNull Object read(@NonNull Class<?> c, @NonNull HttpInputMessage m) throws IOException, HttpMessageNotReadableException {
         MediaType t = m.getHeaders().getContentType();
         Charset charset = t != null && t.getCharset() != null ? t.getCharset() : defaultCharset;
         PBTextDataInputStream is = new PBTextDataInputStream(m.getBody(), charset);
@@ -67,8 +73,9 @@ public record PBTextDataHttpMessageConverter(Charset defaultCharset) implements 
     }
 
     @Override
-    public void write(@Nonnull Object o, @Nullable MediaType t, HttpOutputMessage m) throws IOException, HttpMessageNotWritableException {
-        Charset charset = t != null && t.getCharset() != null ? t.getCharset() : defaultCharset;
+    public void write(@NonNull Object o, @Nullable MediaType t, @NonNull HttpOutputMessage m) throws IOException, HttpMessageNotWritableException {
+        Charset charset = t == null ? null : t.getCharset(); 
+        if(charset == null) charset = defaultCharset;
         HttpHeaders h = m.getHeaders();
         if (h.getContentType() == null) h.setContentType(new MediaType("text", "plain", charset));
         ByteArrayOutputStream baos = new ByteArrayOutputStream(4096);

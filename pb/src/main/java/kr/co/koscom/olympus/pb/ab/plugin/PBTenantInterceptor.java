@@ -2,9 +2,11 @@ package kr.co.koscom.olympus.pb.ab.plugin;
 
 import com.mybatisflex.core.datasource.DataSourceKey;
 import io.micrometer.common.util.StringUtils;
-import jakarta.annotation.Nonnull;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+
+import org.springframework.lang.NonNull;
+import org.springframework.lang.Nullable;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import java.net.InetAddress;
@@ -27,7 +29,7 @@ public class PBTenantInterceptor implements HandlerInterceptor {
             "IPV6_ADR");
 
     @Override
-    public boolean preHandle(@Nonnull HttpServletRequest request, @Nonnull HttpServletResponse response, @Nonnull Object handler) throws Exception {
+    public boolean preHandle(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull Object handler) throws Exception {
 
         // 요청을 통해 테넌트 ID를 가져옵니다.
         String tenantId = getTenantIdByReuqest(request);
@@ -43,7 +45,7 @@ public class PBTenantInterceptor implements HandlerInterceptor {
         return true;
     }
 
-    public String getTenantIdByReuqest(@Nonnull HttpServletRequest request) {
+    public String getTenantIdByReuqest(@NonNull HttpServletRequest request) {
         String ip = null;
         for (String s : headerList)
             if (StringUtils.isNotBlank(ip = request.getHeader(s)) || !"unknown".equalsIgnoreCase(ip)) break;
@@ -53,11 +55,11 @@ public class PBTenantInterceptor implements HandlerInterceptor {
         } catch (UnknownHostException e) {
             throw new RuntimeException(e);
         }
-        return ip.matches("172.22.56.47") ? "코스콤" : "신정원";
+        return ip !=null && ip.matches("172.22.56.47") ? "코스콤" : "신정원";
     }
 
     @Override
-    public void afterCompletion(@Nonnull HttpServletRequest request, @Nonnull HttpServletResponse response, @Nonnull Object handler, Exception ex) throws Exception {
+    public void afterCompletion(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull Object handler, @Nullable Exception ex) throws Exception {
         // NOTHING TODO
     }
 }
