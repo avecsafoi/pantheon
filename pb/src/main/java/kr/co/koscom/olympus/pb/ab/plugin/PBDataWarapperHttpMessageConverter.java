@@ -6,7 +6,6 @@ import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.List;
 
-import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpInputMessage;
 import org.springframework.http.HttpOutputMessage;
@@ -61,22 +60,21 @@ public class PBDataWarapperHttpMessageConverter implements HttpMessageConverter<
     }
 
     @Override
-    public @NonNull Object read(@NonNull Class<?> c, @NonNull HttpInputMessage m) throws IOException, HttpMessageNotReadableException {
-		MediaType t = m.getHeaders().getContentType();
+    public @NonNull Object read(@NonNull Class<?> c, @NonNull HttpInputMessage hm) throws IOException, HttpMessageNotReadableException {
+		MediaType t = hm.getHeaders().getContentType();
 		Charset charset = t == null ? null : t.getCharset();
 		if (charset == null) charset = defaultCharset;
 		try {
-			int z = (int) m.getHeaders().getContentLength();
+			int z = (int) hm.getHeaders().getContentLength();
 			byte[] b = new byte[z];
-			int n = m.getBody().read(b);
+			int n = hm.getBody().read(b);
 			if (n != z) throw new Exception( "Incorrect byte length between (cotent-length = %d, actual-length = %d)".formatted(z, n));
 			String s = new String(b, charset);
-			JSONObject o = new JSONObject(s);
-			PBDataWrapper wo = objectMapper.convertValue(o, PBDataWrapper.class);
+			PBDataWrapper wo = objectMapper.readValue(s, PBDataWrapper.class);
 			wo.initService();
 			PBData in = objectMapper.convertValue(wo.getIn(), wo.getCi());
 			PBData out = PBDataUtil.createObject(wo.getCo());
-			wo.getSt().setIn(in).setOut(out);
+			wo.setIn(in).setOut(out);
 			return wo;
 		} catch (Throwable e) {
 			e.printStackTrace(System.err);

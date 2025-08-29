@@ -20,6 +20,7 @@ import com.mybatisflex.core.datasource.DataSourceManager;
 
 import jakarta.annotation.Resource;
 import kr.co.koscom.olympus.pb.ab.plugin.PBDataSourceShardingStrategy;
+import kr.co.koscom.olympus.pb.ab.plugin.PBDataWarapperHttpMessageConverter;
 import kr.co.koscom.olympus.pb.ab.plugin.PBPageInterceptor;
 import kr.co.koscom.olympus.pb.ab.plugin.PBTenantFactory;
 import kr.co.koscom.olympus.pb.ab.plugin.PBTextDataHttpMessageConverter;
@@ -33,6 +34,12 @@ public class PBAppConfig {
 	@Resource
 	private ApplicationContext ctx;
 
+	@Bean
+	@Description("PBDataWarapper(JSON) 전문을 파싱하는 기능")
+	PBDataWarapperHttpMessageConverter pbDataWarapperHttpMessageConverter() {
+		return new PBDataWarapperHttpMessageConverter();
+	}
+	
 	@Bean
 	@Description("송수신 전문을 파싱하는 기능")
 	PBTextDataHttpMessageConverter pbTextDataHttpMessageConverter() {

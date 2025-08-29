@@ -58,39 +58,39 @@
         [ class kr.co.koscom.olympus.pb.ab.db.service.PBServiceImpl ]
         [ class com.mybatisflex.spring.service.impl.ServiceImpl ]
 
-[   17] [ PBRSocketController ]
-        [ class kr.co.koscom.olympus.pb.demo.rsocket.PBRSocketController ]
-
-[   18] [ /aa ]
+[   17] [ /aa ]
         [ class kr.co.koscom.olympus.pb.test.aa.AAController ]
 
-[   19] [ 11110000 ]
+[   18] [ 11110000 ]
         [ class kr.co.koscom.olympus.pb.test.aa.AAService ]
 
-[   20] [ /pb/flex ]
+[   19] [ /pb/flex ]
         [ class kr.co.koscom.olympus.pb.test.flex.FlexController$$SpringCGLIB$$0 ]
         [ class kr.co.koscom.olympus.pb.test.flex.FlexController ]
 
-[   21] [ 10001001 ]
+[   20] [ 10001001 ]
         [ class kr.co.koscom.olympus.pb.test.pb.io.st10001001.ST10001001SVC ]
 
-[   22] [ 10001002 ]
+[   21] [ 10001002 ]
         [ class kr.co.koscom.olympus.pb.test.pb.io.st10001002.ST10001002SVC ]
 
-[   23] [ PBGatewayController ]
+[   22] [ PBGatewayController ]
         [ class kr.co.koscom.olympus.pb.test.pb.PBGatewayController ]
 
-[   24] [ PBOrdStController ]
+[   23] [ PBOrdStController ]
         [ class kr.co.koscom.olympus.pb.test.pb.PBOrdStController ]
 
-[   25] [ PBPageController ]
+[   24] [ PBPageController ]
         [ class kr.co.koscom.olympus.pb.test.pb.PBPageController ]
 
-[   26] [ testController ]
+[   25] [ testController ]
         [ class kr.co.koscom.olympus.pb.test.text.TestController ]
 
-[   27] [ vueTestController ]
+[   26] [ vueTestController ]
         [ class kr.co.koscom.olympus.pb.test.vue.VueTestController ]
+
+[   27] [ pbDataWarapperHttpMessageConverter ]
+        [ class kr.co.koscom.olympus.pb.ab.plugin.PBDataWarapperHttpMessageConverter ]
 
 [   28] [ pbTextDataHttpMessageConverter ]
         [ class kr.co.koscom.olympus.pb.ab.plugin.PBTextDataHttpMessageConverter ]
@@ -117,7 +117,7 @@
         [ class org.springframework.boot.context.properties.BoundConfigurationProperties ]
 
 [   36] [ org.springframework.boot.context.properties.EnableConfigurationPropertiesRegistrar.methodValidationExcludeFilter ]
-        [ class org.springframework.boot.validation.beanvalidation.MethodValidationExcludeFilter$$Lambda/0x000001ee493dc818 ]
+        [ class org.springframework.boot.validation.beanvalidation.MethodValidationExcludeFilter$$Lambda/0x000001a3583e0548 ]
 
 [   37] [ pb-kr.co.koscom.olympus.pb.ab.conf.PBProperties ]
         [ class kr.co.koscom.olympus.pb.ab.conf.PBProperties ]
@@ -143,7 +143,7 @@
         [ class org.springframework.boot.autoconfigure.jdbc.metadata.DataSourcePoolMetadataProvidersConfiguration$HikariPoolDataSourceMetadataProviderConfiguration ]
 
 [   44] [ hikariPoolDataSourceMetadataProvider ]
-        [ class org.springframework.boot.autoconfigure.jdbc.metadata.DataSourcePoolMetadataProvidersConfiguration$HikariPoolDataSourceMetadataProviderConfiguration$$Lambda/0x000001ee4959c000 ]
+        [ class org.springframework.boot.autoconfigure.jdbc.metadata.DataSourcePoolMetadataProvidersConfiguration$HikariPoolDataSourceMetadataProviderConfiguration$$Lambda/0x000001a35859e518 ]
 
 [   45] [ org.springframework.boot.autoconfigure.jdbc.metadata.DataSourcePoolMetadataProvidersConfiguration ]
         [ class org.springframework.boot.autoconfigure.jdbc.metadata.DataSourcePoolMetadataProvidersConfiguration ]
@@ -326,7 +326,7 @@
         [ class org.springframework.boot.autoconfigure.http.codec.CodecsAutoConfiguration$JacksonCodecConfiguration ]
 
 [   98] [ jacksonCodecCustomizer ]
-        [ class org.springframework.boot.autoconfigure.http.codec.CodecsAutoConfiguration$JacksonCodecConfiguration$$Lambda/0x000001ee495a1620 ]
+        [ class org.springframework.boot.autoconfigure.http.codec.CodecsAutoConfiguration$JacksonCodecConfiguration$$Lambda/0x000001a3585a3370 ]
 
 [   99] [ org.springframework.boot.autoconfigure.http.codec.CodecsAutoConfiguration ]
         [ class org.springframework.boot.autoconfigure.http.codec.CodecsAutoConfiguration ]
@@ -377,7 +377,7 @@
         [ class org.springframework.boot.autoconfigure.task.TaskExecutorConfigurations$BootstrapExecutorConfiguration ]
 
 [  112] [ bootstrapExecutorAliasPostProcessor ]
-        [ class org.springframework.boot.autoconfigure.task.TaskExecutorConfigurations$BootstrapExecutorConfiguration$$Lambda/0x000001ee493d8f70 ]
+        [ class org.springframework.boot.autoconfigure.task.TaskExecutorConfigurations$BootstrapExecutorConfiguration$$Lambda/0x000001a3583dcbf0 ]
 
 [  113] [ org.springframework.boot.autoconfigure.task.TaskExecutionAutoConfiguration ]
         [ class org.springframework.boot.autoconfigure.task.TaskExecutionAutoConfiguration ]
@@ -894,7 +894,7 @@
         [ class org.springframework.boot.actuate.autoconfigure.web.ManagementContextFactory ]
 
 [  258] [ managementServletContext ]
-        [ class org.springframework.boot.actuate.autoconfigure.web.servlet.ServletManagementContextAutoConfiguration$$Lambda/0x000001ee49639208 ]
+        [ class org.springframework.boot.actuate.autoconfigure.web.servlet.ServletManagementContextAutoConfiguration$$Lambda/0x000001a35863b350 ]
 
 [  259] [ org.springframework.boot.actuate.autoconfigure.condition.ConditionsReportEndpointAutoConfiguration ]
         [ class org.springframework.boot.actuate.autoconfigure.condition.ConditionsReportEndpointAutoConfiguration ]
@@ -927,7 +927,7 @@
         [ class org.springframework.boot.actuate.autoconfigure.endpoint.jackson.JacksonEndpointAutoConfiguration ]
 
 [  269] [ endpointObjectMapper ]
-        [ class org.springframework.boot.actuate.autoconfigure.endpoint.jackson.JacksonEndpointAutoConfiguration$$Lambda/0x000001ee495c2278 ]
+        [ class org.springframework.boot.actuate.autoconfigure.endpoint.jackson.JacksonEndpointAutoConfiguration$$Lambda/0x000001a3585c38e0 ]
 
 [  270] [ org.springframework.boot.autoconfigure.jmx.JmxAutoConfiguration ]
         [ class org.springframework.boot.autoconfigure.jmx.JmxAutoConfiguration ]
@@ -964,10 +964,10 @@
         [ class org.springframework.boot.actuate.autoconfigure.endpoint.expose.IncludeExcludeEndpointFilter ]
 
 [  280] [ eagerlyInitializeJmxEndpointExporter ]
-        [ class org.springframework.boot.LazyInitializationExcludeFilter$$Lambda/0x000001ee49640478 ]
+        [ class org.springframework.boot.LazyInitializationExcludeFilter$$Lambda/0x000001a358646490 ]
 
 [  281] [ jmxAccessPropertiesOperationFilter ]
-        [ class org.springframework.boot.actuate.endpoint.OperationFilter$$Lambda/0x000001ee4962dcf0 ]
+        [ class org.springframework.boot.actuate.endpoint.OperationFilter$$Lambda/0x000001a35862ed20 ]
 
 [  282] [ management.endpoints.jmx-org.springframework.boot.actuate.autoconfigure.endpoint.jmx.JmxEndpointProperties ]
         [ class org.springframework.boot.actuate.autoconfigure.endpoint.jmx.JmxEndpointProperties ]
@@ -1006,7 +1006,7 @@
         [ class org.springframework.boot.actuate.autoconfigure.endpoint.expose.IncludeExcludeEndpointFilter ]
 
 [  293] [ webAccessPropertiesOperationFilter ]
-        [ class org.springframework.boot.actuate.endpoint.OperationFilter$$Lambda/0x000001ee4962dcf0 ]
+        [ class org.springframework.boot.actuate.endpoint.OperationFilter$$Lambda/0x000001a35862ed20 ]
 
 [  294] [ management.endpoints.web-org.springframework.boot.actuate.autoconfigure.endpoint.web.WebEndpointProperties ]
         [ class org.springframework.boot.actuate.autoconfigure.endpoint.web.WebEndpointProperties ]
@@ -1219,7 +1219,7 @@
         [ class org.springframework.boot.actuate.autoconfigure.metrics.task.TaskExecutorMetricsAutoConfiguration ]
 
 [  362] [ eagerTaskExecutorMetrics ]
-        [ class org.springframework.boot.LazyInitializationExcludeFilter$$Lambda/0x000001ee49640478 ]
+        [ class org.springframework.boot.LazyInitializationExcludeFilter$$Lambda/0x000001a358646490 ]
 
 [  363] [ org.springframework.boot.actuate.autoconfigure.metrics.web.tomcat.TomcatMetricsAutoConfiguration ]
         [ class org.springframework.boot.actuate.autoconfigure.metrics.web.tomcat.TomcatMetricsAutoConfiguration ]
@@ -1341,7 +1341,7 @@
         [ class org.springframework.boot.autoconfigure.http.client.reactive.ClientHttpConnectorAutoConfiguration$ReactorNetty ]
 
 [  400] [ reactorResourceFactoryClientHttpConnectorBuilderCustomizer ]
-        [ class org.springframework.boot.autoconfigure.http.client.reactive.ClientHttpConnectorAutoConfiguration$ReactorNetty$$Lambda/0x000001ee496567d0 ]
+        [ class org.springframework.boot.autoconfigure.http.client.reactive.ClientHttpConnectorAutoConfiguration$ReactorNetty$$Lambda/0x000001a3586558a8 ]
 
 [  401] [ org.springframework.boot.autoconfigure.http.client.reactive.ClientHttpConnectorAutoConfiguration ]
         [ class org.springframework.boot.autoconfigure.http.client.reactive.ClientHttpConnectorAutoConfiguration ]
@@ -1375,7 +1375,7 @@
         [ class org.springframework.web.reactive.function.client.DefaultWebClientBuilder ]
 
 [  410] [ webClientHttpConnectorCustomizer ]
-        [ class org.springframework.boot.autoconfigure.web.reactive.function.client.WebClientAutoConfiguration$$Lambda/0x000001ee4971eb50 ]
+        [ class org.springframework.boot.autoconfigure.web.reactive.function.client.WebClientAutoConfiguration$$Lambda/0x000001a35873fcd0 ]
 
 [  411] [ webClientSsl ]
         [ class org.springframework.boot.autoconfigure.web.reactive.function.client.AutoConfiguredWebClientSsl ]
@@ -1483,7 +1483,7 @@
         [ class org.springframework.boot.autoconfigure.aop.AopAutoConfiguration$ClassProxyingConfiguration ]
 
 [  445] [ forceAutoProxyCreatorToUseClassProxying ]
-        [ class org.springframework.boot.autoconfigure.aop.AopAutoConfiguration$ClassProxyingConfiguration$$Lambda/0x000001ee493d91a0 ]
+        [ class org.springframework.boot.autoconfigure.aop.AopAutoConfiguration$ClassProxyingConfiguration$$Lambda/0x000001a3583dce20 ]
 
 [  446] [ org.springframework.boot.autoconfigure.aop.AopAutoConfiguration ]
         [ class org.springframework.boot.autoconfigure.aop.AopAutoConfiguration ]
@@ -1654,10 +1654,10 @@
         [ class org.springframework.boot.autoconfigure.data.web.SpringDataWebAutoConfiguration ]
 
 [  493] [ pageableCustomizer ]
-        [ class org.springframework.boot.autoconfigure.data.web.SpringDataWebAutoConfiguration$$Lambda/0x000001ee495eb440 ]
+        [ class org.springframework.boot.autoconfigure.data.web.SpringDataWebAutoConfiguration$$Lambda/0x000001a3585ed238 ]
 
 [  494] [ sortCustomizer ]
-        [ class org.springframework.boot.autoconfigure.data.web.SpringDataWebAutoConfiguration$$Lambda/0x000001ee495ea988 ]
+        [ class org.springframework.boot.autoconfigure.data.web.SpringDataWebAutoConfiguration$$Lambda/0x000001a3585ec780 ]
 
 [  495] [ springDataWebSettings ]
         [ class org.springframework.data.web.config.SpringDataWebSettings ]
@@ -1695,7 +1695,7 @@
         [ class org.springframework.boot.autoconfigure.netty.NettyAutoConfiguration ]
 
 [  506] [ nettyAutoConfigurationLazyInitializationExcludeFilter ]
-        [ class org.springframework.boot.LazyInitializationExcludeFilter$$Lambda/0x000001ee49640478 ]
+        [ class org.springframework.boot.LazyInitializationExcludeFilter$$Lambda/0x000001a358646490 ]
 
 [  507] [ spring.netty-org.springframework.boot.autoconfigure.netty.NettyProperties ]
         [ class org.springframework.boot.autoconfigure.netty.NettyProperties ]
@@ -1704,7 +1704,7 @@
         [ class org.springframework.boot.autoconfigure.reactor.ReactorAutoConfiguration ]
 
 [  509] [ reactorAutoConfigurationLazyInitializationExcludeFilter ]
-        [ class org.springframework.boot.LazyInitializationExcludeFilter$$Lambda/0x000001ee49640478 ]
+        [ class org.springframework.boot.LazyInitializationExcludeFilter$$Lambda/0x000001a358646490 ]
 
 [  510] [ spring.reactor-org.springframework.boot.autoconfigure.reactor.ReactorProperties ]
         [ class org.springframework.boot.autoconfigure.reactor.ReactorProperties ]
@@ -1713,13 +1713,13 @@
         [ class org.springframework.boot.autoconfigure.rsocket.RSocketStrategiesAutoConfiguration$JacksonJsonStrategyConfiguration ]
 
 [  512] [ jacksonJsonRSocketStrategyCustomizer ]
-        [ class org.springframework.boot.autoconfigure.rsocket.RSocketStrategiesAutoConfiguration$JacksonJsonStrategyConfiguration$$Lambda/0x000001ee4966ed28 ]
+        [ class org.springframework.boot.autoconfigure.rsocket.RSocketStrategiesAutoConfiguration$JacksonJsonStrategyConfiguration$$Lambda/0x000001a358675000 ]
 
 [  513] [ org.springframework.boot.autoconfigure.rsocket.RSocketStrategiesAutoConfiguration$JacksonCborStrategyConfiguration ]
         [ class org.springframework.boot.autoconfigure.rsocket.RSocketStrategiesAutoConfiguration$JacksonCborStrategyConfiguration ]
 
 [  514] [ jacksonCborRSocketStrategyCustomizer ]
-        [ class org.springframework.boot.autoconfigure.rsocket.RSocketStrategiesAutoConfiguration$JacksonCborStrategyConfiguration$$Lambda/0x000001ee4966ef60 ]
+        [ class org.springframework.boot.autoconfigure.rsocket.RSocketStrategiesAutoConfiguration$JacksonCborStrategyConfiguration$$Lambda/0x000001a358675238 ]
 
 [  515] [ org.springframework.boot.autoconfigure.rsocket.RSocketStrategiesAutoConfiguration ]
         [ class org.springframework.boot.autoconfigure.rsocket.RSocketStrategiesAutoConfiguration ]
@@ -1751,7 +1751,7 @@
         [ class org.springframework.boot.rsocket.context.RSocketServerBootstrap ]
 
 [  524] [ frameDecoderRSocketServerCustomizer ]
-        [ class org.springframework.boot.autoconfigure.rsocket.RSocketServerAutoConfiguration$EmbeddedServerConfiguration$$Lambda/0x000001ee49693840 ]
+        [ class org.springframework.boot.autoconfigure.rsocket.RSocketServerAutoConfiguration$EmbeddedServerConfiguration$$Lambda/0x000001a3586972a8 ]
 
 [  525] [ org.springframework.boot.autoconfigure.rsocket.RSocketServerAutoConfiguration ]
         [ class org.springframework.boot.autoconfigure.rsocket.RSocketServerAutoConfiguration ]
@@ -1792,7 +1792,7 @@
         [ class org.springframework.boot.autoconfigure.web.reactive.function.client.ClientHttpConnectorAutoConfiguration$ReactorNetty ]
 
 [  537] [ reactorNettyHttpClientMapperClientHttpConnectorBuilderCustomizer ]
-        [ class org.springframework.boot.autoconfigure.web.reactive.function.client.ClientHttpConnectorAutoConfiguration$ReactorNetty$$Lambda/0x000001ee49657838 ]
+        [ class org.springframework.boot.autoconfigure.web.reactive.function.client.ClientHttpConnectorAutoConfiguration$ReactorNetty$$Lambda/0x000001a3586589a8 ]
 
 [  538] [ org.springframework.boot.autoconfigure.web.reactive.function.client.ClientHttpConnectorAutoConfiguration ]
         [ class org.springframework.boot.autoconfigure.web.reactive.function.client.ClientHttpConnectorAutoConfiguration ]
@@ -1834,7 +1834,7 @@
         [ class org.springframework.boot.devtools.classpath.PatternClassPathRestartStrategy ]
 
 [  550] [ fileSystemWatcherFactory ]
-        [ class org.springframework.boot.devtools.autoconfigure.LocalDevToolsAutoConfiguration$RestartConfiguration$$Lambda/0x000001ee496bd250 ]
+        [ class org.springframework.boot.devtools.autoconfigure.LocalDevToolsAutoConfiguration$RestartConfiguration$$Lambda/0x000001a3586bc310 ]
 
 [  551] [ conditionEvaluationDeltaLoggingListener ]
         [ class org.springframework.boot.devtools.autoconfigure.ConditionEvaluationDeltaLoggingListener ]
