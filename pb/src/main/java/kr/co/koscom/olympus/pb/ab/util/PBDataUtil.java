@@ -4,9 +4,6 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 
 import kr.co.koscom.olympus.pb.ab.conf.PBAppConfig;
-import kr.co.koscom.olympus.pb.ab.data.PBData;
-import kr.co.koscom.olympus.pb.apa.PBST;
-import kr.co.koscom.olympus.pb.apa.PBService;
 
 public class PBDataUtil {
 

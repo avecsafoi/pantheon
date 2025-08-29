@@ -77,7 +77,7 @@ public class PBTextDataHttpMessageConverter implements HttpMessageConverter<Obje
         Charset charset = t == null ? null : t.getCharset(); 
         if(charset == null) charset = defaultCharset;
         HttpHeaders h = m.getHeaders();
-        if (h.getContentType() == null) h.setContentType(new MediaType("text", "plain", charset));
+        if (h.getContentType() == null) h.setContentType(new MediaType(MediaType.TEXT_PLAIN, charset));
         ByteArrayOutputStream baos = new ByteArrayOutputStream(4096);
         try (PBTextDataOutputStream tdos = new PBTextDataOutputStream(baos, charset)) {
             tdos.writeObject(o);

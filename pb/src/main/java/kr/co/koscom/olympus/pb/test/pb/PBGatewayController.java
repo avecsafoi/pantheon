@@ -11,8 +11,8 @@ public class PBGatewayController {
     @PostMapping(value = "json"
             , consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE}
             , produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE})
-    public @ResponseBody PBDataWrapper json(@RequestBody PBDataWrapper js) throws Exception {
-        js.processForJson();
-        return js;
+    public @ResponseBody PBDataWrapper json(@RequestBody PBDataWrapper wo) throws Exception {
+        wo.process();
+        return wo;
     }
 }

@@ -1,27 +1,24 @@
 package kr.co.koscom.olympus.pb.apa;
 
-import kr.co.koscom.olympus.pb.ab.data.PBObject;
-import kr.co.koscom.olympus.pb.ab.data.annotation.PBA;
+import kr.co.koscom.olympus.pb.ab.data.PBData;
 import kr.co.koscom.olympus.pb.apa.hdr.PBHdrAccount;
 import kr.co.koscom.olympus.pb.apa.hdr.PBHdrCommon;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.experimental.Accessors;
 
-@EqualsAndHashCode(callSuper = true)
-@Accessors(chain = true)
-@Data
-public class PBST<I, O> extends PBObject {
+public interface PBST<I, O> extends PBData {
 
-    @PBA(name = "공통 헤더")
-    public PBHdrCommon hdrCommon;
+	PBHdrCommon getHdrCommon();
 
-    @PBA(name = "계정계 헤더")
-    public PBHdrAccount hdrAccount;
+	PBST<I, O> setHdrCommon(PBHdrCommon hdrCommon);
 
-    @PBA(name = "입력")
-    public I in;
+	PBHdrAccount getHdrAccount();
 
-    @PBA(name = "출력")
-    public O out;
+	PBST<I, O> setHdrAccount(PBHdrAccount hdrAccount);
+
+	I getIn();
+
+	PBST<I, O> setIn(I in);
+
+	O getOut();
+
+	PBST<I, O> setOut(O out);
 }
