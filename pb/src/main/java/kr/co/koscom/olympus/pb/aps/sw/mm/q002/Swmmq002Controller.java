@@ -11,12 +11,21 @@ import jakarta.annotation.Resource;
 public class Swmmq002Controller {
 
 	@Resource
-	Swmmq002Serivce service;
+	Swmmq002Serivce service1;
+	
+	@Resource
+	Swmmx002Serivce service2;
 
 	@PostMapping("Swmmq002")
 	public @ResponseBody Swmmq002St q002List(@RequestBody Swmmq002St st) {
-		service.process(st);
+		service1.process(st);
 		return st;
 	}
+	
+	@PostMapping("Swmmq002")
+	public @ResponseBody Swmmx002St q002List(@RequestBody Swmmx002St st) {
+		service2.process(st);
+		return st;
+	}	
 
 }
