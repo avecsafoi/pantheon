@@ -6,9 +6,10 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import jakarta.annotation.Resource;
+import kr.co.koscom.olympus.pb.ab.data.annotation.PBGeneralValidator;
 import kr.co.koscom.olympus.pb.ab.db.page.PBCPage;
 
-@Service("SWMMQ002")
+@Service("SWMMX002")
 public class Swmmx002Serivce {
 
 	@Resource
@@ -18,8 +19,13 @@ public class Swmmx002Serivce {
 
 		Swmmx002In in = st.getIn();
 
+		PBGeneralValidator vt = new PBGeneralValidator(in);
+
+		if (!vt.valid())
+			throw vt.getException();
+
 		PBCPage p0 = st.getPage();
-		PBCPage p1 = p0.copy();
+		PBCPage p1 = p0 == null ? null : p0.copy();
 
 		//@formatter:off
 		Swmmx002QryIn qryin = new Swmmx002QryIn()

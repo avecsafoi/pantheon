@@ -4,6 +4,6 @@
     "zIsuNo": "ccc",
     "zSrtDt": "20010101",
     "zEndDt": "20310101",
-    "page": { "first":true, "limit":5, "orders": [ {"column":"isuNo"}, {"column":"srtDt"}, {"column":"endDt"} ] }
+    "page": { "first":true, "limit":5, "orders": [ {"column":"isuNo","asc":true}, {"column":"srtDt","asc":true}, {"column":"endDt","asc":true} ] }
   }
 }

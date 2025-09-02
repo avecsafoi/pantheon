@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import jakarta.annotation.Resource;
+import kr.co.koscom.olympus.pb.ab.data.annotation.PBGeneralValidator;
 import kr.co.koscom.olympus.pb.ab.db.page.PBCPage;
 
 @Service("SWMMQ002")

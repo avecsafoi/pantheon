@@ -6,18 +6,21 @@ import java.lang.annotation.RetentionPolicy;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface PBA {
 
-    String name();
+	String name();
 
-    int scale() default 0;
+	int scale() default 0;
 
-    int precision() default 0;
+	int precision() default 0;
 
-    boolean fix() default true;
+	boolean fix() default true;
 
-    String format() default "";
+	String format() default "";
 
-    boolean skip() default false;
+	boolean skip() default false;
 
-    String charset() default "";
+	String charset() default "";
 
+	PBCheck[] check() default {};
+
+	Class<PBValidator>[] valid() default {};
 }

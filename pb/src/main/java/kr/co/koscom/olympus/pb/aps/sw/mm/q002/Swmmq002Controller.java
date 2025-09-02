@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import jakarta.annotation.Resource;
 
-@Controller("pb/swmmq")
+@Controller("/pb/swmmq")
 public class Swmmq002Controller {
 
 	@Resource
@@ -22,7 +22,7 @@ public class Swmmq002Controller {
 		return st;
 	}
 	
-	@PostMapping("Swmmq002")
+	@PostMapping("Swmmx002")
 	public @ResponseBody Swmmx002St q002List(@RequestBody Swmmx002St st) {
 		service2.process(st);
 		return st;
