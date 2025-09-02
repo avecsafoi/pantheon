@@ -19,8 +19,6 @@ import org.apache.ibatis.plugin.Intercepts;
 import org.apache.ibatis.plugin.Invocation;
 import org.apache.ibatis.plugin.Signature;
 import org.apache.ibatis.reflection.DefaultReflectorFactory;
-import org.apache.ibatis.reflection.MetaObject;
-import org.apache.ibatis.reflection.SystemMetaObject;
 import org.apache.ibatis.session.ResultHandler;
 import org.apache.ibatis.session.RowBounds;
 
@@ -36,26 +34,20 @@ import kr.co.koscom.olympus.pb.ab.db.page.PBOrder;
 import kr.co.koscom.olympus.pb.ab.db.page.PBPage;
 import lombok.extern.slf4j.Slf4j;
 
-@Intercepts(@Signature(type = Executor.class, method = "query", args = {MappedStatement.class, Object.class, RowBounds.class, ResultHandler.class}))
+@Intercepts(@Signature(type = Executor.class, method = "query", args = { MappedStatement.class, Object.class, RowBounds.class, ResultHandler.class }))
 @Slf4j
 public class PBPageInterceptor implements Interceptor {
 
 	public static final DefaultReflectorFactory DEFAULT_REFLECTOR_FACTORY = new DefaultReflectorFactory();
 
-    private static BoundSql setPageSql(MappedStatement ms, BoundSql bs, StringBuilder sb, Map.Entry<String, PBPage> pe) {
+    private static void setPageSql(MappedStatement ms, BoundSql bs, StringBuilder sb, Map.Entry<String, PBPage> pe, List<ParameterMapping> pm) {
 
-		List<ParameterMapping> pm = bs.getParameterMappings();
-		if (pm.isEmpty()) {
-			String sql = bs.getSql();
-			pm = new ArrayList<>();
-			Object pr = bs.getParameterObject();
-			bs = new BoundSql(ms.getConfiguration(), sql, pm, pr);
-		}
 		String pn = pe.getKey();
 		PBPage pg = pe.getValue();
-		boolean offset = false;
-		
+		int offset = 0;
+
 		if (pg instanceof PBCPage cpg) {
+			if (cpg.getLimit() < 1) cpg.setLimit(10);
 			String on = pn.isEmpty() ? "orders" : pn + ".orders";
 			List<PBOrder> os = cpg.getOrders();
 			StringBuilder bw = new StringBuilder();
@@ -83,53 +75,55 @@ public class PBPageInterceptor implements Interceptor {
 			}
 			sb.append("SELECT A.* FROM (%n%s%n) A%s%n%s%n".formatted(bs.getSql(), bw, bo));
 		} else if (pg instanceof PBNPage npg) {
-			if(npg.getOffset() > 0) offset = true;
+			if (npg.getLimit() < 1) npg.setLimit(10);
+			offset = npg.getOffset();
+			if (offset < 0) npg.setOffset(offset = 0);
 			sb.append(bs.getSql());
 			sb.append(System.lineSeparator());
 		} else {
 			throw new IllegalArgumentException("Not yet supported PageType (%s)".formatted(pg.getClass().getSimpleName()));
 		}
 		// 공통처리
-		String on = pn.isEmpty() ? "" : pn + ".";
+		String noff = pn.isEmpty() ? "offset" : pn + ".offset";
+		String nlim = pn.isEmpty() ? "limit" : pn + ".limit";
 		DbType dt = DialectFactory.getHintDbType();
 		if (dt == null) dt = FlexGlobalConfig.getDefaultConfig().getDbType(); 
 		switch (dt) {
 			case ORACLE, ORACLE_12C, DB2 -> {
-				if (offset) {
+				if (offset > 0) {
 					sb.append(" OFFSET ? ROWS FETCH NEXT ? ROWS ONLY");
-					pm.add(new ParameterMapping.Builder(ms.getConfiguration(), on + "offset", int.class).build());
-					pm.add(new ParameterMapping.Builder(ms.getConfiguration(), on + "limit", int.class).build());
+					pm.add(new ParameterMapping.Builder(ms.getConfiguration(), noff, int.class).build());
+					pm.add(new ParameterMapping.Builder(ms.getConfiguration(), nlim, int.class).build());
 				} else {
 					sb.append(" FETCH NEXT ? ROWS ONLY");
-					pm.add(new ParameterMapping.Builder(ms.getConfiguration(), on + "limit", int.class).build());					
+					pm.add(new ParameterMapping.Builder(ms.getConfiguration(), nlim, int.class).build());					
 				}
 			}
 			case MYSQL, MARIADB, H2, CUBRID, HIVE -> {
-				if (offset) {
+				if (offset > 0) {
 					sb.append(" LIMIT ?, ?");
-					pm.add(new ParameterMapping.Builder(ms.getConfiguration(), on + "offset", int.class).build());
-					pm.add(new ParameterMapping.Builder(ms.getConfiguration(), on + "limit", int.class).build());
+					pm.add(new ParameterMapping.Builder(ms.getConfiguration(), noff, int.class).build());
+					pm.add(new ParameterMapping.Builder(ms.getConfiguration(), nlim, int.class).build());
 				} else {
 					sb.append(" LIMIT ?");
-					pm.add(new ParameterMapping.Builder(ms.getConfiguration(), on + "limit", int.class).build());					
+					pm.add(new ParameterMapping.Builder(ms.getConfiguration(), nlim, int.class).build());					
 				}
 			}
 			case POSTGRE_SQL, SQLITE, HSQL, SAP_HANA -> {
-				if (offset) {
+				if (offset > 0) {
 					sb.append(" LIMIT ? OFFSET ?");
-					pm.add(new ParameterMapping.Builder(ms.getConfiguration(), on + "limit", int.class).build());
-					pm.add(new ParameterMapping.Builder(ms.getConfiguration(), on + "offset", int.class).build());
+					pm.add(new ParameterMapping.Builder(ms.getConfiguration(), nlim, int.class).build());
+					pm.add(new ParameterMapping.Builder(ms.getConfiguration(), noff, int.class).build());
 				} else {
 					sb.append(" LIMIT ?");
-					pm.add(new ParameterMapping.Builder(ms.getConfiguration(), on + "limit", int.class).build());					
+					pm.add(new ParameterMapping.Builder(ms.getConfiguration(), nlim, int.class).build());
 				}
 			}
 			default -> throw new IllegalArgumentException("Not yet supported DbType (%s)".formatted(dt));
 		}
-		return bs;
 	}
 
-	public static void setLockSql(MappedStatement ms, BoundSql bs, StringBuilder sb, Map.Entry<String, PBLock> le) {
+	public static void setLockSql(MappedStatement ms, BoundSql bs, StringBuilder sb, Map.Entry<String, PBLock> le, List<ParameterMapping> pm) {
 		if (le == null)
 			return;
 		int wt = le.getValue().getWaitTime();
@@ -139,7 +133,6 @@ public class PBPageInterceptor implements Interceptor {
 			sb.append(" FOR UPDATE NOWAIT");
 		else if (wt > 0) {
 			sb.append(" FOR UPDATE WAIT ?");
-			List<ParameterMapping> pm = bs.getParameterMappings();
 			String nm = le.getKey().isEmpty() ? "waitTime" : le.getKey() + ".waitTime";
 			pm.add(new ParameterMapping.Builder(ms.getConfiguration(), nm, int.class).build());
 		}
@@ -218,17 +211,23 @@ public class PBPageInterceptor implements Interceptor {
 			RowBounds rb = (RowBounds) args[2];
 			Map.Entry<String, PBPage> pe = findTypeEntry(pr, PBPage.class);
 			Map.Entry<String, PBLock> le = findTypeEntry(pr, PBLock.class);
-
+			
 			BoundSql bs = ms.getBoundSql(pr);
 			StringBuilder sb = new StringBuilder("%n/* SQLID %s */%n".formatted(ms.getId()));
 
-            if (pe != null) bs = setPageSql(ms, bs, sb, pe);
+			List<ParameterMapping> pm = new ArrayList<>(20);
+
+            if (pe != null) setPageSql(ms, bs, sb, pe, pm);
             else sb.append(bs.getSql());
 
-            if (le != null) setLockSql(ms, bs, sb, le);
+            if (le != null) setLockSql(ms, bs, sb, le, pm);
 
-            MetaObject meta = MetaObject.forObject(bs, SystemMetaObject.DEFAULT_OBJECT_FACTORY, SystemMetaObject.DEFAULT_OBJECT_WRAPPER_FACTORY, DEFAULT_REFLECTOR_FACTORY);
-			meta.setValue("sql", sb.toString());
+//          MetaObject meta = MetaObject.forObject(bs, SystemMetaObject.DEFAULT_OBJECT_FACTORY, SystemMetaObject.DEFAULT_OBJECT_WRAPPER_FACTORY, DEFAULT_REFLECTOR_FACTORY);
+//			meta.setValue("sql", sb.toString());
+
+            pm.addAll(0, bs.getParameterMappings());
+			
+			bs = new BoundSql(ms.getConfiguration(), sb.toString(), pm, pr);
 			CacheKey ck = executor.createCacheKey(ms, pr, rb, bs);
 			Object rs = executor.query(ms, pr, rb, (ResultHandler<?>) args[3], ck, bs);
 			if (pe != null) {
@@ -236,8 +235,9 @@ public class PBPageInterceptor implements Interceptor {
 				if (pg instanceof PBCPage cpg) {
 					if (rs instanceof List<?> l) {
 						if (l.isEmpty() || l.size() < cpg.getLimit()) {
-							cpg.setLast(true);
+							if (!cpg.isLast()) cpg.setLast(true);
 						} else {
+							if (cpg.isFirst()) cpg.setFirst(false);
 							List<PBOrder> os = cpg.getOrders();
 							if (os != null && !os.isEmpty()) {
 								Object r = l.getLast();
