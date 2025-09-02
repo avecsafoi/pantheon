@@ -13,6 +13,9 @@ import lombok.experimental.Accessors;
 @Data
 public class Swmmq002QryOut extends PBObject {
 
+	@PBA(name = "종목번호")
+	public String isuNo;
+	
 	@PBA(name = "시작일")
 	public String srtDt;
 
@@ -26,8 +29,8 @@ public class Swmmq002QryOut extends PBObject {
 	public BigDecimal acntIntRat;
 
 	@PBA(name = "회원사번호")
-	public BigDecimal firmNo;
+	public String firmNo;
 
 	@PBA(name = "수수료율")
-	public BigDecimal dCmsRat;
+	public BigDecimal cmsRat;
 }

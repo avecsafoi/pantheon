@@ -53,7 +53,8 @@ public class PBPageInterceptor implements Interceptor {
 		}
 		String pn = pe.getKey();
 		PBPage pg = pe.getValue();
-
+		boolean offset = false;
+		
 		if (pg instanceof PBCPage cpg) {
 			String on = pn.isEmpty() ? "orders" : pn + ".orders";
 			List<PBOrder> os = cpg.getOrders();
@@ -81,7 +82,8 @@ public class PBPageInterceptor implements Interceptor {
                 if (!cpg.isFirst()) bw.append(")".repeat(Math.max(0, i * 2 - 1)));
 			}
 			sb.append("SELECT A.* FROM (%n%s%n) A%s%n%s%n".formatted(bs.getSql(), bw, bo));
-		} else if (pg instanceof PBNPage) {
+		} else if (pg instanceof PBNPage npg) {
+			if(npg.getOffset() > 0) offset = true;
 			sb.append(bs.getSql());
 			sb.append(System.lineSeparator());
 		} else {
@@ -90,22 +92,37 @@ public class PBPageInterceptor implements Interceptor {
 		// 공통처리
 		String on = pn.isEmpty() ? "" : pn + ".";
 		DbType dt = DialectFactory.getHintDbType();
-		if (dt == null) dt = FlexGlobalConfig.getDefaultConfig().getDbType();
+		if (dt == null) dt = FlexGlobalConfig.getDefaultConfig().getDbType(); 
 		switch (dt) {
 			case ORACLE, ORACLE_12C, DB2 -> {
-				sb.append(" OFFSET ? ROWS FETCH NEXT ? ROWS ONLY");
-				pm.add(new ParameterMapping.Builder(ms.getConfiguration(), on + "offset", int.class).build());
-				pm.add(new ParameterMapping.Builder(ms.getConfiguration(), on + "limit", int.class).build());
+				if (offset) {
+					sb.append(" OFFSET ? ROWS FETCH NEXT ? ROWS ONLY");
+					pm.add(new ParameterMapping.Builder(ms.getConfiguration(), on + "offset", int.class).build());
+					pm.add(new ParameterMapping.Builder(ms.getConfiguration(), on + "limit", int.class).build());
+				} else {
+					sb.append(" FETCH NEXT ? ROWS ONLY");
+					pm.add(new ParameterMapping.Builder(ms.getConfiguration(), on + "limit", int.class).build());					
+				}
 			}
 			case MYSQL, MARIADB, H2, CUBRID, HIVE -> {
-				sb.append(" LIMIT ?, ?");
-				pm.add(new ParameterMapping.Builder(ms.getConfiguration(), on + "offset", int.class).build());
-				pm.add(new ParameterMapping.Builder(ms.getConfiguration(), on + "limit", int.class).build());
+				if (offset) {
+					sb.append(" LIMIT ?, ?");
+					pm.add(new ParameterMapping.Builder(ms.getConfiguration(), on + "offset", int.class).build());
+					pm.add(new ParameterMapping.Builder(ms.getConfiguration(), on + "limit", int.class).build());
+				} else {
+					sb.append(" LIMIT ?");
+					pm.add(new ParameterMapping.Builder(ms.getConfiguration(), on + "limit", int.class).build());					
+				}
 			}
 			case POSTGRE_SQL, SQLITE, HSQL, SAP_HANA -> {
-				sb.append(" LIMIT ? OFFSET ?");
-				pm.add(new ParameterMapping.Builder(ms.getConfiguration(), on + "limit", int.class).build());
-				pm.add(new ParameterMapping.Builder(ms.getConfiguration(), on + "offset", int.class).build());
+				if (offset) {
+					sb.append(" LIMIT ? OFFSET ?");
+					pm.add(new ParameterMapping.Builder(ms.getConfiguration(), on + "limit", int.class).build());
+					pm.add(new ParameterMapping.Builder(ms.getConfiguration(), on + "offset", int.class).build());
+				} else {
+					sb.append(" LIMIT ?");
+					pm.add(new ParameterMapping.Builder(ms.getConfiguration(), on + "limit", int.class).build());					
+				}
 			}
 			default -> throw new IllegalArgumentException("Not yet supported DbType (%s)".formatted(dt));
 		}

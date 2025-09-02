@@ -2,6 +2,7 @@ package kr.co.koscom.olympus.pb.aps.sw.mm.q002;
 
 import kr.co.koscom.olympus.pb.ab.data.PBObject;
 import kr.co.koscom.olympus.pb.ab.data.annotation.PBA;
+import kr.co.koscom.olympus.pb.ab.db.page.PBCPage;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
@@ -15,8 +16,11 @@ public class Swmmq002QryIn extends PBObject {
 	public String zIsuNo;
 
 	@PBA(name = "시작일")
-	public String zSrtDt;
+	public String zQrySrtDt;
 
 	@PBA(name = "종료일")
-	public String zEndDt;
+	public String zQryEndDt;
+
+	@PBA(name = "페이지")
+	public PBCPage page;
 }

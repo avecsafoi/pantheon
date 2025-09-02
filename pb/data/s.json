@@ -1,0 +1,74 @@
+{
+  "hdrCommon": {
+    "tgLen": 0,
+    "tgTp": "string",
+    "cmprstype": "string",
+    "encrpType": "string",
+    "dataOfst": 0
+  },
+  "hdrAccount": {
+    "svcId": "string",
+    "firmNo": "string",
+    "userId": "string",
+    "connClssCode": "string",
+    "connChnNo": "string",
+    "trxSeqNo": "string",
+    "connClntNo": "string",
+    "hostClntNo": "string",
+    "filler": "string",
+    "pubIP": "string",
+    "prvtIP": "string",
+    "trxBrnNo": "string",
+    "brnNo": "string",
+    "termClssCode": "string",
+    "termNo": "string",
+    "lngTp": "string",
+    "apTrxTime": "string",
+    "msgCode": "string",
+    "outMsgTp": "string",
+    "cmprReqstTp": "string",
+    "funcKeyList": "string",
+    "reqstRecQty": 0,
+    "excpTRx": "string",
+    "smsSndYn": "string",
+    "filler1": "string",
+    "contYn": "string",
+    "contKey": "string",
+    "varSysLen": 0,
+    "varHederLen": 0,
+    "varMsgLen": 0,
+    "varMsg": "string"
+  },
+  "in": {
+    "zIsuNo": "string",
+    "zQrySrtDt": "string",
+    "zQryEndDt": "string",
+    "page": {
+      "first": true,
+      "last": true,
+      "limit": 0,
+      "orders": [
+        {
+          "column": "string",
+          "asc": true,
+          "value": "string"
+        }
+      ]
+    },
+    "zisuNo": "string",
+    "zqryEndDt": "string",
+    "zqrySrtDt": "string"
+  },
+  "out": [
+    {
+      "zSrtDt": "string",
+      "zEndDt": "string",
+      "dIntRat": 0,
+      "dCmsRat": 0,
+      "zsrtDt": "string",
+      "zendDt": "string",
+      "dintRat": 0,
+      "dcmsRat": 0
+    }
+  ]
+}

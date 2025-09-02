@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.co.koscom.olympus.pb.aps.sw.mm.q002.Swmmq002Mapper">
+
+	<select id="q002List"><![CDATA[
+	SELECT ISU_NO               ISU_NO
+	     , SRT_DT               SRT_DT
+	     , END_DT               END_DT
+	     , ITT_INTRAT           ITT_INTRAT
+	     , ACNT_INTRAT          ACNt_INTRAT
+	     , FIRM_NO              FIRM_NO
+	     , CMSN_RAT             CMSN_RAT
+	  FROM WM_TBF_MMWINTRAT
+	 WHERE ISU_NO = #{in.zIsuNo}
+	   AND SRT_DT BETWEEN #{in.zQrySrtDt} AND #{in.zQryEndDt}
+  /* ORDER BY ISU_NO, SRT_DT */
+	]]></select>
+
+</mapper>
